@@ -5,8 +5,8 @@ const translator = new Translator(process.env.DEEPL_KEY);
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("translate-to-en")
-    .setDescription("Translate your text from Russian to English")
+    .setName("translate-to-ru")
+    .setDescription("Translate your text from English to Russian")
     .addStringOption(option =>
       option.setName('text')
           .setDescription('Text to translate')
@@ -18,7 +18,7 @@ module.exports = {
       fetchReply: true
     })
 
-    const result = await translator.translateText(option.value, null, 'en-US');
+    const result = await translator.translateText(option.value, null, 'ru');
 
     const embed = new EmbedBuilder()
       .setTitle(option.value)

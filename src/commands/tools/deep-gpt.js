@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const { Configuration, OpenAIApi } = require("openai");
 
 const { Translator } = require('deepl-node');
@@ -14,7 +14,7 @@ const openai = new OpenAIApi(configuration);
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("deep-gpt")
-    .setDescription("Ask gpt")
+    .setDescription("Ask gpt (for Russian language only)")
     .addStringOption(option =>
       option.setName('question')
           .setDescription('Question to ask')
@@ -40,8 +40,13 @@ module.exports = {
 
     const ruAnswer = await translator.translateText(response.data.choices[0].text, null, 'ru');
 
+    const embed = new EmbedBuilder()
+      .setTitle(option.value)
+      .setDescription(ruAnswer.text);
+
     await interaction.editReply({
-      content: `You asked: ${option.value}. \nThe answer is: ${ruAnswer.text}`
+      ephemeral: true,
+      embeds: [embed]
     })
   }
     

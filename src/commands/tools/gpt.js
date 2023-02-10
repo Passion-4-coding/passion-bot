@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const { Configuration, OpenAIApi } = require("openai");
 
 const configuration = new Configuration({
@@ -32,8 +32,13 @@ module.exports = {
       presence_penalty: 0,
     });
 
+    const embed = new EmbedBuilder()
+      .setTitle(option.value)
+      .setDescription(response.data.choices[0].text);
+
     await interaction.editReply({
-      content: `You asked: ${option.value}. \nThe answer is: ${response.data.choices[0].text}`
+      ephemeral: true,
+      embeds: [embed]
     })
   }
     
