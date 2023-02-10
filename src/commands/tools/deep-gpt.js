@@ -1,6 +1,10 @@
 const { SlashCommandBuilder } = require("discord.js");
 const { Configuration, OpenAIApi } = require("openai");
 
+const { Translator } = require('deepl-node');
+
+const translator = new Translator(process.env.DEEPL_KEY);
+
 const configuration = new Configuration({
   apiKey: process.env.OPEN_AI_API_KEY,
 });
@@ -9,7 +13,7 @@ const openai = new OpenAIApi(configuration);
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("gpt")
+    .setName("deep-gpt")
     .setDescription("Ask gpt")
     .addStringOption(option =>
       option.setName('question')
@@ -22,9 +26,11 @@ module.exports = {
       fetchReply: true
     })
 
+    const question = await translator.translateText(option.value, null, 'en-US');
+
     const response = await openai.createCompletion({
       model: "text-davinci-003",
-      prompt: option.value,
+      prompt: question.text,
       temperature: 0.7,
       max_tokens: 256,
       top_p: 1,
@@ -32,8 +38,10 @@ module.exports = {
       presence_penalty: 0,
     });
 
+    const ruAnswer = await translator.translateText(response.data.choices[0].text, null, 'ru');
+
     await interaction.editReply({
-      content: `You asked: ${option.value}. \nThe answer is: ${response.data.choices[0].text}`
+      content: `You asked: ${option.value}. \nThe answer is: ${ruAnswer.text}`
     })
   }
     
