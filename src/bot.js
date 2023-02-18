@@ -1,13 +1,21 @@
 require("dotenv").config();
 const { Client, Collection, GatewayIntentBits, Partials } = require("discord.js");
 const fs = require("fs");
+const Sentry = require("@sentry/node");
 
-const { TOKEN } = process.env;
+
+const { TOKEN, SENTRY_DSN } = process.env;
+
+Sentry.init({
+  dsn: SENTRY_DSN,
+  tracesSampleRate: 1.0,
+});
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions],
-  partials: [Partials.Message, Partials.Channel, Partials.Reaction]
+  partials: [Partials.Message, Partials.Channel, Partials.Reaction, Partials.GuildMember]
 });
+
 client.commands = new Collection();
 client.commandArray = [];
 
