@@ -18,9 +18,18 @@ module.exports = {
     .addStringOption(option =>
       option.setName('question')
           .setDescription('Question to ask')
-          .setRequired(true)),
+          .setRequired(true))
+    .addStringOption(option =>
+      option.setName('answer-type')
+        .setDescription('Choose a method how do you want to receive answer. Default: Reply')
+        .setChoices(
+          {name: "Reply", value: "reply"}, 
+          {name: "Private", value: "private"},
+        )
+      ),
   async execute(interaction) {
     const option = interaction.options.get('question');
+    const optionAnswerType = interaction.options.get('answer-type');
 
     await interaction.deferReply({
       fetchReply: true
@@ -38,11 +47,22 @@ module.exports = {
       presence_penalty: 0,
     });
 
+    const isPrivate = optionAnswerType && optionAnswerType.value === "private";
+
+    if (isPrivate) {
+      interaction.member.send(response.data.choices[0].text);
+    }
+
     const ruAnswer = await translator.translateText(response.data.choices[0].text, null, 'ru');
 
-    const embed = new EmbedBuilder()
-      .setTitle(option.value)
-      .setDescription(ruAnswer.text);
+    const embed = isPrivate ? (
+      new EmbedBuilder()
+      .setDescription("Answer to your question has been sent as a private message")
+      ) : (
+      new EmbedBuilder()
+        .setTitle(option.value)
+        .setDescription(ruAnswer.text)
+    )
 
     await interaction.editReply({
       ephemeral: true,
