@@ -1,10 +1,13 @@
 require("dotenv").config();
-const { Client, Collection, GatewayIntentBits } = require("discord.js");
+const { Client, Collection, GatewayIntentBits, Partials } = require("discord.js");
 const fs = require("fs");
 
-const { TOKEN, OPEN_AI_API_KEY } = process.env;
+const { TOKEN } = process.env;
 
-const client = new Client({ intents: GatewayIntentBits.Guilds });
+const client = new Client({
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions],
+  partials: [Partials.Message, Partials.Channel, Partials.Reaction]
+});
 client.commands = new Collection();
 client.commandArray = [];
 

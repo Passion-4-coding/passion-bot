@@ -1,7 +1,7 @@
-const { Events } = require("discord.js");
+const { Events } = require("discord.js")
 
 module.exports = {
-  name: Events.MessageCreate,
+  name: Events.MessageReactionAdd,
   once: false,
   async execute(interaction, client) {
   }
