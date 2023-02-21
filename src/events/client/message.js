@@ -4,6 +4,6 @@ module.exports = {
   name: Events.MessageCreate,
   once: false,
   async execute(interaction, client) {
-    console.log("MessageCreate", member);
+    console.log("MessageCreate", interaction);
   }
 }
