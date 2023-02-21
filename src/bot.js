@@ -12,7 +12,12 @@ Sentry.init({
 });
 
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions],
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildMessageReactions,
+    GatewayIntentBits.GuildMembers
+  ],
   partials: [Partials.Message, Partials.Channel, Partials.Reaction, Partials.GuildMember]
 });
 
