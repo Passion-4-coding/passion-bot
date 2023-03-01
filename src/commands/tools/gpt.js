@@ -22,7 +22,7 @@ module.exports = {
 
     try {
       response = await openai.createCompletion({
-        model: "text-davinci-003",
+        model: "gpt-3.5-turbo",
         prompt: option.value,
         temperature: 0.7,
         max_tokens: getAnswerLengthValue(optionAnswerLength),

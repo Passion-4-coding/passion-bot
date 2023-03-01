@@ -26,7 +26,7 @@ module.exports = {
     const question = await translator.translateText(option.value, null, 'en-US');
 
     const response = await openai.createCompletion({
-      model: "text-davinci-003",
+      model: "gpt-3.5-turbo",
       prompt: question.text,
       temperature: 0.7,
       max_tokens: getAnswerLengthValue(optionAnswerLength),
