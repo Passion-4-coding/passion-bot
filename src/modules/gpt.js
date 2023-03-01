@@ -1,27 +1,55 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const { Configuration, OpenAIApi } = require("openai");
+
+const configuration = new Configuration({
+  apiKey: process.env.OPEN_AI_API_KEY,
+});
+
+const openai = new OpenAIApi(configuration);
+
+const MODELS = {
+  davinci: "text-davinci-003",
+  gpt: "gpt-3.5-turbo"
+}
 
 const answerTypes = {
   reply: "reply",
   private: "private"
 }
 
-const answerLengthTypes = {
-  short: { name: "short", value: 256 },
-  medium: { name: "medium", value: 1024 },
-  long: { name: "long", value: 4000 },
+const createCompletion = (model, maxTokens, prompt) => {
+  return openai.createCompletion({
+    model,
+    prompt,
+    temperature: 0.7,
+    max_tokens: maxTokens,
+    top_p: 1,
+    frequency_penalty: 0,
+    presence_penalty: 0,
+  });
 }
 
 module.exports = {
-  getAnswerLengthValue(nameOption) {
-    const name = nameOption ? nameOption.value : answerLengthTypes.short.name;
-    const answerLength = answerLengthTypes[name];
-    return answerLength.value;
-  },
   getEmbed(isPrivate, question, answer) {
     if (isPrivate) {
       return new EmbedBuilder().setDescription("Answer to your question has been sent as a private message")
     }
     return new EmbedBuilder().setTitle(question).setDescription(answer)
+  },
+  async getAnswer(text) {
+    let response;
+    try {
+      response = await createCompletion(MODELS.gpt, 4096, text);
+    } catch (error) {
+      console.error(MODELS.gpt, error);
+    }
+    if (response) return response;
+    try {
+      response = await createCompletion(MODELS.davinci, 4000, text);
+    } catch (error) {
+      console.error(MODELS.davinci, error);
+    }
+    return response;
   },
   getBasicGptOptions(name, description) {
     return new SlashCommandBuilder()
@@ -37,15 +65,6 @@ module.exports = {
         .setChoices(
           {name: "Reply", value: answerTypes.reply}, 
           {name: "Private", value: answerTypes.private},
-        )
-      )
-    .addStringOption(option =>
-      option.setName('answer-length')
-        .setDescription('Choose a maximum length of answer you want to receive. Default: Short(256 tokens)')
-        .setChoices(
-          {name: "Short(256 tokens)", value: answerLengthTypes.short.name}, 
-          {name: "Medium(1024 tokens)", value: answerLengthTypes.medium.name},
-          {name: "Long(4000 tokens)", value: answerLengthTypes.long.name},
         )
       )
   }
