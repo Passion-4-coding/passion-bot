@@ -5,8 +5,10 @@ module.exports = {
   name: Events.GuildMemberAdd,
   once: false,
   async execute(member) {
+    console.log("member", member)
     const role = member.guild.roles.cache.get("850393978926006294");
     member.roles.add(role).catch(console.error);
+    console.log("client.channels", client.channels)
     const channel = client.channels.cache.get("876024439245000746");
     console.log("channel", channel)
     const randomLanguage = languages[Math.floor(Math.random()*languages.length)];
