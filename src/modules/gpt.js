@@ -41,14 +41,16 @@ module.exports = {
     try {
       response = await createCompletion(MODELS.gpt, 4096, text);
     } catch (error) {
-      console.error(MODELS.gpt, error);
+      //console.error(MODELS.gpt, error);
     }
+    console.log(1, !!response);
     if (response) return response;
     try {
       response = await createCompletion(MODELS.davinci, 4000, text);
     } catch (error) {
-      console.error(MODELS.davinci, error);
+      //console.error(MODELS.davinci, error);
     }
+    console.log(2, !!response);
     return response;
   },
   getBasicGptOptions(name, description) {
