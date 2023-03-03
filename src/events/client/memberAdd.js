@@ -7,12 +7,16 @@ module.exports = {
   async execute(member) {
     const role = member.guild.roles.cache.get("850393978926006294");
     member.roles.add(role).catch(console.error);
-
     const channel = client.channels.cache.get("876024439245000746");
+    console.log("channel", channel)
     const randomLanguage = languages[Math.floor(Math.random()*languages.length)];
+    console.log("randomLanguage", randomLanguage)
     const randomMessage = welcome.messages[randomLanguage][Math.floor(Math.random()*welcome.messages[randomLanguage].length)];
+    console.log("randomMessage", randomMessage)
     const otherLanguages = languages.filter(l => l !== randomLanguage);
+    console.log("otherLanguages", otherLanguages)
     const languageRole = interaction.guild.roles.cache.get(languageRoles[randomLanguage]);
+    console.log("languageRole", languageRole)
     interaction.member.roles.add(languageRole).catch(console.error);
 
     const buttons = new ActionRowBuilder()
@@ -24,7 +28,7 @@ module.exports = {
           .setStyle(ButtonStyle.Primary),
       );
     }
-  
+    console.log("buttons", buttons)
     await channel.send({ content: `${member}\n${randomMessage}`, components: [buttons] });
   }
 }
