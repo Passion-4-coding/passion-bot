@@ -14,7 +14,7 @@ module.exports = (client) => {
         const command = require(`../../commands/${folder}/${file}`);
         commands.set(command.data.name, command);
         commandArray.push(command.data.toJSON());
-        console.log(`Command: ${command.data.name} has bin registered`);
+        console.log(`Command: ${command.data.name} has been registered`);
       }
     }
 
