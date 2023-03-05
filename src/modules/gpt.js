@@ -18,14 +18,16 @@ const answerTypes = {
 }
 
 const createCompletion = (model, maxTokens, prompt) => {
+  if (model === MODELS.gpt) {
+    return openai.createChatCompletion({
+      model,
+      messages: [{role: "user", content: prompt}],
+    }).catch((error) => console.log(error));
+  }
   return openai.createCompletion({
     model,
     prompt,
-    temperature: 0.7,
     max_tokens: maxTokens,
-    top_p: 1,
-    frequency_penalty: 0,
-    presence_penalty: 0,
   });
 }
 
@@ -37,21 +39,19 @@ module.exports = {
     return new EmbedBuilder().setTitle(question).setDescription(answer)
   },
   async getAnswer(text) {
-    let response;
+    let completion;
     try {
-      response = await createCompletion(MODELS.gpt, 4096, text);
+      completion = await createCompletion(MODELS.gpt, 4096, text);
     } catch (error) {
-      //console.error(MODELS.gpt, error);
+      console.error(MODELS.gpt, error);
     }
-    console.log(1, !!response);
-    if (response) return response;
+    if (completion) return completion.data.choices[0].message.content;
     try {
-      response = await createCompletion(MODELS.davinci, 4000, text);
+      completion = await createCompletion(MODELS.davinci, 4000, text);
     } catch (error) {
-      //console.error(MODELS.davinci, error);
+      console.error(MODELS.davinci, error);
     }
-    console.log(2, !!response);
-    return response;
+    if (completion) return completion.data.choices[0].text;
   },
   getBasicGptOptions(name, description) {
     return new SlashCommandBuilder()

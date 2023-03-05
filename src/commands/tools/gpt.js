@@ -10,15 +10,15 @@ module.exports = {
       fetchReply: true
     })
 
-    const response = await getAnswer(option.value);
+    const answer = await getAnswer(option.value);
 
     const isPrivate = optionAnswerType && optionAnswerType.value === "private";
 
     if (isPrivate) {
-      interaction.member.send(response.data.choices[0].text);
+      interaction.member.send(answer);
     }
 
-    const embed = getEmbed(isPrivate, option.value, response.data.choices[0].text);
+    const embed = getEmbed(isPrivate, option.value, answer);
 
     await interaction.editReply({
       ephemeral: true,

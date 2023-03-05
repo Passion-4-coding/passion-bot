@@ -17,15 +17,15 @@ module.exports = {
 
     const question = await translator.translateText(option.value, null, 'en-US');
 
-    const response = await getAnswer(question.text);
+    const answer = await getAnswer(question.text);
 
     const isPrivate = optionAnswerType && optionAnswerType.value === "private";
 
     if (isPrivate) {
-      interaction.member.send(response.data.choices[0].text);
+      interaction.member.send(answer);
     }
 
-    const ruAnswer = await translator.translateText(response.data.choices[0].text, null, 'ru');
+    const ruAnswer = await translator.translateText(answer, null, 'ru');
 
     const embed = getEmbed(isPrivate, option.value, ruAnswer.text);
 

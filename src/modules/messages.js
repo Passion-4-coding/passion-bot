@@ -1,10 +1,4 @@
 module.exports = {
-  languages: ["ua", "ru", "en"],
-  languageRoles: {
-    ua: "1081158202193891358",
-    ru: "1081159521482850346",
-    en: "1081163687731134514",
-  },
   welcome: {
     messages: {
       en: [

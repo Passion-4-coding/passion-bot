@@ -1,5 +1,6 @@
-const { languageRoles, welcome } = require("../../modules/messages");
-const { Events } = require("discord.js");
+const { welcome } = require("../../modules/messages");
+const { roles, languages } = require("../../constants")
+const { Events, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 
 module.exports = {
   name: Events.InteractionCreate,
@@ -10,11 +11,22 @@ module.exports = {
       const memberId = ids[2];
       if (memberId !== interaction.member.id) return;
       const randomMessage = welcome.messages[currentLanguage][Math.floor(Math.random()*welcome.messages[currentLanguage].length)];
-      for(const roleId of Object.values(languageRoles)) {
-        interaction.member.roles.remove(roleId);
+      for(const roleName of languages) {
+        interaction.member.roles.remove(roles[roleName]);
       }
-      interaction.member.roles.add(languageRoles[currentLanguage]);
-      interaction.update(`${randomMessage}\n\n${welcome.replies[currentLanguage]}`);
+      interaction.member.roles.add(roles[currentLanguage]);
+
+      const otherLanguages = languages.filter(l => l !== currentLanguage);
+      const buttons = new ActionRowBuilder()
+      for(const language of otherLanguages) {
+        buttons.addComponents(
+          new ButtonBuilder()
+            .setCustomId(`${roles[language]}:${language}:${interaction.member.id}`)
+            .setLabel(welcome.buttons[language])
+            .setStyle(ButtonStyle.Primary),
+        );
+      }
+      interaction.update({ content: `${interaction.member}\n${randomMessage}\n\n${welcome.replies[currentLanguage]}`, components: [buttons] });
       return;
     }
     if (interaction.isChatInputCommand()) {
