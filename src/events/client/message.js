@@ -5,7 +5,6 @@ module.exports = {
   once: false,
   async execute(interaction, client) {
     if (interaction.author.bot) return;
-    client.emit('guildMemberAdd', interaction.member);
   }
   
 }
