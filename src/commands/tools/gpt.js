@@ -18,7 +18,7 @@ module.exports = {
       interaction.member.send(answer);
     }
 
-    const embed = getEmbed(isPrivate, option.value, answer);
+    const embed = getEmbed(isPrivate, option.value, answer, interaction.member);
 
     await interaction.editReply({
       ephemeral: true,

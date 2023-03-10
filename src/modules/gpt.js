@@ -1,5 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const { Configuration, OpenAIApi } = require("openai");
+const { getLanguageRole } = require("./roles");
+const { gpt } = require("../modules/messages");
 
 const configuration = new Configuration({
   apiKey: process.env.OPEN_AI_API_KEY,
@@ -32,11 +34,15 @@ const createCompletion = (model, maxTokens, prompt) => {
 }
 
 module.exports = {
-  getEmbed(isPrivate, question, answer) {
+  getEmbed(isPrivate, question, answer, member) {
+    const title = question.length > 256 ? `${question.slice(0, 253)}...` : question;
+
+    const memberLanguagesRole = getLanguageRole(member.roles);
+    
     if (isPrivate) {
-      return new EmbedBuilder().setDescription("Answer to your question has been sent as a private message")
+      return new EmbedBuilder().setDescription(gpt.answerSent[memberLanguagesRole])
     }
-    return new EmbedBuilder().setTitle(question).setDescription(answer)
+    return new EmbedBuilder().setTitle(title).setDescription(answer)
   },
   async getAnswer(text) {
     let completion;

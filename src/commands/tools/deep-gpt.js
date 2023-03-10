@@ -27,7 +27,7 @@ module.exports = {
 
     const ruAnswer = await translator.translateText(answer, null, 'ru');
 
-    const embed = getEmbed(isPrivate, option.value, ruAnswer.text);
+    const embed = getEmbed(isPrivate, option.value, ruAnswer.text, interaction.member);
 
     await interaction.editReply({
       ephemeral: true,

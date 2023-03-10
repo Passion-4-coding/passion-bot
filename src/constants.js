@@ -17,6 +17,7 @@ module.exports = {
     ru: RU_ROLE
   },
   languages: ["ua", "en", "ru"],
+  defaultLanguage: "en",
   channels: {
     reception: RECEPTION_CHANNEL
   }

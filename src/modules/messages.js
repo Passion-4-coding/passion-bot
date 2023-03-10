@@ -48,5 +48,17 @@ module.exports = {
       ru: "Ваш язык сохранен как русский",
       ua: "Ваша мова збережена як українська"
     }
+  },
+  language: {
+    en: "Your language set as English",
+    ru: "Ваш язык сохранен как русский",
+    ua: "Ваша мова збережена як українська"
+  },
+  gpt: {
+    answerSent: {
+      ua: "Відповідь на твоє питання була надіслана в приватні повідомлення",
+      en: "Answer to your question has been sent as a private message",
+      ru: "Ответ на ваш вопрос был отправлен в личные сообщения",
+    }
   }
 }
