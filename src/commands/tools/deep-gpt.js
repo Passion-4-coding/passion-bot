@@ -11,15 +11,16 @@ module.exports = {
     const option = interaction.options.get('question');
     const optionAnswerType = interaction.options.get('answer-type');
 
+    const isPrivate = optionAnswerType && optionAnswerType.value === "private";
+
     await interaction.deferReply({
-      fetchReply: true
+      fetchReply: true,
+      ephemeral: isPrivate,
     })
 
     const question = await translator.translateText(option.value, null, 'en-US');
 
     const answer = await getAnswer(question.text);
-
-    const isPrivate = optionAnswerType && optionAnswerType.value === "private";
 
     if (isPrivate) {
       interaction.member.send(answer);
@@ -30,7 +31,6 @@ module.exports = {
     const embed = getEmbed(isPrivate, option.value, ruAnswer.text, interaction.member);
 
     await interaction.editReply({
-      ephemeral: true,
       embeds: [embed]
     })
   }

@@ -27,7 +27,8 @@ module.exports = {
     const languageOption = interaction.options.get('language');
     const language = languageOption.value;
     await interaction.deferReply({
-      fetchReply: true
+      fetchReply: true,
+      ephemeral: true,
     })
 
     for(const roleName of languagesRoles) {
@@ -41,7 +42,6 @@ module.exports = {
       .setDescription(languageText[language])
     
     await interaction.editReply({
-      ephemeral: true,
       embeds: [embed]
     })
   }

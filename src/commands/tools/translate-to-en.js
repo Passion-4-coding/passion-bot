@@ -15,7 +15,8 @@ module.exports = {
     const option = interaction.options.get('text');
 
     await interaction.deferReply({
-      fetchReply: true
+      fetchReply: true,
+      ephemeral: true
     })
 
     const result = await translator.translateText(option.value, null, 'en-US');
@@ -25,7 +26,6 @@ module.exports = {
       .setDescription(result.text);
 
     await interaction.editReply({
-      ephemeral: true,
       embeds: [embed]
     })
   }
