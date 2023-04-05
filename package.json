@@ -16,7 +16,7 @@
     "chalk": "^4.1.2",
     "deepl-node": "^1.8.0",
     "discord-api-types": "^0.37.31",
-    "discord.js": "^14.7.1",
+    "discord.js": "^14.8.0",
     "dotenv": "^16.0.3",
     "openai": "^3.2.1"
   },
