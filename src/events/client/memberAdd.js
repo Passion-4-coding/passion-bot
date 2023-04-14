@@ -9,10 +9,10 @@ module.exports = {
   async execute(member) {
     const role = member.guild.roles.cache.get(roles.trainee);
     member.roles.add(role).catch(console.error);
-    console.log("roles", member.roles);
+    console.log("roles", member.roles.forEach(role => console.log(role.name, role.id)));
     const channel = member.guild.channels.cache.get(channels.reception);
     const randomLanguage = languages[Math.floor(Math.random()*languages.length)];
-    const randomMessage = welcome.messages[randomLanguage][Math.floor(Math.random()*welcome.messages.en.length)];
+    const randomMessage = welcome.messages.en[Math.floor(Math.random()*welcome.messages.en.length)];
     //const otherLanguages = languages.filter(l => l !== randomLanguage);
     //const languageRole = member.guild.roles.cache.get(roles[randomLanguage]);
     //member.roles.add(languageRole).catch(console.error);
