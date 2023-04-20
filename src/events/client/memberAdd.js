@@ -13,8 +13,6 @@ module.exports = {
     const randomLanguage = languages[Math.floor(Math.random()*languages.length)];
     const randomMessage = welcome.messages[randomLanguage][Math.floor(Math.random()*welcome.messages[randomLanguage].length)];
     const otherLanguages = languages.filter(l => l !== randomLanguage);
-    const languageRole = member.guild.roles.cache.get(roles[randomLanguage]);
-    member.roles.add(languageRole).catch(console.error);
 
     const buttons = new ActionRowBuilder()
     for(const language of otherLanguages) {

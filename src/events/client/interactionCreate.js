@@ -27,10 +27,6 @@ module.exports = {
       const memberId = ids[2];
       if (memberId !== interaction.member.id) return;
       const randomMessage = welcome.messages[currentLanguage][Math.floor(Math.random()*welcome.messages[currentLanguage].length)];
-      for(const roleName of languages) {
-        interaction.member.roles.remove(roles[roleName]);
-      }
-      interaction.member.roles.add(roles[currentLanguage]);
 
       const otherLanguages = languages.filter(l => l !== currentLanguage);
       const buttons = new ActionRowBuilder()
@@ -42,7 +38,7 @@ module.exports = {
             .setStyle(ButtonStyle.Primary),
         );
       }
-      interaction.update({ content: `${interaction.member}\n${randomMessage}\n\n${welcome.replies[currentLanguage]}`, components: [buttons] });
+      interaction.update({ content: `${interaction.member}\n${randomMessage}\n`, components: [buttons] });
       return;
     }
     if (interaction.isChatInputCommand()) {
