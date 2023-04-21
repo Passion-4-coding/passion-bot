@@ -23,13 +23,29 @@ class Database {
   async addMember(member) {
     await this.connect();
     const exist = await this.db.collection("members").findOne({ id: member.id });
-    if (exist) return;
+    if (exist) {
+      await this.client.close();
+      return;
+    }
     await this.db.collection("members").insertOne({ id: member.id, username: member.username });
     await this.client.close();
   }
-  async addMembers(members) {
+  async addMessageKarma(message, memberId) {
+    const karma = Math.round(message.length/10);
+    if (karma === 0) return;
     await this.connect();
-    await this.db.collection("members").insertMany(members.map(m => ({ id: m.user.id, username: m.user.username, karma: 0 })));
+    await this.db.collection("members").updateOne(
+      { id: memberId },
+      { $inc: { karma } }
+    )
+    await this.client.close();
+  }
+  async addKarma(karma, memberId) {
+    await this.connect();
+    await this.db.collection("members").updateOne(
+      { id: memberId },
+      { $inc: { karma } }
+    )
     await this.client.close();
   }
 }
