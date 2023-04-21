@@ -22,7 +22,7 @@ class Database {
   }
   async addMember(member) {
     await this.connect();
-    const exist = await this.db.collection("members").findOne({ id: member.username });
+    const exist = await this.db.collection("members").findOne({ id: member.id });
     if (exist) return;
     await this.db.collection("members").insertOne({ id: member.id, username: member.username });
     await this.client.close();
