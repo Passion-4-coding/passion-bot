@@ -3,7 +3,6 @@ const { Client, Collection, GatewayIntentBits, Partials } = require("discord.js"
 const fs = require("fs");
 const Sentry = require("@sentry/node");
 
-
 const { TOKEN, SENTRY_DSN } = process.env;
 
 Sentry.init({

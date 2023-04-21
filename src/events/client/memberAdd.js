@@ -1,12 +1,16 @@
 const { Events, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { welcome } = require("../../modules/messages");
 const { roles, channels, languages } = require("../../constants");
+const { Database } = require("../../config/db");
+
+const db = new Database();
 
 
 module.exports = {
   name: Events.GuildMemberAdd,
   once: false,
   async execute(member) {
+    db.addMember(member);
     const role = member.guild.roles.cache.get(roles.trainee);
     member.roles.add(role).catch(console.error);
     const channel = member.guild.channels.cache.get(channels.reception);
