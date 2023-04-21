@@ -20,6 +20,12 @@ const client = new Client({
   partials: [Partials.Message, Partials.Channel, Partials.Reaction, Partials.GuildMember]
 });
 
+client.on('ready', () => {
+  const guild = client.guilds.cache.first();
+  const allUsers = guild.members.cache.map(member => member.user);
+  console.log(allUsers.length);
+});
+
 client.commands = new Collection();
 client.commandArray = [];
 
