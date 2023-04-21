@@ -29,7 +29,7 @@ class Database {
   }
   async addMembers(members) {
     await this.connect();
-    await this.db.collection("members").insertMany(members.map(m => ({ id: m.id, username: m.username, karma: 0 })));
+    await this.db.collection("members").insertMany(members.map(m => ({ id: m.user.id, username: m.user.username, karma: 0 })));
     await this.client.close();
   }
 }
