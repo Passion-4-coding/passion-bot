@@ -3,6 +3,10 @@ const { Client, Collection, GatewayIntentBits, Partials } = require("discord.js"
 const fs = require("fs");
 const Sentry = require("@sentry/node");
 
+const { Database } = require("./config/db");
+
+const db = new Database();
+
 const { TOKEN, SENTRY_DSN } = process.env;
 
 Sentry.init({
@@ -22,8 +26,11 @@ const client = new Client({
 
 client.on('ready', () => {
   const guild = client.guilds.cache.first();
-  const allUsers = guild.members.cache.map(member => member.user);
-  console.log(allUsers.length);
+  guild.members.fetch()
+  .then((members) => {
+    db.addMembers(members);
+  })
+  .catch(console.error);
 });
 
 client.commands = new Collection();

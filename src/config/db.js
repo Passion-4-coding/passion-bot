@@ -27,6 +27,14 @@ class Database {
     await this.db.collection("members").insertOne({ id: member.id, username: member.username });
     await this.client.close();
   }
+  async addMembers(members) {
+    await this.connect();
+    for (let index = 0; index < members.length; index++) {
+      const member = members[index];
+      await this.db.collection("members").insertOne({ id: member.id, username: member.username });
+    }
+    await this.client.close();
+  }
 }
 
 module.exports = {
