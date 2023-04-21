@@ -29,10 +29,7 @@ class Database {
   }
   async addMembers(members) {
     await this.connect();
-    for (let index = 0; index < members.length; index++) {
-      const member = members[index];
-      await this.db.collection("members").insertOne({ id: member.id, username: member.username });
-    }
+    await this.db.collection("members").insertMany(members.map(m => ({ id: m.id, username: m.username, karma: 0 })));
     await this.client.close();
   }
 }
