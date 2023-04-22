@@ -1,7 +1,9 @@
 require("dotenv").config();
 const { Client, Collection, GatewayIntentBits, Partials } = require("discord.js");
+require("./api/server");
 const fs = require("fs");
 const Sentry = require("@sentry/node");
+
 
 const { TOKEN, SENTRY_DSN } = process.env;
 

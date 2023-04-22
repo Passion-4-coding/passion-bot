@@ -56,6 +56,10 @@ class Database {
     await this.client.close();
     return member.karma;
   }
+  async getMembersCount() {
+    await this.connect();
+    return this.db.collection("members").countDocuments();
+  }
 }
 
 module.exports = {
