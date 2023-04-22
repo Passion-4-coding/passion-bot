@@ -8,7 +8,7 @@ module.exports = {
   once: false,
   async execute(interaction, client) {
     if (interaction.author.bot) return;
-    db.addMessageKarma(interaction.content, interaction.member.user.id);
+    db.addKarmaForMessageActivity(interaction.content, interaction.member.user.id);
   }
   
 }

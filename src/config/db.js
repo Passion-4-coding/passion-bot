@@ -30,8 +30,8 @@ class Database {
     await this.db.collection("members").insertOne({ id: member.id, username: member.username });
     await this.client.close();
   }
-  async addMessageKarma(message, memberId) {
-    const karma = Math.round(message.length/10);
+  async addKarmaForMessageActivity(message, memberId) {
+    const karma = Math.round(message.length/20);
     if (karma === 0) return;
     await this.connect();
     await this.db.collection("members").updateOne(

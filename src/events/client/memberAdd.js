@@ -5,7 +5,6 @@ const { Database } = require("../../config/db");
 
 const db = new Database();
 
-
 module.exports = {
   name: Events.GuildMemberAdd,
   once: false,
