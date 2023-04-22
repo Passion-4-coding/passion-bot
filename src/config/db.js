@@ -48,6 +48,14 @@ class Database {
     )
     await this.client.close();
   }
+  async getKarma(memberId) {
+    await this.connect();
+    const member = await this.db.collection("members").findOne(
+      { id: memberId },
+    )
+    await this.client.close();
+    return member.karma;
+  }
 }
 
 module.exports = {
