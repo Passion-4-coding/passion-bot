@@ -12,7 +12,7 @@ app.get('/api/member-count', async (req, res) => {
   res.send(count.toString());
 })
 
-const port = PORT || 80;
+const port = PORT || 8080;
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
