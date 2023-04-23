@@ -6,7 +6,7 @@ const changeKarmaPoints = async (points, user) => {
 
   const successMessage = points > 0 ?
     `Added ${points} karma points to user ${user.username}` : 
-    `Removed ${points} karma points from user ${user.username}`
+    `Removed ${Math.abs(points)} karma points from user ${user.username}`
 
   const errorMessage = points > 0 ?
     `Error adding karma to user ${user.username}` : 
