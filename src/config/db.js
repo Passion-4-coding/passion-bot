@@ -34,6 +34,9 @@ class Database {
     const karma = Math.round(message.length/20);
     if (karma === 0) return;
     await this.connect();
+    await this.db.collection("karma-entries").insertOne(
+      { memberId, karma, date: new Date(), type: "message" },
+    )
     await this.db.collection("members").updateOne(
       { id: memberId },
       { $inc: { karma } }
@@ -42,6 +45,9 @@ class Database {
   }
   async addKarma(karma, memberId) {
     await this.connect();
+    await this.db.collection("karma-entries").insertOne(
+      { memberId, karma, date: new Date(), type: "manual" },
+    )
     await this.db.collection("members").updateOne(
       { id: memberId },
       { $inc: { karma } }

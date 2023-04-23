@@ -15,6 +15,5 @@ app.get('/api/member-count', async (req, res) => {
 const port = PORT || 8080;
 
 app.listen(port, () => {
-  console.log(port)
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Passion API listening on port ${port}`)
 })
