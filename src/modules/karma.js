@@ -29,7 +29,20 @@ const getKarmaPoints = async (user) => {
   }
 }
 
+const getKarmaLeaderBoard = async () => {
+  try {
+    return await db.getKarmaEntriesForToday();
+    //return new EmbedBuilder().setDescription(`User ${user.username} has ${karma} karma points`);
+  } catch (error) {
+    console.log(error);
+    //return new EmbedBuilder().setDescription(`Error getting karma for user ${user.username}`);
+  }
+}
+
+
+
 module.exports = {
   changeKarmaPoints,
-  getKarmaPoints
+  getKarmaPoints,
+  getKarmaLeaderBoard
 }

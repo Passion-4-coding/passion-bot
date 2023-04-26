@@ -8,6 +8,7 @@ const RU_ROLE = IS_PRODUCTION ? "1081159521482850346" : "1081211731608612965";
 
 // CHANNELS
 const RECEPTION_CHANNEL = IS_PRODUCTION ? "876024439245000746" : "1081864082912706573";
+const COFFEE_CHANNEL = IS_PRODUCTION ? "821695511768727569" : "1073690832600842252";
 
 module.exports = {
   roles: {
@@ -19,6 +20,7 @@ module.exports = {
   languages: ["ua", "en", "ru"],
   defaultLanguage: "en",
   channels: {
-    reception: RECEPTION_CHANNEL
+    reception: RECEPTION_CHANNEL,
+    coffee: COFFEE_CHANNEL
   }
 }

@@ -1,3 +1,4 @@
+const { subDays } = require('date-fns');
 const { MongoClient, ServerApiVersion } = require('mongodb');
 require("dotenv").config();
 
@@ -31,7 +32,8 @@ class Database {
     await this.client.close();
   }
   async addKarmaForMessageActivity(message, memberId) {
-    const karma = Math.round(message.length/20);
+    const points = Math.round(message.length/20);
+    const karma = points > 5 ? 5 : points;
     if (karma === 0) return;
     await this.connect();
     await this.db.collection("karma-entries").insertOne(
@@ -61,6 +63,34 @@ class Database {
     )
     await this.client.close();
     return member.karma;
+  }
+  async getKarmaEntriesForToday() {
+    await this.connect();
+    const end = new Date();
+    const start = subDays(end, 1);
+    const entries = await this.db.collection("karma-entries").find({ date: { $gte: start, $lt: end } }).toArray();
+    const leaders = entries.reduce(
+      (accumulator, currentValue) => {
+        if (accumulator[currentValue.memberId]) {
+          accumulator[currentValue.memberId] = accumulator[currentValue.memberId] + currentValue.karma;
+          return accumulator;
+        }
+        accumulator[currentValue.memberId] = currentValue.karma;
+        return accumulator;
+      },
+      {}
+    );
+    const list = Object.keys(leaders).map((id) => ({ id, total: leaders[id] })).sort((a, b) => b.total - a.total);
+    const first15 = list.slice(0, 15);
+    const populatedFirst15 = [];
+    for (let index = 0; index < first15.length; index++) {
+      const item = first15[index];
+      const member = await this.db.collection("members").findOne({ id: item.id });
+      if (member.username && populatedFirst15.length < 10) {
+        populatedFirst15.push({ ...item, username: member.username });
+      }
+    }
+    return populatedFirst15;
   }
   async getMembersCount() {
     await this.connect();

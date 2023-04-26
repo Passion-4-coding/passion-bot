@@ -3,7 +3,7 @@ const { Client, Collection, GatewayIntentBits, Partials } = require("discord.js"
 require("./api/server");
 const fs = require("fs");
 const Sentry = require("@sentry/node");
-
+const { runTasks } = require("./cron/tasks");
 
 const { TOKEN, SENTRY_DSN } = process.env;
 
@@ -22,6 +22,8 @@ const client = new Client({
   ],
   partials: [Partials.Message, Partials.Channel, Partials.Reaction, Partials.GuildMember  ]
 });
+
+runTasks(client);
 
 client.commands = new Collection();
 client.commandArray = [];
