@@ -9,7 +9,7 @@ const runTasks = (client) => {
     const entries = await getKarmaLeaderBoard();
     let text = '';
     entries.forEach((entry, index) => {
-      text = `${text} \n ${index}. ${entry.username}: ${entry.total}`;
+      text = `${text} \n ${index + 1}. ${entry.username}: ${entry.total}`;
     })
     const embed = new EmbedBuilder().setTitle("Karma leaders for the last 24 hours:").setDescription(text);
     channel.send({ embeds: [embed] });
