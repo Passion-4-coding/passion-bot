@@ -13,7 +13,7 @@ const changeKarmaPoints = async (points, user) => {
     `Error removing karma from user ${user.username}`
 
   try {
-    await db.addKarma(points, user.id);
+    await db.addKarma(points, user.id, "manual");
     return new EmbedBuilder().setDescription(successMessage);
   } catch (error) {
     return new EmbedBuilder().setDescription(errorMessage);
@@ -46,7 +46,7 @@ const addKarmaForBump = async (interaction) => {
   if (interaction.type !== MessageType.ChatInputCommand || interaction.interaction.commandName !== "bump") return;
   for (let embed of interaction.embeds) {
     if (embed.description.includes("Bump done!") || embed.description.includes("Server bumped")) {
-      db.addKarma(50, interaction.interaction.user.id);
+      db.addKarma(50, interaction.interaction.user.id, "bump");
     }
   }
 }
@@ -55,7 +55,7 @@ const addKarmaForMessageActivity = (message, memberId) => {
   const points = Math.round(message.length/20);
   const karma = points > 5 ? 5 : points;
   if (karma === 0) return;
-  return db.addKarma(karma, memberId);
+  return db.addKarma(karma, memberId, "message");
 }
 
 
