@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, MessageType } = require("discord.js");
 const { Database } = require("../config/db");
 const db = new Database();
 
@@ -31,12 +31,31 @@ const getKarmaPoints = async (user) => {
 
 const getKarmaLeaderBoard = async () => {
   try {
-    return await db.getKarmaEntriesForToday();
-    //return new EmbedBuilder().setDescription(`User ${user.username} has ${karma} karma points`);
+    const entries = await db.getKarmaEntriesForToday();
+    let text = '';
+    entries.forEach((entry, index) => {
+      text = `${text} \n ${index + 1}. ${entry.username}: ${entry.total}`;
+    })
+    return new EmbedBuilder().setTitle("Karma leaders for the last 24 hours:").setDescription(text);
   } catch (error) {
-    console.log(error);
-    //return new EmbedBuilder().setDescription(`Error getting karma for user ${user.username}`);
+    return new EmbedBuilder().setDescription(`Something went wrong with getting data for leader board`);
   }
+}
+
+const addKarmaForBump = async (interaction) => {
+  if (interaction.type !== MessageType.ChatInputCommand || interaction.interaction.commandName !== "bump") return;
+  for (let embed of interaction.embeds) {
+    if (embed.description.includes("Bump done!") || embed.description.includes("Server bumped")) {
+      db.addKarma(50, interaction.interaction.user.id);
+    }
+  }
+}
+
+const addKarmaForMessageActivity = (message, memberId) => {
+  const points = Math.round(message.length/20);
+  const karma = points > 5 ? 5 : points;
+  if (karma === 0) return;
+  return db.addKarma(karma, memberId);
 }
 
 
@@ -44,5 +63,7 @@ const getKarmaLeaderBoard = async () => {
 module.exports = {
   changeKarmaPoints,
   getKarmaPoints,
-  getKarmaLeaderBoard
+  getKarmaLeaderBoard,
+  addKarmaForBump,
+  addKarmaForMessageActivity
 }

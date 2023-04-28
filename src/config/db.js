@@ -31,20 +31,6 @@ class Database {
     await this.db.collection("members").insertOne({ id: member.id, username: member.username });
     await this.client.close();
   }
-  async addKarmaForMessageActivity(message, memberId) {
-    const points = Math.round(message.length/20);
-    const karma = points > 5 ? 5 : points;
-    if (karma === 0) return;
-    await this.connect();
-    await this.db.collection("karma-entries").insertOne(
-      { memberId, karma, date: new Date(), type: "message" },
-    )
-    await this.db.collection("members").updateOne(
-      { id: memberId },
-      { $inc: { karma } }
-    )
-    await this.client.close();
-  }
   async addKarma(karma, memberId) {
     await this.connect();
     await this.db.collection("karma-entries").insertOne(
