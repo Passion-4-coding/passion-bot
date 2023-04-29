@@ -1,5 +1,6 @@
 const { EmbedBuilder, MessageType } = require("discord.js");
 const { Database } = require("../config/db");
+const { getSwearWordAmount } = require("./swear");
 const db = new Database();
 
 const changeKarmaPoints = async (points, user) => {
@@ -58,6 +59,10 @@ const addKarmaForMessageActivity = (message, memberId) => {
   return db.addKarma(karma, memberId, "message");
 }
 
+const removeKarmaForSwearWord = (memberId, text) => {
+  db.addKarma(-10, memberId, "swear-word", text);
+}
+
 
 
 module.exports = {
@@ -65,5 +70,6 @@ module.exports = {
   getKarmaPoints,
   getKarmaLeaderBoard,
   addKarmaForBump,
-  addKarmaForMessageActivity
+  addKarmaForMessageActivity,
+  removeKarmaForSwearWord
 }

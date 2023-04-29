@@ -20,7 +20,7 @@ const client = new Client({
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.MessageContent,
   ],
-  partials: [Partials.Message, Partials.Channel, Partials.Reaction, Partials.GuildMember  ]
+  partials: [Partials.Message, Partials.Channel, Partials.Reaction, Partials.GuildMember]
 });
 
 runTasks(client);

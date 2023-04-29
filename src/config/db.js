@@ -31,10 +31,10 @@ class Database {
     await this.db.collection("members").insertOne({ id: member.id, username: member.username });
     await this.client.close();
   }
-  async addKarma(karma, memberId, type) {
+  async addKarma(karma, memberId, type, target) {
     await this.connect();
     await this.db.collection("karma-entries").insertOne(
-      { memberId, karma, date: new Date(), type },
+      { memberId, karma, date: new Date(), type, target },
     )
     await this.db.collection("members").updateOne(
       { id: memberId },
