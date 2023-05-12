@@ -23,7 +23,7 @@ const addMember = async (discordMember) => {
 
 const updateMembers = (discordId, isBot) => {
   MemberModel.updateOne({ discordId }, [
-    {"$set": { isTest: true, isBot, isActive: true } }
+    {"$set": { isTest: false, isBot, isActive: true } }
   ]).then(() => {
   }).catch(error => {
     console.log(error);
