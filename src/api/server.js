@@ -1,19 +1,18 @@
 require("dotenv").config();
 const express = require('express');
+const { handleMemberApi } = require("../modules/member");
 const app = express();
 
 const { PORT } = process.env;
 
-const { Database } = require("../config/db");
-const db = new Database();
-
-app.get('/api/member-count', async (req, res) => {
-  const count = await db.getMembersCount();
-  res.send(count.toString());
-})
-
 const port = PORT || 8080;
+
+handleMemberApi(app);
 
 app.listen(port, () => {
   console.log(`Passion API listening on port ${port}`)
 })
+
+module.exports = {
+  api: app
+}

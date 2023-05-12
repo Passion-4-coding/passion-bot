@@ -1,5 +1,5 @@
 const { ContextMenuCommandBuilder, ApplicationCommandType } = require("discord.js");
-const { getKarmaPoints } = require("../../modules/karma");
+const { getMemberTotalKarma } = require("../../modules/member");
 
 module.exports = {
   data: new ContextMenuCommandBuilder().setName("Get user karma").setType(ApplicationCommandType.User),
@@ -9,7 +9,7 @@ module.exports = {
       ephemeral: true,
     })
 
-    const embed = await getKarmaPoints(interaction.targetUser);
+    const embed = await getMemberTotalKarma(interaction.targetUser);
     
     await interaction.editReply({
       embeds: [embed]

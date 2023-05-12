@@ -4,6 +4,8 @@ require("./api/server");
 const fs = require("fs");
 const Sentry = require("@sentry/node");
 const { runTasks } = require("./cron/tasks");
+const { Database } = require("./config/db");
+const db = new Database();
 
 const { TOKEN, SENTRY_DSN } = process.env;
 
@@ -11,6 +13,8 @@ Sentry.init({
   dsn: SENTRY_DSN,
   tracesSampleRate: 1.0,
 });
+
+db.connect();
 
 const client = new Client({
   intents: [

@@ -2,6 +2,7 @@ const { Events, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discor
 const { welcome } = require("../../modules/messages");
 const { roles, channels, languages } = require("../../constants");
 const { Database } = require("../../config/db");
+const { addMember } = require("../../modules/member");
 
 const db = new Database();
 
@@ -9,7 +10,7 @@ module.exports = {
   name: Events.GuildMemberAdd,
   once: false,
   async execute(member) {
-    db.addMember(member);
+    addMember(member);
     const role = member.guild.roles.cache.get(roles.trainee);
     member.roles.add(role).catch(console.error);
     const channel = member.guild.channels.cache.get(channels.reception);

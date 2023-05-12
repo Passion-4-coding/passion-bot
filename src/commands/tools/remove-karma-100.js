@@ -1,5 +1,5 @@
 const { ContextMenuCommandBuilder, ApplicationCommandType } = require("discord.js");
-const { changeKarmaPoints } = require("../../modules/karma");
+const { changeKarmaManual } = require("../../modules/karma");
 
 module.exports = {
   data: new ContextMenuCommandBuilder().setName("Remove 100 karma points").setType(ApplicationCommandType.User),
@@ -9,7 +9,7 @@ module.exports = {
       ephemeral: true,
     })
 
-    const embed = await changeKarmaPoints(-100, interaction.targetUser);
+    const embed = await changeKarmaManual(-100, interaction.targetUser);
     
     await interaction.editReply({
       embeds: [embed]
