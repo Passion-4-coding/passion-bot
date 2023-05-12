@@ -23,6 +23,7 @@ const _getAllMembers = () => getAllMembers();
 const _addMember = (member) => addMember(member);
 
 const getMemberTotalKarma = async (user) => {
+  console.log("user", user);
   try {
     const karma = await getMemberKarma(user.id);
     return new EmbedBuilder().setDescription(`User ${user.username} has ${karma} karma points`);

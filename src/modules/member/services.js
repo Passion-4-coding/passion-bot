@@ -32,7 +32,9 @@ const updateMembers = () => {
 };
 
 const getMemberKarma = async (discordMemberId) => {
+  console.log("discordMemberId", discordMemberId);
   const member = await MemberModel.findOne({ discordId: discordMemberId }).exec();
+  console.log("member", member);
   return member.karma;
 }
 
