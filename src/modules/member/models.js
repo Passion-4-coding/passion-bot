@@ -6,7 +6,10 @@ const MemberSchema = new mongoose.Schema({
   karma: {
     type: Number,
     default: 0
-  }
+  },
+  isBot: Boolean,
+  isActive: Boolean,
+  isTest: Boolean
 });
 
 const MemberModel = mongoose.model('members', MemberSchema);

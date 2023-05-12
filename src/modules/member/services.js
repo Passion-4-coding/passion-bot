@@ -21,20 +21,17 @@ const addMember = async (discordMember) => {
   }
 }
 
-const updateMembers = () => {
-  MemberModel.updateMany({}, [
-    {"$set": {"discordId": { "$concat": ["$id"]}}}
+const updateMembers = (discordId, isBot) => {
+  MemberModel.updateOne({ discordId }, [
+    {"$set": { isTest: true, isBot, isActive: true } }
   ]).then(() => {
-    console.log("ok")
   }).catch(error => {
     console.log(error);
   });
 };
 
 const getMemberKarma = async (discordMemberId) => {
-  console.log("discordMemberId", discordMemberId);
   const member = await MemberModel.findOne({ discordId: discordMemberId }).exec();
-  console.log("member", member);
   return member.karma;
 }
 

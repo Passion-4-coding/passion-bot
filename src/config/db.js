@@ -16,10 +16,6 @@ class Database {
       console.error("Error while connecting to DB", error);
     }
   }
-
-  async getMembersCount() {
-    return this.db.collection("members").countDocuments();
-  }
 }
 
 module.exports = {

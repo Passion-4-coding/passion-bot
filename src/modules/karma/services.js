@@ -12,7 +12,6 @@ const getKarmaEntriesFor24h = (start, end) => {
 
 const updateKarmaEntriesMemberIds = async () => {
   const entries = await KarmaEntryModel.find().populate().exec();
-  console.log(entries);
 }
 
 module.exports = {
