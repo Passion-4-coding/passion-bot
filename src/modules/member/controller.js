@@ -6,7 +6,8 @@ const {
   addMember,
   getMemberKarma,
   updateMemberKarma,
-  getAllMembers
+  getAllMembers,
+  removeMember
 } = require("./services");
 
 const handleMemberApi = (app) => {
@@ -21,6 +22,7 @@ const _getMemberByDiscordId = (memberId) => getMemberByDiscordId(memberId);
 const _getAllMembers = () => getAllMembers();
 
 const _addMember = (member) => addMember(member);
+const _removeMember = (member) => removeMember(member);
 
 const getMemberTotalKarma = async (user) => {
   console.log("user", user);
@@ -40,6 +42,7 @@ module.exports = {
   getMemberById: _getMemberById,
   getMemberByDiscordId: _getMemberByDiscordId,
   addMember: _addMember,
+  removeMember: _removeMember,
   getMemberTotalKarma,
   updateMemberTotalKarma,
   getAllMembers: _getAllMembers,

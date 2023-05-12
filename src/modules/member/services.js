@@ -21,6 +21,10 @@ const addMember = async (discordMember) => {
   }
 }
 
+const removeMember = async (discordMember) => {
+  return MemberModel.updateOne({ discordId: discordMember.id }, { isActive: false });
+}
+
 const updateMembers = (discordId, isBot) => {
   MemberModel.updateOne({ discordId }, [
     {"$set": { isTest: false, isBot, isActive: true } }
@@ -43,7 +47,7 @@ const updateMemberKarma = (memberId, karma) => {
 }
 
 const getMembersCount = () => {
-  return MemberModel.countDocuments();
+  return MemberModel.countDocuments({ isActive: true, isBot: false, isTest: false });
 }
 
 const getAllMembers = () => {
@@ -54,6 +58,7 @@ module.exports = {
   getMemberByDiscordId,
   getMemberById,
   addMember,
+  removeMember,
   getMembersCount,
   getMemberKarma,
   updateMemberKarma,

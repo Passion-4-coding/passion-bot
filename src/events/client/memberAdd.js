@@ -1,10 +1,7 @@
 const { Events, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { welcome } = require("../../modules/messages");
 const { roles, channels, languages } = require("../../constants");
-const { Database } = require("../../config/db");
 const { addMember } = require("../../modules/member");
-
-const db = new Database();
 
 module.exports = {
   name: Events.GuildMemberAdd,

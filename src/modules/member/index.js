@@ -5,7 +5,8 @@ const {
   addMember,
   getMemberTotalKarma,
   updateMemberTotalKarma,
-  getAllMembers
+  getAllMembers,
+  removeMember
 } = require("./controller");
 
 module.exports = {
@@ -15,5 +16,6 @@ module.exports = {
   addMember,
   getMemberTotalKarma,
   updateMemberTotalKarma,
-  getAllMembers
+  getAllMembers,
+  removeMember
 }
