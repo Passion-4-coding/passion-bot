@@ -9,7 +9,7 @@ module.exports = {
   once: false,
   async execute(member) {
     console.log("memberAdd", member);
-    addMember(member);
+    addMember(member.user);
     addStatEntryMemberAdd(member.id);
     const role = member.guild.roles.cache.get(roles.trainee);
     member.roles.add(role).catch(console.error);
