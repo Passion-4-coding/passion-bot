@@ -1,13 +1,19 @@
 const { EmbedBuilder, MessageType } = require("discord.js");
 const NodeCache = require( "node-cache" );
-const { addStatEntry } = require("./services");
+const { addStatEntry, getStatEntriesForTimeRange } = require("./services");
 const { getMemberByDiscordId } = require("../member");
+const { subDays } = require("date-fns");
 
 const memberMessagesCache = new NodeCache( { stdTTL: 90000 } );
 
 const addEntryWithDiscordMember = async (discordMemberId, data) => {
-  const member = await getMemberByDiscordId(discordMemberId);
-  return addStatEntry({ memberId: member._id, ...data });
+  try {
+    const member = await getMemberByDiscordId(discordMemberId);
+    if (!member) return;
+    await addStatEntry({ memberId: member._id, ...data });
+  } catch (error) {
+    console.error(error);
+  }
 } 
 
 const addStatEntryMessage = async () => {
@@ -52,9 +58,22 @@ const handleStatsForMessage = async (interaction) => {
   }
 }
 
+const getPastDayStats = async () => {
+  const end = new Date();
+  const start = subDays(end, 1);
+  try {
+    const entries = await getStatEntriesForTimeRange(start, end);
+    console.log(entries);
+    //return new EmbedBuilder().setTitle("Karma leaders for the last 24 hours:").setDescription(text);
+  } catch (error) {
+    //return new EmbedBuilder().setDescription(`Something went wrong with getting data for leader board`);
+  }
+}
+
 module.exports = {
   addStatEntryMemberAdd,
   addStatEntryMemberRemove,
   addStatEntryMemberBanned,
-  handleStatsForMessage
+  handleStatsForMessage,
+  getPastDayStats
 }

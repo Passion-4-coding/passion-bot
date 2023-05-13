@@ -13,7 +13,7 @@ const getMemberById = async (memberId) => {
 const addMember = async (discordMember) => {
   const exist = await MemberModel.exists({ discordId: discordMember.id });
   if (exist) return;
-  const newMember = new MemberModel({ discordId: member.id, username: member.username });
+  const newMember = new MemberModel({ discordId: discordMember.id, username: discordMember.username });
   try {
     newMember.save();
   } catch (error) {
@@ -25,13 +25,11 @@ const removeMember = async (discordMember) => {
   return MemberModel.updateOne({ discordId: discordMember.id }, { isActive: false });
 }
 
-const updateMembers = (discordId, isBot) => {
-  MemberModel.updateOne({ discordId }, [
-    {"$set": { isTest: false, isBot, isActive: true } }
-  ]).then(() => {
-  }).catch(error => {
-    console.log(error);
-  });
+const updateMembers = async (member) => {
+  const dbmember = await getMemberByDiscordId(member.id);
+  if (!dbmember) {
+    await addMember(member);
+  }
 };
 
 const getMemberKarma = async (discordMemberId) => {

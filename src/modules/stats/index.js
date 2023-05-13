@@ -3,6 +3,7 @@ const {
   addStatEntryMemberBanned,
   addStatEntryMemberRemove,
   handleStatsForMessage,
+  getPastDayStats
 } = require("./controller");
 
 module.exports = {
@@ -10,4 +11,5 @@ module.exports = {
   addStatEntryMemberBanned,
   addStatEntryMemberRemove,
   handleStatsForMessage,
+  getPastDayStats
 }

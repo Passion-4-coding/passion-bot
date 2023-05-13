@@ -8,13 +8,16 @@ module.exports = {
   once: false,
   async execute(interaction, client) {
     const message = interaction.content;
-    const memberId = interaction.member.user.id;
-
+    
     // check for bump and add karma
     addKarmaForBump(interaction);
-
+    
     // handle message stats
     handleStatsForMessage(interaction);
+    
+    if (!interaction.member) return;
+
+    const memberId = interaction.member.user.id;
 
     if (interaction.author.bot) return;
     // add karma for user activity
