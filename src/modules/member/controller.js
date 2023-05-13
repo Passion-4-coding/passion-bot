@@ -21,8 +21,17 @@ const _getMemberById = (memberId) => getMemberById(memberId);
 const _getMemberByDiscordId = (memberId) => getMemberByDiscordId(memberId);
 const _getAllMembers = () => getAllMembers();
 
-const _addMember = (member) => addMember(member);
-const _removeMember = (member) => removeMember(member);
+const _addMember = (discordMember) => {
+  const member = {
+    discordId: discordMember.id,
+    username: discordMember.username,
+    isActive: true,
+    isBot: discordMember.bot,
+    isTest: false,
+  }
+  return addMember(member);
+};
+const _removeMember = (discordMember) => removeMember(discordMember);
 
 const getMemberTotalKarma = async (user) => {
   console.log("user", user);

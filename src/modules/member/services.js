@@ -10,10 +10,10 @@ const getMemberById = async (memberId) => {
   return member;
 }
 
-const addMember = async (discordMember) => {
-  const exist = await MemberModel.exists({ discordId: discordMember.id });
+const addMember = async (member) => {
+  const exist = await MemberModel.exists({ discordId: member.discordId });
   if (exist) return;
-  const newMember = new MemberModel({ discordId: discordMember.id, username: discordMember.username });
+  const newMember = new MemberModel(member);
   try {
     newMember.save();
   } catch (error) {
