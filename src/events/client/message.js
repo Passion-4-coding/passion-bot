@@ -1,6 +1,7 @@
 const { Events } = require("discord.js");
 const { addKarmaForMessageActivity, addKarmaForBump, removeKarmaForSwearWord } = require("../../modules/karma");
 const { getSwearWordAmount, checkSwearWordsForUser } = require("../../modules/swear");
+const { handleStatsForMessage } = require("../../modules/stats");
 
 module.exports = {
   name: Events.MessageCreate,
@@ -11,6 +12,9 @@ module.exports = {
 
     // check for bump and add karma
     addKarmaForBump(interaction);
+
+    // handle message stats
+    handleStatsForMessage(interaction);
 
     if (interaction.author.bot) return;
     // add karma for user activity

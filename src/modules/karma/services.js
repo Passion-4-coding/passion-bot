@@ -6,7 +6,7 @@ const addKarmaEntry = (memberId, data) => {
   return karmaEntry.save();
 }
 
-const getKarmaEntriesFor24h = (start, end) => {
+const getKarmaEntriesForTimeRange = (start, end) => {
   return KarmaEntryModel.find({ date: { $gte: start, $lt: end } }).populate("memberId");
 }
 
@@ -16,6 +16,6 @@ const updateKarmaEntriesMemberIds = async () => {
 
 module.exports = {
   addKarmaEntry,
-  getKarmaEntriesFor24h,
+  getKarmaEntriesForTimeRange,
   updateKarmaEntriesMemberIds
 }

@@ -1,5 +1,5 @@
 const { EmbedBuilder, MessageType } = require("discord.js");
-const { addKarmaEntry, getKarmaEntriesFor24h } = require("./services");
+const { addKarmaEntry, getKarmaEntriesForTimeRange } = require("./services");
 const { updateMemberTotalKarma, getMemberByDiscordId } = require("../member");
 const { subDays } = require("date-fns");
 const { getKarmaLeaders } = require("./utils");
@@ -52,7 +52,7 @@ const getKarmaLeaderBoard = async () => {
   const end = new Date();
   const start = subDays(end, 1);
   try {
-    const entries = await getKarmaEntriesFor24h(start, end);
+    const entries = await getKarmaEntriesForTimeRange(start, end);
     const leaders = getKarmaLeaders(entries);
     const list = Object.keys(leaders).map((id) => ({ ...leaders[id] })).sort((a, b) => b.karma - a.karma);
     let text = '';
