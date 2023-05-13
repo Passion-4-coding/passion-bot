@@ -1,5 +1,5 @@
 const { ContextMenuCommandBuilder, ApplicationCommandType } = require("discord.js");
-const { getMemberTotalKarma } = require("../../modules/member");
+const { getMemberTotalKarma, getAllMembers } = require("../../modules/member");
 const { getPastDayStats } = require("../../modules/stats");
 const { updateMembers } = require("../../modules/member/services");
 
@@ -16,12 +16,14 @@ module.exports = {
     const guild = client.guilds.resolve(GUILD_ID);
 
     const members = await guild.members.fetch();
-    console.log(members.length)
+
+    const dbmembers = await getAllMembers();
+
     members.forEach(member => {
-      if (member.id === "831915463138738238") {
-        console.log(member)
+      const dbmember = dbmembers.find(m => m.discordId === member.id);
+      if (!dbmember) {
+        console.log(member);
       }
-      //updateMembers(member);
     });
 
 
