@@ -15,7 +15,7 @@ const addMember = async (member) => {
   if (exist) return;
   const newMember = new MemberModel(member);
   try {
-    newMember.save();
+    return newMember.save();
   } catch (error) {
     console.error(error);
   }
