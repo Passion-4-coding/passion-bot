@@ -2,7 +2,7 @@ const { EmbedBuilder, MessageType } = require("discord.js");
 const { addKarmaEntry, getKarmaEntriesForTimeRange } = require("./services");
 const { updateMemberTotalKarma, getMemberByDiscordId } = require("../member");
 const { subDays } = require("date-fns");
-const { getKarmaLeaders } = require("./utils");
+const { getKarmaLeaders, calculateTotalKarma } = require("./utils");
 
 const updateKarma = async (discordMemberId, karma, type, target) => {
   const member = await getMemberByDiscordId(discordMemberId);
@@ -48,6 +48,17 @@ const removeKarmaForSwearWord = (memberId, text) => {
   return updateKarma(memberId, -10, "bump", text);
 }
 
+const getKarmaForThePastDay = async () => {
+  const end = new Date();
+  const start = subDays(end, 1);
+  try {
+    const entries = await getKarmaEntriesForTimeRange(start, end);
+    return calculateTotalKarma(entries);
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 const getKarmaLeaderBoard = async () => {
   const end = new Date();
   const start = subDays(end, 1);
@@ -70,5 +81,6 @@ module.exports = {
   addKarmaForBump,
   addKarmaForMessageActivity,
   removeKarmaForSwearWord,
-  getKarmaLeaderBoard
+  getKarmaLeaderBoard,
+  getKarmaForThePastDay
 }

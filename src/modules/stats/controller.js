@@ -1,8 +1,10 @@
+const { subDays } = require("date-fns");
 const { EmbedBuilder, MessageType } = require("discord.js");
 const NodeCache = require( "node-cache" );
 const { addStatEntry, getStatEntriesForTimeRange } = require("./services");
+const { calculateMessages } = require("./utils");
 const { getMemberByDiscordId } = require("../member");
-const { subDays } = require("date-fns");
+const { getKarmaForThePastDay } = require("../karma");
 
 const memberMessagesCache = new NodeCache( { stdTTL: 90000 } );
 
@@ -63,10 +65,25 @@ const getPastDayStats = async () => {
   const start = subDays(end, 1);
   try {
     const entries = await getStatEntriesForTimeRange(start, end);
-    console.log(entries);
-    //return new EmbedBuilder().setTitle("Karma leaders for the last 24 hours:").setDescription(text);
+    const messageCount = calculateMessages(entries);
+    const bumps = entries.filter(e => e.type === "bump").length;
+    const bans = entries.filter(e => e.type === "member-banned").length;
+    const commands = entries.filter(e => e.type === "command-use").length;
+    const membersJoined = entries.filter(e => e.type === "member-add").length;
+    const membersLeft = entries.filter(e => e.type === "member-remove").length;
+    const totalKarma = await getKarmaForThePastDay();
+    const text = `
+      **${messageCount}** message${messageCount === 1 ? '' : 's'} was sent.
+      **${commands}** command${commands === 1 ? '' : 's'} was used.
+      **${membersJoined}** member${membersJoined === 1 ? '' : 's'} joined and **${membersLeft}** member${membersLeft === 1 ? '' : 's'} left.
+      **${bans}** member${bans === 1 ? '' : 's'} was banned.
+      **${bumps}** bump${bumps === 1 ? '' : 's'} was made to promote our server.
+      **${totalKarma}** total karma point${totalKarma === 1 ? '' : 's'} was earned by our community.
+    `;
+    return new EmbedBuilder().setTitle("Community statistic for the past day:").setDescription(text).setImage("https://res.cloudinary.com/de76u6w6i/image/upload/v1683992738/stats_rqcikr.png");
   } catch (error) {
-    //return new EmbedBuilder().setDescription(`Something went wrong with getting data for leader board`);
+    console.log(error);
+    return new EmbedBuilder().setDescription(`Something went wrong with getting data for leader board`);
   }
 }
 

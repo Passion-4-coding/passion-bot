@@ -18,6 +18,12 @@ const getKarmaLeaders = (entries) => entries.reduce(
   {}
 )
 
+const calculateTotalKarma = (entries) => entries.reduce(
+  (accumulator, currentValue) => currentValue.karma + accumulator,
+  0
+)
+
 module.exports = {
-  getKarmaLeaders
+  getKarmaLeaders,
+  calculateTotalKarma
 }

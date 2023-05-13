@@ -10,7 +10,7 @@ module.exports = {
   async execute(member) {
     console.log("memberAdd", member);
     addMember(member.user);
-    addStatEntryMemberAdd(member.id);
+    addStatEntryMemberAdd(member.user.id);
     const role = member.guild.roles.cache.get(roles.trainee);
     member.roles.add(role).catch(console.error);
     const channel = member.guild.channels.cache.get(channels.reception);

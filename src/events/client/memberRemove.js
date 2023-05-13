@@ -6,7 +6,6 @@ module.exports = {
   name: Events.GuildMemberRemove,
   once: false,
   async execute(member) {
-    removeMember(member);
-    addStatEntryMemberRemove(member.id);
+    addStatEntryMemberRemove(member.user.id);
   }
 }
