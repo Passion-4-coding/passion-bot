@@ -16,9 +16,12 @@ module.exports = {
     const guild = client.guilds.resolve(GUILD_ID);
 
     const members = await guild.members.fetch();
-    
+    console.log(members.length)
     members.forEach(member => {
-      updateMembers(member);
+      if (member.id === "831915463138738238") {
+        console.log(member)
+      }
+      //updateMembers(member);
     });
 
 
