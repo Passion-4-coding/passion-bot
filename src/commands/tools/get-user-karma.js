@@ -1,5 +1,5 @@
 const { ContextMenuCommandBuilder, ApplicationCommandType } = require("discord.js");
-const { getMemberTotalKarma, getAllMembers } = require("../../modules/member");
+const { getMemberTotalKarma, getAllMembers, addMember } = require("../../modules/member");
 const { getPastDayStats } = require("../../modules/stats");
 const { updateMembers } = require("../../modules/member/services");
 
@@ -19,12 +19,25 @@ module.exports = {
 
     const dbmembers = await getAllMembers();
 
+    const membersToAdd = [];
+
     members.forEach(member => {
       const dbmember = dbmembers.find(m => m.discordId === member.id);
       if (!dbmember) {
-        console.log(member);
+        membersToAdd.push(member);
       }
     });
+
+    console.log(membersToAdd.length);
+
+    for (let index = 0; index < membersToAdd.length; index++) {
+      const memberToAdd = membersToAdd[index];
+      try {
+        await addMember(memberToAdd);
+      } catch (error) {
+        console.log(error);
+      }
+    }
 
 
     //updateMembers();
