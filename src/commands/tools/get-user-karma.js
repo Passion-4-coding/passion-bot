@@ -24,7 +24,7 @@ module.exports = {
     members.forEach(member => {
       const dbmember = dbmembers.find(m => m.discordId === member.id);
       if (!dbmember) {
-        membersToAdd.push(member);
+        membersToAdd.push(member.user);
       }
     });
 

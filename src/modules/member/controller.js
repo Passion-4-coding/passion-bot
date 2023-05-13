@@ -26,7 +26,7 @@ const _addMember = (discordMember) => {
     discordId: discordMember.id,
     username: discordMember.username,
     isActive: true,
-    isBot: discordMember.user ? discordMember.user.bot : false,
+    isBot: discordMember.bot,
     isTest: false,
   }
   return addMember(member);
