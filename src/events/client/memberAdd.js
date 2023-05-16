@@ -8,7 +8,6 @@ module.exports = {
   name: Events.GuildMemberAdd,
   once: false,
   async execute(member) {
-    console.log("memberAdd", member);
     await addMember(member.user);
     addStatEntryMemberAdd(member.user.id);
     const role = member.guild.roles.cache.get(roles.trainee);

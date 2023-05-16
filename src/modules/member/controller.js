@@ -34,7 +34,6 @@ const _addMember = (discordMember) => {
 const _removeMember = (discordMember) => removeMember(discordMember);
 
 const getMemberTotalKarma = async (user) => {
-  console.log("user", user);
   try {
     const karma = await getMemberKarma(user.id);
     return new EmbedBuilder().setDescription(`User ${user.username} has ${karma} karma points`);
