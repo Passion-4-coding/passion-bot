@@ -68,7 +68,7 @@ const getKarmaLeaderBoard = async () => {
     const list = Object.keys(leaders).map((id) => ({ ...leaders[id] })).sort((a, b) => b.karma - a.karma).filter(member => member.username);
     let text = '';
     list.forEach((entry, index) => {
-      text = `${text} \n ${index + 1}. ${entry.username}: ${entry.karma}`;
+      text = `${text}\n${index + 1}. ${entry.username}: ${entry.karma}`;
     })
     return new EmbedBuilder().setTitle("Karma leaders for the last 24 hours:").setDescription(text).setImage("https://res.cloudinary.com/de76u6w6i/image/upload/v1683985555/karma_leaderboard_yuqenx.png");
   } catch (error) {
