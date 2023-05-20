@@ -8,7 +8,7 @@ module.exports = {
   once: false,
   async execute(interaction, client) {
     const message = interaction.content;
-    
+    const channelId = interaction.channelId;
     // check for bump and add karma
     addKarmaForBump(interaction);
     
@@ -21,7 +21,7 @@ module.exports = {
 
     if (interaction.author.bot) return;
     // add karma for user activity
-    await addKarmaForMessageActivity(message, memberId);
+    await addKarmaForMessageActivity(message, memberId, channelId);
 
     const swearWordsAmount = getSwearWordAmount(message);
     if (swearWordsAmount > 0) {

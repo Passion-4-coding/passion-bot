@@ -3,6 +3,7 @@ const { addKarmaEntry, getKarmaEntriesForTimeRange } = require("./services");
 const { updateMemberTotalKarma, getMemberByDiscordId } = require("../member");
 const { subDays } = require("date-fns");
 const { getKarmaLeaders, calculateTotalKarma } = require("./utils");
+const { channels } = require("../../constants");
 
 const updateKarma = async (discordMemberId, karma, type, target) => {
   const member = await getMemberByDiscordId(discordMemberId);
@@ -37,8 +38,9 @@ const addKarmaForBump = async (interaction) => {
   }
 }
 
-const addKarmaForMessageActivity = (message, memberId) => {
-  const points = Math.round(message.length/20);
+const addKarmaForMessageActivity = (message, memberId, channelId) => {
+  const divisor = channelId === channels.coffee ? 20 : 10;
+  const points = Math.round(message.length/divisor);
   const karma = points > 5 ? 5 : points;
   if (karma === 0) return;
   return updateKarma(memberId, karma, "bump");
