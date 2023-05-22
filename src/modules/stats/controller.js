@@ -11,6 +11,7 @@ const memberMessagesCache = new NodeCache( { stdTTL: 90000 } );
 const addEntryWithDiscordMember = async (discordMemberId, data) => {
   try {
     const member = await getMemberByDiscordId(discordMemberId);
+    console.log("member", member);
     if (!member) return;
     await addStatEntry({ memberId: member._id, ...data });
   } catch (error) {
@@ -72,14 +73,13 @@ const getPastDayStats = async () => {
     const membersJoined = entries.filter(e => e.type === "member-add").length;
     const membersLeft = entries.filter(e => e.type === "member-remove").length;
     const totalKarma = await getKarmaForThePastDay();
-    const text = `
-      **${messageCount}** message${messageCount === 1 ? '' : 's'} was sent.
-      **${commands}** command${commands === 1 ? '' : 's'} was used.
-      **${membersJoined}** member${membersJoined === 1 ? '' : 's'} joined and **${membersLeft}** member${membersLeft === 1 ? '' : 's'} left.
-      **${bans}** member${bans === 1 ? '' : 's'} was banned.
-      **${bumps}** bump${bumps === 1 ? '' : 's'} was made to promote our server.
-      **${totalKarma}** total karma point${totalKarma === 1 ? '' : 's'} was earned by our community.
-    `;
+    const text = 
+      `**${messageCount}** message${messageCount === 1 ? '' : 's'} was sent.\n` +
+      `**${commands}** command${commands === 1 ? '' : 's'} was used.\n` +
+      `**${membersJoined}** member${membersJoined === 1 ? '' : 's'} joined and **${membersLeft}** member${membersLeft === 1 ? '' : 's'} left.\n` +
+      `**${bans}** member${bans === 1 ? '' : 's'} was banned.\n` +
+      `**${bumps}** bump${bumps === 1 ? '' : 's'} was made to promote our server.\n` +
+      `**${totalKarma}** total karma point${totalKarma === 1 ? '' : 's'} was earned by our community.`;
     return new EmbedBuilder().setTitle("Community statistic for the past day:").setDescription(text).setImage("https://res.cloudinary.com/de76u6w6i/image/upload/v1683992738/stats_rqcikr.png");
   } catch (error) {
     console.log(error);
