@@ -11,13 +11,12 @@ const memberMessagesCache = new NodeCache( { stdTTL: 90000 } );
 const addEntryWithDiscordMember = async (discordMemberId, data) => {
   try {
     const member = await getMemberByDiscordId(discordMemberId);
-    console.log("member", member);
     if (!member) return;
     await addStatEntry({ memberId: member._id, ...data });
   } catch (error) {
     console.error(error);
   }
-} 
+}
 
 const addStatEntryMessage = async () => {
   const messageCount = memberMessagesCache.get("message-count") || 0;
@@ -47,6 +46,11 @@ const addStatEntryMemberCommandUse = (discordMemberId, command) => {
 
 const addStatEntryMemberBump = (discordMemberId) => {
   return addEntryWithDiscordMember(discordMemberId, { type: "bump", amount: 1 });
+}
+
+const addStatEntryMemberPromoted = (discordMemberId) => {
+  console.log(discordMemberId)
+  return addEntryWithDiscordMember(discordMemberId, { type: "promotion", amount: 1 });
 }
 
 const handleStatsForMessage = async (interaction) => {
@@ -92,5 +96,6 @@ module.exports = {
   addStatEntryMemberRemove,
   addStatEntryMemberBanned,
   handleStatsForMessage,
-  getPastDayStats
+  getPastDayStats,
+  addStatEntryMemberPromoted
 }

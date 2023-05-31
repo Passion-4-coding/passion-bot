@@ -16,7 +16,7 @@ const StatsEntrySchema = new mongoose.Schema({
   type: {
     type: String,
     required: true,
-    enum: ["message", "bump", "member-add", "member-remove", "member-banned", "command-use"]
+    enum: ["message", "bump", "member-add", "member-remove", "member-banned", "command-use", "promotion"]
   },
   amount: {
     type: Number,
