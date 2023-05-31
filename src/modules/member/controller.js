@@ -46,6 +46,10 @@ const getMemberTotalKarma = async (user) => {
   }
 }
 
+const isManualRole = (roleId) => {
+  return roleId === roles.architect || roleId === roles.lead || roleId === roles.owner
+}
+
 const promoteRole = async (member, discordMembers, addStatEntryMemberPromoted) => {
   const discordMember = discordMembers.find(m => {
     return m.id === member.discordId
@@ -74,7 +78,7 @@ const promoteRole = async (member, discordMembers, addStatEntryMemberPromoted) =
     await addStatEntryMemberPromoted(member.discordId);
     return;
   }
-  if (memberProgressRole.id === newMemberRoleId) {
+  if (memberProgressRole.id === newMemberRoleId || isManualRole(memberProgressRole.id)) {
     return;
   }
   discordMember.roles.remove(memberProgressRole.id);

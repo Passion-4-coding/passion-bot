@@ -49,7 +49,6 @@ const addStatEntryMemberBump = (discordMemberId) => {
 }
 
 const addStatEntryMemberPromoted = (discordMemberId) => {
-  console.log(discordMemberId)
   return addEntryWithDiscordMember(discordMemberId, { type: "promotion", amount: 1 });
 }
 
