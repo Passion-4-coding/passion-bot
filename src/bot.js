@@ -7,12 +7,15 @@ const { runTasks } = require("./cron/tasks");
 const { Database } = require("./config/db");
 const db = new Database();
 
-const { TOKEN, SENTRY_DSN } = process.env;
+const { TOKEN, SENTRY_DSN, PRODUCTION } = process.env;
 
-Sentry.init({
-  dsn: SENTRY_DSN,
-  tracesSampleRate: 1.0,
-});
+if (PRODUCTION) {
+  Sentry.init({
+    dsn: SENTRY_DSN,
+    tracesSampleRate: 1.0,
+  });
+}
+
 
 db.connect();
 

@@ -75,11 +75,13 @@ const getPastDayStats = async () => {
     const commands = entries.filter(e => e.type === "command-use").length;
     const membersJoined = entries.filter(e => e.type === "member-add").length;
     const membersLeft = entries.filter(e => e.type === "member-remove").length;
+    const membersPromoted = entries.filter(e => e.type === "promotion").length;
     const totalKarma = await getKarmaForThePastDay();
     const text = 
       `**${messageCount}** message${messageCount === 1 ? '' : 's'} was sent.\n` +
       `**${commands}** command${commands === 1 ? '' : 's'} was used.\n` +
       `**${membersJoined}** member${membersJoined === 1 ? '' : 's'} joined and **${membersLeft}** member${membersLeft === 1 ? '' : 's'} left.\n` +
+      `**${membersPromoted}** member${membersPromoted === 1 ? '' : 's'} promoted\n` +
       `**${bans}** member${bans === 1 ? '' : 's'} was banned.\n` +
       `**${bumps}** bump${bumps === 1 ? '' : 's'} was made to promote our server.\n` +
       `**${totalKarma}** total karma point${totalKarma === 1 ? '' : 's'} was earned by our community.`;

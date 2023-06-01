@@ -39,7 +39,13 @@ const _removeMember = (discordMember) => removeMember(discordMember);
 const getMemberTotalKarma = async (user) => {
   try {
     const karma = await getMemberKarma(user.id);
-    return new EmbedBuilder().setDescription(`User ${user.username} has ${karma} karma points`);
+    const gradationValue = Object.values(karmaGradation).find(value => value >= karma);
+    const gradationRole = Object.keys(karmaGradation).find(key => karmaGradation[key] >= karma);
+    if (gradationValue && gradationRole) {
+      const karmaNeededForNextRole = Math.round(gradationValue - karma);
+      return new EmbedBuilder().setDescription(`You have ${karma} karma points. For the ${gradationRole} you need to earn ${karmaNeededForNextRole} more karma point${karmaNeededForNextRole === 1 ? '' : 's'}`);
+    }
+    return new EmbedBuilder().setDescription(`You have ${karma} karma points.`);
   } catch (error) {
     console.log(error);
     return new EmbedBuilder().setDescription(`Error getting karma for user ${user.username}`);
@@ -61,16 +67,16 @@ const promoteRole = async (member, discordMembers, addStatEntryMemberPromoted) =
     if (progressRole) memberProgressRole = progressRole;
   });
   let newMemberRoleId = roles.trainee;
-  if (member.karma >= karmaGradation.JUNIOR_ROLE) {
+  if (member.karma >= karmaGradation.junior) {
     newMemberRoleId = roles.junior;
   }
-  if (member.karma >= karmaGradation.MIDDLE_ROLE) {
+  if (member.karma >= karmaGradation.middle) {
     newMemberRoleId = roles.middle;
   }
-  if (member.karma >= karmaGradation.SENIOR_ROLE) {
+  if (member.karma >= karmaGradation.senior) {
     newMemberRoleId = roles.senior;
   }
-  if (member.karma >= karmaGradation.PRINCIPAL_ROLE) {
+  if (member.karma >= karmaGradation.principal) {
     newMemberRoleId = roles.principal;
   }
   if (!memberProgressRole) {
