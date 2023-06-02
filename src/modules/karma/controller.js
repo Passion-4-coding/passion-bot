@@ -43,11 +43,11 @@ const addKarmaForMessageActivity = (message, memberId, channelId) => {
   const points = Math.round(message.length/divisor);
   const karma = points > 5 ? 5 : points;
   if (karma === 0) return;
-  return updateKarma(memberId, karma, "bump");
+  return updateKarma(memberId, karma, "message");
 }
 
 const removeKarmaForSwearWord = (memberId, text) => {
-  return updateKarma(memberId, -10, "bump", text);
+  return updateKarma(memberId, -10, "swear-word", text);
 }
 
 const getKarmaForThePastDay = async () => {
