@@ -41,7 +41,7 @@ const getMemberTotalKarma = async (user) => {
     const karma = await getMemberKarma(user.id);
     const gradationValue = Object.values(karmaGradation).find(value => value >= karma);
     const gradationRole = Object.keys(karmaGradation).find(key => karmaGradation[key] >= karma);
-    if (gradationValue && gradationRole && !user.roles.cache.has(roles.lead)) {
+    if (gradationValue && gradationRole && user.roles && !user.roles.cache.has(roles.lead)) {
       const karmaNeededForNextRole = Math.round(gradationValue - karma);
       return new EmbedBuilder().setDescription(`You have ${karma} karma points. For the ${gradationRole} you need to earn ${karmaNeededForNextRole} more karma point${karmaNeededForNextRole === 1 ? '' : 's'}`);
     }
