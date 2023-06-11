@@ -1,18 +1,27 @@
 require("dotenv").config();
 const express = require('express');
-const { handleMemberApi } = require("../modules/member");
+var cors = require('cors')
 const app = express();
+const { handleMemberApi } = require("../modules/member");
+const { handleAuthApi } = require("../modules/auth");
 
 const { PORT } = process.env;
 
 const port = PORT || 8080;
 
-handleMemberApi(app);
+app.use(cors());
+
+const init = (client) => {
+  handleMemberApi(app);
+  handleAuthApi(app, client);
+}
+
 
 app.listen(port, () => {
   console.log(`Passion API listening on port ${port}`)
 })
 
 module.exports = {
-  api: app
+  api: app,
+  init
 }

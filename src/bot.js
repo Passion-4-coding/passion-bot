@@ -1,6 +1,6 @@
 require("dotenv").config();
 const { Client, Collection, GatewayIntentBits, Partials } = require("discord.js");
-require("./api/server");
+const { init } = require("./api/server");
 const fs = require("fs");
 const Sentry = require("@sentry/node");
 const { runTasks } = require("./cron/tasks");
@@ -29,6 +29,8 @@ const client = new Client({
   ],
   partials: [Partials.Message, Partials.Channel, Partials.Reaction, Partials.GuildMember]
 });
+
+init(client);
 
 runTasks(client);
 
