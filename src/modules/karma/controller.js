@@ -33,7 +33,9 @@ const addKarmaForBump = async (interaction) => {
   if (interaction.type !== MessageType.ChatInputCommand || (interaction.interaction.commandName !== "bump" && interaction.interaction.commandName !== "like")) return;
   for (let embed of interaction.embeds) {
     if (embed.description.includes("Bump done!") || embed.description.includes("Server bumped") || embed.description.includes("successfully liked")) {
-      await updateKarma(interaction.interaction.user.id, 50, "bump");
+      const nowHours = new Date().getUTCHours();
+      const karmaReward = nowHours >= 22 || nowHours <= 6 ? 50 : 25
+      await updateKarma(interaction.interaction.user.id, karmaReward, "bump");
     }
   }
 }
