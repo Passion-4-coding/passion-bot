@@ -6,7 +6,17 @@ const { getQuestion } = require('./services');
 const { ObjectId } = require('mongodb');
 const NodeCache = require( "node-cache" );
 const { addKarmaForTheQuiz } = require('../karma');
-const answersCache = new NodeCache( { stdTTL: 10 } );
+
+const QUIZ_TIME = 3600;
+
+const answersCache = new NodeCache( { stdTTL: QUIZ_TIME } );
+const timeoutCache = new NodeCache( { stdTTL: QUIZ_TIME } );
+
+const quizHeadMessage = "Quiz is here, you have one hour to provide an answer and earn some karma points.";
+
+const getQuizMessage = (quiz) => {
+  return `${quizHeadMessage}\n\n**${quiz.question}**`;
+}
 
 const handleQuizApi = (app, client) => {
   app.get('/api/quiz/questions', async ({ headers, body }, res) => {
@@ -30,7 +40,7 @@ const handleQuizApi = (app, client) => {
 }
 
 const handleCorrectAnswer = async (interaction, karma, correctAnswersAmount, quiz) => {
-  interaction.message.edit(`${quiz.question}\n\nCorrect answers: ${correctAnswersAmount}`)
+  interaction.message.edit(`${getQuizMessage(quiz)}\n\n*Correct answers: ${correctAnswersAmount}*`)
   await addKarmaForTheQuiz(interaction.message.author.id, quiz._id, karma);
   const embed = new EmbedBuilder()
   .setTitle(`Congratulations!`)
@@ -58,6 +68,15 @@ const handleAnswerRepeat = (interaction) => {
   })
 }
 
+const handleQuizNotAvailable = (interaction) => {
+  const embed = new EmbedBuilder()
+  .setTitle(`Ooops, quiz is no longer available!`)
+  .setDescription("Wait for the next one and try to be faster next time");
+  return interaction.editReply({
+    embeds: [embed]
+  })
+}
+
 const handleMemberAnswer = async (interaction) => {
   await interaction.deferReply({
     ephemeral: true,
@@ -65,6 +84,11 @@ const handleMemberAnswer = async (interaction) => {
   })
   const ids = interaction.customId.split(":");
   const questionId = ids[0];
+  const isQuizAvailable = timeoutCache.get(questionId);
+  if (!isQuizAvailable) {
+    handleQuizNotAvailable(interaction);
+    return;
+  } 
   const answer = ids[1];
   const question = await getQuestion(new ObjectId(questionId));
   const membersWhoAnswered = answersCache.get(questionId) || [];
@@ -89,13 +113,17 @@ const getQuizEmbed = async () => {
   const questions = await getAllQuestions();
   const randomQuestionIndex = randomIntFromInterval(0, questions.length - 1);
   const randomQuiz = questions[randomQuestionIndex];
+  timeoutCache.set(randomQuiz._id.toString(), true);
+  setInterval(() => {
+    timeoutCache.set(randomQuiz._id.toString(), false);
+  }, QUIZ_TIME*1000);
   const buttons = new ActionRowBuilder();
   const id = randomQuiz._id.toString();
   buttons.addComponents(new ButtonBuilder().setCustomId(`${id}:answer1`).setLabel(randomQuiz.answer1).setStyle(ButtonStyle.Primary));
   buttons.addComponents(new ButtonBuilder().setCustomId(`${id}:answer2`).setLabel(randomQuiz.answer2).setStyle(ButtonStyle.Primary));
   buttons.addComponents(new ButtonBuilder().setCustomId(`${id}:answer3`).setLabel(randomQuiz.answer3).setStyle(ButtonStyle.Primary));
   buttons.addComponents(new ButtonBuilder().setCustomId(`${id}:answer4`).setLabel(randomQuiz.answer4).setStyle(ButtonStyle.Primary));
-  return { content: randomQuiz.question, components: [buttons] };
+  return { content: getQuizMessage(randomQuiz), components: [buttons] };
 }
 
 module.exports = {
