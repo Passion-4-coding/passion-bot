@@ -18,9 +18,16 @@ const KarmaEntrySchema = new mongoose.Schema({
   type: {
     type: String,
     required: true,
-    enum: ["manual", "bump", "message", "swear-word", "content-making"]
+    enum: ["manual", "bump", "message", "swear-word", "content-making", "quiz"]
   },
-  target: String
+  target: String,
+  quizId: {
+    type: ObjectId,
+    ref: 'quiz-questions',
+    required: function() {
+      return this.type === "quiz";
+    }
+  }
 });
 
 const KarmaEntryModel = mongoose.model('karma-entries', KarmaEntrySchema);

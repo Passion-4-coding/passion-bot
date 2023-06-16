@@ -5,9 +5,9 @@ const { subDays } = require("date-fns");
 const { getKarmaLeaders, calculateTotalKarma } = require("./utils");
 const { channels } = require("../../constants");
 
-const updateKarma = async (discordMemberId, karma, type, target) => {
+const updateKarma = async (discordMemberId, karma, type, target, quizId) => {
   const member = await getMemberByDiscordId(discordMemberId);
-  await addKarmaEntry(member._id, { karma, type, target });
+  await addKarmaEntry(member._id, { karma, type, target, quizId });
   await updateMemberTotalKarma(member._id, karma);
 }
 
@@ -46,6 +46,10 @@ const addKarmaForMessageActivity = (message, memberId, channelId) => {
   const karma = points > 5 ? 5 : points;
   if (karma === 0) return;
   return updateKarma(memberId, karma, "message");
+}
+
+const addKarmaForTheQuiz = (memberId, quizId, karma) => {
+  return updateKarma(memberId, karma, "quiz", undefined, quizId);
 }
 
 const removeKarmaForSwearWord = (memberId, text) => {
@@ -100,5 +104,6 @@ module.exports = {
   removeKarmaForSwearWord,
   getKarmaLeaderBoard,
   getKarmaForThePastDay,
-  addKarmaForContentMaking
+  addKarmaForContentMaking,
+  addKarmaForTheQuiz
 }

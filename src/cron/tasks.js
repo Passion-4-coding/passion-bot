@@ -3,6 +3,8 @@ const { channels } = require("../constants");
 const { getKarmaLeaderBoard } = require('../modules/karma');
 const { getPastDayStats, addStatEntryMemberPromoted } = require('../modules/stats');
 const { updateRoles } = require('../modules/member');
+const { randomIntFromInterval } = require('../utils');
+const { getQuizEmbed } = require('../modules/quiz');
 
 const runTasks = (client) => {
   cron.schedule('0 16 * * *', async () => {
@@ -17,6 +19,17 @@ const runTasks = (client) => {
     const channel = client.channels.cache.get(channels.coffee);
     const embed = await getPastDayStats();
     channel.send({ embeds: [embed] });
+  }, {
+    timezone: 'Europe/Warsaw'
+  });
+
+  cron.schedule('30 18 * * *', async () => {
+    const channel = client.channels.cache.get(channels.code);
+    const timeout = randomIntFromInterval(1000, 3600);
+    setTimeout(async () => {
+      const embed = await getQuizEmbed()
+      channel.send(embed);
+    }, timeout)
   }, {
     timezone: 'Europe/Warsaw'
   });

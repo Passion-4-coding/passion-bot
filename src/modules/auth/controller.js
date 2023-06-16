@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-const { getParams, getToken } = require('./utils');
+const { getParams, getToken, scopes } = require('./utils');
 const { roles } = require('../../constants');
 
 const handleAuthApi = (app, client) => {
@@ -19,22 +19,22 @@ const handleAuthApi = (app, client) => {
     });
     const data = await response.json();
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
-    const scopes = [];
+    const memberScopes = [];
     const member = await guild.members.fetch(data.id);
     if (member) {
-      scopes.push("user");
-    }
-    if (member.roles.cache.has(roles.owner)) {
-      scopes.push("admin");
+      memberScopes.push(scopes.user);
     }
     if (member.roles.cache.has(roles.lead)) {
-      scopes.push("moderator");
+      memberScopes.push(scopes.moderator);
+    }
+    if (member.roles.cache.has(roles.owner)) {
+      memberScopes.push(scopes.admin);
     }
     res.send({
       id: data.id,
       name: data.username,
       avatar: `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png`,
-      scopes,
+      scopes: memberScopes,
     });
   })
 }

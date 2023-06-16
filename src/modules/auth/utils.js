@@ -1,4 +1,12 @@
 const { DISCORD_CLIENT_ID, DISCORD_SECRET, DISCORD_URI } = process.env;
+const fetch = require('node-fetch');
+const { roles } = require('../../constants');
+
+const scopes = {
+  user: "user",
+  moderator: "moderator",
+  admin: "admin"
+}
 
 const getParams = (code) => {
   const params = new URLSearchParams();
@@ -39,8 +47,32 @@ const getDiscordUser = async (token) => {
   }
 }
 
+const validateAccess = async (headers, scope, client) => {
+  const response = await fetch(' https://discord.com/api/users/@me', {
+    headers: {
+      "Authorization": headers['authorization'],
+    }
+  });
+  const data = await response.json();
+  const guild = client.guilds.cache.get(process.env.GUILD_ID);
+  const member = await guild.members.fetch(data.id);
+  const memberScopes = [];
+  if (member) {
+    memberScopes.push("user");
+  }
+  if (member.roles.cache.has(roles.lead)) {
+    memberScopes.push("moderator");
+  }
+  if (member.roles.cache.has(roles.owner)) {
+    memberScopes.push("admin");
+  }
+  return memberScopes.includes(scope);
+}
+
 module.exports = {
   getParams,
   getToken,
-  getDiscordUser
+  getDiscordUser,
+  validateAccess,
+  scopes,
 }
