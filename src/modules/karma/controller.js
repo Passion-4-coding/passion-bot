@@ -52,6 +52,19 @@ const removeKarmaForSwearWord = (memberId, text) => {
   return updateKarma(memberId, -10, "swear-word", text);
 }
 
+const addKarmaForContentMaking = async (member) => {
+  const successMessage = `Added 50 karma points to user ${member.username} for the content making`; 
+  const errorMessage = `Error adding karma to user ${member.username} for the content making`;
+
+  try {
+    await updateKarma(member.id, 50, "content-making");
+    return new EmbedBuilder().setDescription(successMessage);
+  } catch (error) {
+    console.log(error);
+    return new EmbedBuilder().setDescription(errorMessage);
+  }
+}
+
 const getKarmaForThePastDay = async () => {
   const end = new Date();
   const start = subDays(end, 1);
@@ -86,5 +99,6 @@ module.exports = {
   addKarmaForMessageActivity,
   removeKarmaForSwearWord,
   getKarmaLeaderBoard,
-  getKarmaForThePastDay
+  getKarmaForThePastDay,
+  addKarmaForContentMaking
 }
