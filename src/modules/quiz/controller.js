@@ -29,14 +29,9 @@ const handleQuizApi = (app, client) => {
   })
 }
 
-const handleCorrectAnswer = async (interaction, karma, correctAnswersAmount, quizId) => {
-  if (correctAnswersAmount > 1) {
-    const updatedContent = interaction.message.content.replace(`Correct answers: ${correctAnswersAmount - 1}`, `Correct answers: ${correctAnswersAmount}`);
-    interaction.message.edit(updatedContent)
-  } else {
-    interaction.message.edit(`${interaction.message.content}\n\nCorrect answers: ${correctAnswersAmount}`)
-  }
-  await addKarmaForTheQuiz(interaction.message.author.id, quizId, karma);
+const handleCorrectAnswer = async (interaction, karma, correctAnswersAmount, quiz) => {
+  interaction.message.edit(`${quiz.question}\n\nCorrect answers: ${correctAnswersAmount}`)
+  await addKarmaForTheQuiz(interaction.message.author.id, quiz._id, karma);
   const embed = new EmbedBuilder()
   .setTitle(`Congratulations!`)
   .setDescription(`Your answer was correct and you have earned ${karma} karma points.`);
@@ -84,7 +79,7 @@ const handleMemberAnswer = async (interaction) => {
   answersCache.set(questionId, membersWhoAnswered);
   if (isAnswerCorrect) {
     const karma = amountOfCorrectAnswers > 5 ? question.karmaRewardLate : question.karmaRewardEarly;
-    await handleCorrectAnswer(interaction, karma, amountOfCorrectAnswers, question._id);
+    await handleCorrectAnswer(interaction, karma, amountOfCorrectAnswers, question);
     return;
   }
   handleWrongAnswer(interaction)
