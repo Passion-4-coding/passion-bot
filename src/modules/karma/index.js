@@ -4,7 +4,8 @@ const {
   addKarmaForMessageActivity,
   removeKarmaForSwearWord,
   getKarmaLeaderBoard,
-  getKarmaForThePastDay
+  getKarmaForThePastDay,
+  addKarmaForContentMaking
 } = require("./controller");
 
 module.exports = {
@@ -13,5 +14,6 @@ module.exports = {
   addKarmaForMessageActivity,
   removeKarmaForSwearWord,
   getKarmaLeaderBoard,
-  getKarmaForThePastDay
+  getKarmaForThePastDay,
+  addKarmaForContentMaking
 }
