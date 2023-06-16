@@ -92,13 +92,13 @@ const handleMemberAnswer = async (interaction) => {
   const answer = ids[1];
   const question = await getQuestion(new ObjectId(questionId));
   const membersWhoAnswered = answersCache.get(questionId) || [];
-  const isQuestionAlreadyAnswered = membersWhoAnswered.some(a => a.memberId === interaction.message.author.id);
+  const isQuestionAlreadyAnswered = membersWhoAnswered.some(a => a.memberId === interaction.member.id);
   if (isQuestionAlreadyAnswered) {
     handleAnswerRepeat(interaction)
     return;
   }
   const isAnswerCorrect = question[answer] === question.correctAnswer;
-  membersWhoAnswered.push({ memberId: interaction.message.author.id, correct: isAnswerCorrect });
+  membersWhoAnswered.push({ memberId: interaction.member.id, correct: isAnswerCorrect });
   const amountOfCorrectAnswers = membersWhoAnswered.filter(m => m.correct).length;
   answersCache.set(questionId, membersWhoAnswered);
   if (isAnswerCorrect) {

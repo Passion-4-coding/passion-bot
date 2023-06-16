@@ -23,7 +23,7 @@ const runTasks = (client) => {
     timezone: 'Europe/Warsaw'
   });
 
-  cron.schedule('30 21 * * *', async () => {
+  cron.schedule('45 21 * * *', async () => {
     const channel = client.channels.cache.get(channels.code);
     const timeout = randomIntFromInterval(1000, 3600);
     setTimeout(async () => {
