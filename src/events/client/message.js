@@ -2,14 +2,14 @@ const { Events } = require("discord.js");
 const { addKarmaForMessageActivity, addKarmaForBump, removeKarmaForSwearWord } = require("../../modules/karma");
 const { getSwearWordAmount, checkSwearWordsForUser } = require("../../modules/swear");
 const { handleStatsForMessage } = require("../../modules/stats");
-const { channels } = require("../../constants");
+const { channels, roles } = require("../../constants");
 const { handleDraftMessage } = require("../../modules/content-making");
 
 module.exports = {
   name: Events.MessageCreate,
   once: false,
   async execute(interaction, client) {
-    if (interaction.channelId === channels.draft) {
+    if (interaction.channelId === channels.draft && !interaction.member.roles.cache.has(roles.owner)) {
       handleDraftMessage(interaction, client)
     } 
     const message = interaction.content;
