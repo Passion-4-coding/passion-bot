@@ -41,7 +41,7 @@ const handleQuizApi = (app, client) => {
 
 const handleCorrectAnswer = async (interaction, karma, correctAnswersAmount, quiz) => {
   interaction.message.edit(`${getQuizMessage(quiz)}\n\n*Correct answers: ${correctAnswersAmount}*`)
-  await addKarmaForTheQuiz(interaction.message.author.id, quiz._id, karma);
+  await addKarmaForTheQuiz(interaction.member.id, quiz._id, karma);
   const embed = new EmbedBuilder()
   .setTitle(`Congratulations!`)
   .setDescription(`Your answer was correct and you have earned ${karma} karma points.`);

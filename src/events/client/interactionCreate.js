@@ -2,6 +2,7 @@ const { welcome } = require("../../modules/messages");
 const { roles, languages, channels } = require("../../constants")
 const { Events, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { handleMemberAnswer } = require("../../modules/quiz");
+const { handleRewardMemberForContent } = require("../../modules/content-making");
 
 module.exports = {
   name: Events.InteractionCreate,
@@ -24,6 +25,10 @@ module.exports = {
     }
     if (interaction.isButton() && interaction.channelId === channels.code) {
       handleMemberAnswer(interaction);
+      return;
+    }
+    if (interaction.isButton() && interaction.channelId === channels.draft_review) {
+      handleRewardMemberForContent(interaction);
       return;
     }
     if (interaction.isButton()) {

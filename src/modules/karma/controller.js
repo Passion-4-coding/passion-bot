@@ -56,12 +56,12 @@ const removeKarmaForSwearWord = (memberId, text) => {
   return updateKarma(memberId, -10, "swear-word", text);
 }
 
-const addKarmaForContentMaking = async (member) => {
-  const successMessage = `Added 50 karma points to user ${member.username} for the content making`; 
-  const errorMessage = `Error adding karma to user ${member.username} for the content making`;
+const addKarmaForContentMaking = async (memberId, karma) => {
+  const successMessage = `User rewarded with ${karma} karma points`; 
+  const errorMessage = `Error adding karma to user for the content making`;
 
   try {
-    await updateKarma(member.id, 50, "content-making");
+    await updateKarma(memberId, karma, "content-making");
     return new EmbedBuilder().setDescription(successMessage);
   } catch (error) {
     console.log(error);

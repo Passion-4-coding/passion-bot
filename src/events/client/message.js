@@ -2,11 +2,16 @@ const { Events } = require("discord.js");
 const { addKarmaForMessageActivity, addKarmaForBump, removeKarmaForSwearWord } = require("../../modules/karma");
 const { getSwearWordAmount, checkSwearWordsForUser } = require("../../modules/swear");
 const { handleStatsForMessage } = require("../../modules/stats");
+const { channels } = require("../../constants");
+const { handleDraftMessage } = require("../../modules/content-making");
 
 module.exports = {
   name: Events.MessageCreate,
   once: false,
   async execute(interaction, client) {
+    if (interaction.channelId === channels.draft) {
+      handleDraftMessage(interaction, client)
+    } 
     const message = interaction.content;
     const channelId = interaction.channelId;
     // check for bump and add karma
