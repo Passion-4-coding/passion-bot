@@ -23,7 +23,8 @@ const handleDraftMessage = async (interaction, client) => {
     interaction.attachments.forEach(attachment => {
       const attachmentEmbed = new EmbedBuilder()
       .setTitle(`Attachment name: ${attachment.name}`)
-      .setImage(attachment.attachment);
+      .setDescription(`Attachment: ${attachment.attachment}`)
+      .setImage(attachment.url);
       embeds.push(attachmentEmbed);
     });
   }
