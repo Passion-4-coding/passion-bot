@@ -1,7 +1,8 @@
+const { getPaginatedDataFromModel } = require("../../utils");
 const { QuizEntryModel } = require("./models");
 
-const getAllQuestions = () => {
-  return QuizEntryModel.find();
+const getAllQuestions = async (page, pageSize) => {
+  return getPaginatedDataFromModel(QuizEntryModel, page, pageSize);
 }
 
 const getQuestion = (id) => {

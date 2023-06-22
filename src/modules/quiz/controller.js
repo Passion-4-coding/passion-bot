@@ -19,13 +19,14 @@ const getQuizMessage = (quiz) => {
 }
 
 const handleQuizApi = (app, client) => {
-  app.get('/api/quiz/questions', async ({ headers, body }, res) => {
+  app.get('/api/quiz/questions', async ({ headers, query }, res) => {
+    const { page = 1, pageSize = 10 } = query;
     if (!await validateAccess(headers, scopes.admin, client)) {
       res.status(403);
       res.send({ error: "Access Error", message: "This user is not allowed to get questions"});
       return;
     }
-    const questions = await getAllQuestions();
+    const questions = await getAllQuestions(page, pageSize);
     res.send(questions);
   })
   app.post('/api/quiz/questions', async (req, res) => {

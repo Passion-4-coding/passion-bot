@@ -3,14 +3,19 @@ const { channels } = require("../../constants");
 const { addKarmaForContentMaking } = require("../karma");
 
 const handleDraftMessage = async (interaction, client) => {
-  if (interaction.member.user.bot) return;
+  if (interaction.member.user.bot) {
+    setTimeout(() => {
+      interaction.delete()
+    }, 3600  * 1000);
+    return;
+  }
   const draft = client.channels.cache.get(channels.draft);
   const draftReview = client.channels.cache.get(channels.draft_review);
 
   const responseEmbed = new EmbedBuilder()
-  .setTitle(`Content has been added for the review`)
-  .setDescription(`Thank you ${interaction.member}. We will review your request soon.`)
-  
+  .setTitle(`Content has been added for the review.`)
+  .setDescription(`Thank you ${interaction.member}. We will review your request soon.\n\n*This message will be automatically deleted in one hour*`)
+
   draft.send({ embeds: [responseEmbed] });
 
   const contentEmbed = new EmbedBuilder()
@@ -44,7 +49,6 @@ const handleDraftMessage = async (interaction, client) => {
   buttons.addComponents(button50).addComponents(button100);
 
   draftReview.send({ embeds, components: [buttons] });
-
   interaction.delete();
 }
 

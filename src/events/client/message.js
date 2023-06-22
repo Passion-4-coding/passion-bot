@@ -9,7 +9,7 @@ module.exports = {
   name: Events.MessageCreate,
   once: false,
   async execute(interaction, client) {
-    if (interaction.channelId === channels.draft && !interaction.member.roles.cache.has(roles.owner)) {
+    if (interaction.channelId === channels.draft  && !interaction.member.roles.cache.has(roles.owner)) {
       handleDraftMessage(interaction, client)
     } 
     const message = interaction.content;
