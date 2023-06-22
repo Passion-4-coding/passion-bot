@@ -18,8 +18,13 @@ const addQuestion = async (question) => {
   }
 }
 
+const updateQuestion = async (id, question) => {
+  return QuizEntryModel.updateOne({ _id: id }, question);
+}
+
 module.exports = {
   addQuestion,
   getAllQuestions,
-  getQuestion
+  getQuestion,
+  updateQuestion
 }

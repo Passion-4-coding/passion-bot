@@ -1,6 +1,6 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
 const { validateAccess, scopes } = require('../auth');
-const { getAllQuestions, addQuestion } = require('./services');
+const { getAllQuestions, addQuestion, updateQuestion } = require('./services');
 const { randomIntFromInterval } = require('../../utils');
 const { getQuestion } = require('./services');
 const { ObjectId } = require('mongodb');
@@ -29,6 +29,7 @@ const handleQuizApi = (app, client) => {
     const questions = await getAllQuestions(page, pageSize);
     res.send(questions);
   })
+
   app.post('/api/quiz/questions', async (req, res) => {
     if (!await validateAccess(req.headers, scopes.admin, client)) {
       res.status(403);
@@ -36,6 +37,16 @@ const handleQuizApi = (app, client) => {
       return;
     }
     const response = await addQuestion({ ...req.body, date: new Date() });
+    res.send(response);
+  })
+
+  app.patch('/api/quiz/questions/:id', async ({ params, headers, body }, res) => {
+    if (!await validateAccess(headers, scopes.admin, client)) {
+      res.status(403);
+      res.send({ error: "Access Error", message: "This user is not allowed to edit questions"});
+      return;
+    }
+    const response = await updateQuestion(params.id, body);
     res.send(response);
   })
 }
