@@ -122,7 +122,7 @@ const handleMemberAnswer = async (interaction) => {
 }
 
 const getQuizEmbed = async () => {
-  const questions = await getAllQuestions();
+  const { list: questions } = await getAllQuestions();
   const randomQuestionIndex = randomIntFromInterval(0, questions.length - 1);
   const randomQuiz = questions[randomQuestionIndex];
   timeoutCache.set(randomQuiz._id.toString(), true);

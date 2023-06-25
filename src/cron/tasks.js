@@ -23,9 +23,9 @@ const runTasks = (client) => {
     timezone: 'Europe/Warsaw'
   });
 
-  cron.schedule('00 13 * * *', async () => {
+  cron.schedule('0 13 * * *', async () => {
     const channel = client.channels.cache.get(channels.code);
-    const timeout = randomIntFromInterval(1000, 10800*1000);
+    const timeout = randomIntFromInterval(1000, 10800);
     setTimeout(async () => {
       const embed = await getQuizEmbed()
       channel.send(embed);
