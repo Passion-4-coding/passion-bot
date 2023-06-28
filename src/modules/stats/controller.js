@@ -85,7 +85,7 @@ const getPastDayStats = async () => {
       `**${bans}** member${bans === 1 ? '' : 's'} was banned.\n` +
       `**${bumps}** bump${bumps === 1 ? '' : 's'} was made to promote our server.\n` +
       `**${totalKarma}** total karma point${totalKarma === 1 ? '' : 's'} was earned by our community.`;
-    return new EmbedBuilder().setTitle("Community statistic for the past day:").setDescription(text).setImage("https://res.cloudinary.com/de76u6w6i/image/upload/v1683992738/stats_rqcikr.png");
+    return new EmbedBuilder().setDescription(text).setImage("https://res.cloudinary.com/de76u6w6i/image/upload/v1687944284/stats_gzoulf.png");
   } catch (error) {
     console.log(error);
     return new EmbedBuilder().setDescription(`Something went wrong with getting data for leader board`);
