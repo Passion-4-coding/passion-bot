@@ -91,7 +91,7 @@ const getKarmaLeaderBoard = async () => {
     list.forEach((entry, index) => {
       text = `${text}\n${index + 1}. ${entry.username}: ${entry.karma}`;
     })
-    return new EmbedBuilder().setTitle("Karma leaders for the last 24 hours:").setDescription(text).setImage("https://res.cloudinary.com/de76u6w6i/image/upload/v1683985555/karma_leaderboard_yuqenx.png");
+    return new EmbedBuilder().setDescription(text).setImage("https://res.cloudinary.com/de76u6w6i/image/upload/v1687944647/leaders_nqz0n9.png");
   } catch (error) {
     return new EmbedBuilder().setDescription(`Something went wrong with getting data for leader board`);
   }
