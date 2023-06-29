@@ -1,5 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
-const { channels } = require("../../constants");
+const { channels, colors } = require("../../constants");
 const { addKarmaForContentMaking } = require("../karma");
 
 const handleDraftMessage = async (interaction, client) => {
@@ -13,12 +13,14 @@ const handleDraftMessage = async (interaction, client) => {
   const draftReview = client.channels.cache.get(channels.draft_review);
 
   const responseEmbed = new EmbedBuilder()
+  .setColor(colors.primary)
   .setTitle(`Content has been added for the review.`)
   .setDescription(`Thank you ${interaction.member}. We will review your request soon.\n\n*This message will be automatically deleted in one hour*`)
 
   draft.send({ embeds: [responseEmbed] });
 
   const contentEmbed = new EmbedBuilder()
+  .setColor(colors.primary)
   .setTitle(`Request from ${interaction.member.user.username}`)
   .setDescription(interaction.content || "No message content")
 
@@ -27,6 +29,7 @@ const handleDraftMessage = async (interaction, client) => {
   if (interaction.attachments) {
     interaction.attachments.forEach(attachment => {
       const attachmentEmbed = new EmbedBuilder()
+      .setColor(colors.primary)
       .setTitle(`Attachment name: ${attachment.name}`)
       .setDescription(`Attachment: ${attachment.attachment}`)
       .setImage(attachment.url);

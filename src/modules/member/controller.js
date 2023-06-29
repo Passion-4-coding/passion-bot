@@ -9,7 +9,7 @@ const {
   getAllMembers,
   removeMember
 } = require("./services");
-const { roles, karmaGradation, progressRoles } = require("../../constants");
+const { roles, karmaGradation, progressRoles, colors } = require("../../constants");
 
 const { GUILD_ID } = process.env;
 
@@ -43,12 +43,12 @@ const getMemberTotalKarma = async (user) => {
     const gradationRole = Object.keys(karmaGradation).find(key => karmaGradation[key] >= karma);
     if (gradationValue && gradationRole && user.roles && !user.roles.cache.has(roles.lead)) {
       const karmaNeededForNextRole = Math.round(gradationValue - karma);
-      return new EmbedBuilder().setDescription(`You have ${karma} karma points. For the ${gradationRole} you need to earn ${karmaNeededForNextRole} more karma point${karmaNeededForNextRole === 1 ? '' : 's'}`);
+      return new EmbedBuilder().setColor(colors.primary).setDescription(`You have ${karma} karma points. For the ${gradationRole} you need to earn ${karmaNeededForNextRole} more karma point${karmaNeededForNextRole === 1 ? '' : 's'}`);
     }
-    return new EmbedBuilder().setDescription(`You have ${karma} karma points.`);
+    return new EmbedBuilder().setColor(colors.primary).setDescription(`You have ${karma} karma points.`);
   } catch (error) {
     console.log(error);
-    return new EmbedBuilder().setDescription(`Error getting karma for user ${user.username}`);
+    return new EmbedBuilder().setColor(colors.danger).setDescription(`Error getting karma for user ${user.username}`);
   }
 }
 

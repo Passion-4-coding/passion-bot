@@ -28,6 +28,9 @@ const ROLES_KARMA_GRADATION = {
   principal: 5000,
 }
 
+const PRIMARY_COLOR = "#6764E9";
+const DANGER_COLOR = "#DC2626";
+
 module.exports = {
   roles: {
     trainee: TRAINEE_ROLE,
@@ -62,5 +65,9 @@ module.exports = {
     bot: BOT_CHANNEL,
     draft: DRAFT_CHANNEL,
     draft_review: DRAFT_REVIEW_CHANNEL
+  },
+  colors: {
+    primary: PRIMARY_COLOR,
+    danger: DANGER_COLOR
   }
 }

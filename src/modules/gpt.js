@@ -2,6 +2,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const { Configuration, OpenAIApi } = require("openai");
 const { getLanguageRole } = require("./roles");
 const { gpt } = require("../modules/messages");
+const { colors } = require("../constants");
 
 const configuration = new Configuration({
   apiKey: process.env.OPEN_AI_API_KEY,
@@ -40,9 +41,9 @@ module.exports = {
     const memberLanguagesRole = getLanguageRole(member.roles);
     
     if (isPrivate) {
-      return new EmbedBuilder().setDescription(gpt.answerSent[memberLanguagesRole])
+      return new EmbedBuilder().setColor(colors.primary).setDescription(gpt.answerSent[memberLanguagesRole])
     }
-    return new EmbedBuilder().setTitle(title).setDescription(answer)
+    return new EmbedBuilder().setColor(colors.primary).setTitle(title).setDescription(answer)
   },
   async getAnswer(text) {
     let completion;

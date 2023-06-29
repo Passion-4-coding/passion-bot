@@ -7,13 +7,13 @@ const QuizEntrySchema = new mongoose.Schema({
   },
   karmaRewardEarly: {
     type: String,
-    enum: [15, 20, 25],
-    default: 15
+    enum: [25, 30, 35],
+    default: 25
   },
   karmaRewardLate: {
     type: String,
-    enum: [5, 10, 15],
-    default: 5,
+    enum: [15, 20, 25],
+    default: 15,
   },
   question: {
     type: String,

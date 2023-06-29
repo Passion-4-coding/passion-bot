@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const { Configuration, OpenAIApi } = require("openai");
+const { colors } = require("../../constants");
 
 const configuration = new Configuration({
   apiKey: process.env.OPEN_AI_API_KEY,
@@ -53,7 +54,7 @@ module.exports = {
       size: size,
     });
 
-    const embed = new EmbedBuilder()
+    const embed = new EmbedBuilder().setColor(colors.primary)
       .setTitle(`Size: ${size}\nNumber: ${size}`)
       .setDescription(optionDescription.value)
 
@@ -61,7 +62,7 @@ module.exports = {
     images = response.data.data;
       
     const imagesEmbeds = images.map(image => {
-      return new EmbedBuilder().setImage(image.url);
+      return new EmbedBuilder().setColor(colors.primary).setImage(image.url);
     })
     
     await interaction.editReply({

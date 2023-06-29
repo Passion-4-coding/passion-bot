@@ -6,6 +6,7 @@ const { getQuestion } = require('./services');
 const { ObjectId } = require('mongodb');
 const NodeCache = require( "node-cache" );
 const { addKarmaForTheQuiz } = require('../karma');
+const { colors } = require('../../constants');
 
 const QUIZ_TIME = 3600;
 
@@ -16,6 +17,13 @@ const quizHeadMessage = "Quiz is here, you have one hour to provide an answer an
 
 const getQuizMessage = (quiz) => {
   return `${quizHeadMessage}\n\n**${quiz.question}**`;
+}
+
+const getQuizEmbed = (quiz) => {
+  return new EmbedBuilder()
+  .setColor(colors.primary)
+  .setDescription(getQuizMessage(quiz))
+  .setThumbnail("https://res.cloudinary.com/de76u6w6i/image/upload/v1687986757/quiz_yftvp7.png")
 }
 
 const handleQuizApi = (app, client) => {
@@ -52,9 +60,12 @@ const handleQuizApi = (app, client) => {
 }
 
 const handleCorrectAnswer = async (interaction, karma, correctAnswersAmount, quiz) => {
-  interaction.message.edit(`${getQuizMessage(quiz)}\n\n*Correct answers: ${correctAnswersAmount}*`)
+  const embedExisting = getQuizEmbed(quiz);
+  embedExisting.setFooter({ text: `Correct answers: ${correctAnswersAmount}` });
+  interaction.message.edit({ embeds: [embedExisting] })
   await addKarmaForTheQuiz(interaction.member.id, quiz._id, karma);
   const embed = new EmbedBuilder()
+  .setColor(colors.primary)
   .setTitle(`Congratulations!`)
   .setDescription(`Your answer was correct and you have earned ${karma} karma points.`);
   return interaction.editReply({
@@ -64,6 +75,7 @@ const handleCorrectAnswer = async (interaction, karma, correctAnswersAmount, qui
 
 const handleWrongAnswer = (interaction) => {
   const embed = new EmbedBuilder()
+  .setColor(colors.danger)
   .setTitle(`Wrong answer!`)
   .setDescription("Don't worry and good luck next time");
   return interaction.editReply({
@@ -73,6 +85,7 @@ const handleWrongAnswer = (interaction) => {
 
 const handleAnswerRepeat = (interaction) => {
   const embed = new EmbedBuilder()
+  .setColor(colors.danger)
   .setTitle(`Ooops, hold on!`)
   .setDescription("You have already answered this question, wait for the next one");
   return interaction.editReply({
@@ -82,6 +95,7 @@ const handleAnswerRepeat = (interaction) => {
 
 const handleQuizNotAvailable = (interaction) => {
   const embed = new EmbedBuilder()
+  .setColor(colors.danger)
   .setTitle(`Ooops, quiz is no longer available!`)
   .setDescription("Wait for the next one and try to be faster next time");
   return interaction.editReply({
@@ -107,7 +121,7 @@ const handleMemberAnswer = async (interaction) => {
   const isQuestionAlreadyAnswered = membersWhoAnswered.some(a => a.memberId === interaction.member.id);
   if (isQuestionAlreadyAnswered) {
     handleAnswerRepeat(interaction)
-    return;
+    //return;
   }
   const isAnswerCorrect = question[answer] === question.correctAnswer;
   membersWhoAnswered.push({ memberId: interaction.member.id, correct: isAnswerCorrect });
@@ -121,7 +135,7 @@ const handleMemberAnswer = async (interaction) => {
   handleWrongAnswer(interaction)
 }
 
-const getQuizEmbed = async () => {
+const getQuiz = async () => {
   const { list: questions } = await getAllQuestions();
   const randomQuestionIndex = randomIntFromInterval(0, questions.length - 1);
   const randomQuiz = questions[randomQuestionIndex];
@@ -131,15 +145,16 @@ const getQuizEmbed = async () => {
   }, QUIZ_TIME*1000);
   const buttons = new ActionRowBuilder();
   const id = randomQuiz._id.toString();
+  const embed = getQuizEmbed(randomQuiz);
   buttons.addComponents(new ButtonBuilder().setCustomId(`${id}:answer1`).setLabel(randomQuiz.answer1).setStyle(ButtonStyle.Primary));
   buttons.addComponents(new ButtonBuilder().setCustomId(`${id}:answer2`).setLabel(randomQuiz.answer2).setStyle(ButtonStyle.Primary));
   buttons.addComponents(new ButtonBuilder().setCustomId(`${id}:answer3`).setLabel(randomQuiz.answer3).setStyle(ButtonStyle.Primary));
   buttons.addComponents(new ButtonBuilder().setCustomId(`${id}:answer4`).setLabel(randomQuiz.answer4).setStyle(ButtonStyle.Primary));
-  return { content: getQuizMessage(randomQuiz), components: [buttons] };
+  return { embeds: [embed], components: [buttons] };
 }
 
 module.exports = {
   handleQuizApi,
-  getQuizEmbed,
+  getQuiz,
   handleMemberAnswer
 }
