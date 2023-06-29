@@ -6,7 +6,7 @@ const { getQuestion } = require('./services');
 const { ObjectId } = require('mongodb');
 const NodeCache = require( "node-cache" );
 const { addKarmaForTheQuiz } = require('../karma');
-const { colors } = require('../../constants');
+const { colors, images } = require('../../constants');
 
 const QUIZ_TIME = 3600;
 
@@ -19,11 +19,12 @@ const getQuizMessage = (quiz) => {
   return `${quizHeadMessage}\n\n**${quiz.question}**`;
 }
 
-const getQuizEmbed = (quiz) => {
+const getQuizEmbed = (quiz, answersAmount = 0) => {
+  const karma = answersAmount >= 5 ? quiz.karmaRewardLate : quiz.karmaRewardEarly;
   return new EmbedBuilder()
   .setColor(colors.primary)
   .setDescription(getQuizMessage(quiz))
-  .setThumbnail("https://res.cloudinary.com/de76u6w6i/image/upload/v1687986757/quiz_yftvp7.png")
+  .setThumbnail(images[`karma${karma}`]);
 }
 
 const handleQuizApi = (app, client) => {
@@ -60,7 +61,7 @@ const handleQuizApi = (app, client) => {
 }
 
 const handleCorrectAnswer = async (interaction, karma, correctAnswersAmount, quiz) => {
-  const embedExisting = getQuizEmbed(quiz);
+  const embedExisting = getQuizEmbed(quiz, correctAnswersAmount);
   embedExisting.setFooter({ text: `Correct answers: ${correctAnswersAmount}` });
   interaction.message.edit({ embeds: [embedExisting] })
   await addKarmaForTheQuiz(interaction.member.id, quiz._id, karma);

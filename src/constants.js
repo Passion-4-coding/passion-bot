@@ -28,8 +28,18 @@ const ROLES_KARMA_GRADATION = {
   principal: 5000,
 }
 
+// COLORS
 const PRIMARY_COLOR = "#6764E9";
 const DANGER_COLOR = "#DC2626";
+
+// IMAGES
+const KARMA_15 = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688030691/15_o7afq8.png";
+const KARMA_20 = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688030691/16_krfted.png";
+const KARMA_25 = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688030691/17_z9vxu2.png";
+const KARMA_30 = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688030691/19_n32exh.png";
+const KARMA_35 = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688030691/18_idm7b1.png";
+const KARMA_LEADERS_24H = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688030691/18_idm7b1.png";
+const STATS_24H = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688030691/18_idm7b1.png";
 
 module.exports = {
   roles: {
@@ -69,5 +79,14 @@ module.exports = {
   colors: {
     primary: PRIMARY_COLOR,
     danger: DANGER_COLOR
+  },
+  images: {
+    karmaLeaders: KARMA_LEADERS_24H,
+    stats: STATS_24H,
+    karma15: KARMA_15,
+    karma20: KARMA_20,
+    karma25: KARMA_25,
+    karma30: KARMA_30,
+    karma35: KARMA_35,
   }
 }

@@ -3,7 +3,7 @@ const { addKarmaEntry, getKarmaEntriesForTimeRange } = require("./services");
 const { updateMemberTotalKarma, getMemberByDiscordId } = require("../member");
 const { subDays } = require("date-fns");
 const { getKarmaLeaders, calculateTotalKarma } = require("./utils");
-const { channels, colors } = require("../../constants");
+const { channels, colors, images } = require("../../constants");
 
 const updateKarma = async (discordMemberId, karma, type, target, quizId) => {
   const member = await getMemberByDiscordId(discordMemberId);
@@ -91,7 +91,7 @@ const getKarmaLeaderBoard = async () => {
     list.forEach((entry, index) => {
       text = `${text}\n${index + 1}. ${entry.username}: ${entry.karma}`;
     })
-    return new EmbedBuilder().setColor(colors.primary).setDescription(text).setImage("https://res.cloudinary.com/de76u6w6i/image/upload/v1687944647/leaders_nqz0n9.png");
+    return new EmbedBuilder().setColor(colors.primary).setDescription(text).setImage(images.karmaLeaders);
   } catch (error) {
     return new EmbedBuilder().setColor(colors.danger).setDescription(`Something went wrong with getting data for leader board`);
   }

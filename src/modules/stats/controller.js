@@ -5,7 +5,7 @@ const { addStatEntry, getStatEntriesForTimeRange } = require("./services");
 const { calculateMessages } = require("./utils");
 const { getMemberByDiscordId } = require("../member");
 const { getKarmaForThePastDay } = require("../karma");
-const { colors } = require("../../constants");
+const { colors, images } = require("../../constants");
 
 const memberMessagesCache = new NodeCache( { stdTTL: 90000 } );
 
@@ -86,7 +86,7 @@ const getPastDayStats = async () => {
       `**${bans}** member${bans === 1 ? '' : 's'} was banned.\n` +
       `**${bumps}** bump${bumps === 1 ? '' : 's'} was made to promote our server.\n` +
       `**${totalKarma}** total karma point${totalKarma === 1 ? '' : 's'} was earned by our community.`;
-    return new EmbedBuilder().setColor(colors.primary).setDescription(text).setImage("https://res.cloudinary.com/de76u6w6i/image/upload/v1687944284/stats_gzoulf.png");
+    return new EmbedBuilder().setColor(colors.primary).setDescription(text).setImage(images.stats);
   } catch (error) {
     console.log(error);
     return new EmbedBuilder().setColor(colors.danger).setDescription(`Something went wrong with getting data for leader board`);
