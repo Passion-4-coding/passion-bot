@@ -35,11 +35,11 @@ const DANGER_COLOR = "#DC2626";
 // IMAGES
 const KARMA_15 = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688030691/15_o7afq8.png";
 const KARMA_20 = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688030691/16_krfted.png";
-const KARMA_25 = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688030691/17_z9vxu2.png";
+const KARMA_25 = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688030691/20_ypqq8y.png";
 const KARMA_30 = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688030691/19_n32exh.png";
 const KARMA_35 = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688030691/18_idm7b1.png";
-const KARMA_LEADERS_24H = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688030691/18_idm7b1.png";
-const STATS_24H = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688030691/18_idm7b1.png";
+const KARMA_LEADERS_24H = "https://res.cloudinary.com/de76u6w6i/image/upload/v1687944647/leaders_nqz0n9.png";
+const STATS_24H = "https://res.cloudinary.com/de76u6w6i/image/upload/v1687944284/stats_gzoulf.png";
 
 module.exports = {
   roles: {
