@@ -122,7 +122,7 @@ const handleMemberAnswer = async (interaction) => {
   const isQuestionAlreadyAnswered = membersWhoAnswered.some(a => a.memberId === interaction.member.id);
   if (isQuestionAlreadyAnswered) {
     handleAnswerRepeat(interaction)
-    //return;
+    return;
   }
   const isAnswerCorrect = question[answer] === question.correctAnswer;
   membersWhoAnswered.push({ memberId: interaction.member.id, correct: isAnswerCorrect });
