@@ -6,7 +6,8 @@ const {
   getKarmaLeaderBoard,
   getKarmaForThePastDay,
   addKarmaForContentMaking,
-  addKarmaForTheQuiz
+  addKarmaForTheQuiz,
+  getQuizWeekLeaders
 } = require("./controller");
 
 module.exports = {
@@ -17,5 +18,6 @@ module.exports = {
   getKarmaLeaderBoard,
   getKarmaForThePastDay,
   addKarmaForContentMaking,
-  addKarmaForTheQuiz
+  addKarmaForTheQuiz,
+  getQuizWeekLeaders
 }

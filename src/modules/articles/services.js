@@ -9,6 +9,10 @@ const getArticle = (id) => {
   return ArticlesModel.findById(id);
 }
 
+const getArticlesBySlug = (slug) => {
+  return ArticlesModel.find({ slug });
+}
+
 const addArticle = async (article) => {
   const newArticle = new ArticlesModel(article);
   try {
@@ -26,5 +30,6 @@ module.exports = {
   addArticle,
   getAllArticles,
   getArticle,
-  updateArticle
+  updateArticle,
+  getArticlesBySlug
 }

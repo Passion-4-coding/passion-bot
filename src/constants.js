@@ -40,6 +40,11 @@ const KARMA_30 = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688030691/
 const KARMA_35 = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688030691/18_idm7b1.png";
 const KARMA_LEADERS_24H = "https://res.cloudinary.com/de76u6w6i/image/upload/v1687944647/leaders_nqz0n9.png";
 const STATS_24H = "https://res.cloudinary.com/de76u6w6i/image/upload/v1687944284/stats_gzoulf.png";
+const QUIZ_24H = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688577535/quiz_bpwmlk.png";
+
+// ADMIN
+
+const ADMIN_ID = "746469708554829845";
 
 module.exports = {
   roles: {
@@ -83,10 +88,12 @@ module.exports = {
   images: {
     karmaLeaders: KARMA_LEADERS_24H,
     stats: STATS_24H,
+    quizLeaders: QUIZ_24H,
     karma15: KARMA_15,
     karma20: KARMA_20,
     karma25: KARMA_25,
     karma30: KARMA_30,
     karma35: KARMA_35,
-  }
+  },
+  adminId: ADMIN_ID
 }

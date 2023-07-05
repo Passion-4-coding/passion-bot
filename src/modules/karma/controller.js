@@ -1,8 +1,8 @@
 const { EmbedBuilder, MessageType } = require("discord.js");
-const { addKarmaEntry, getKarmaEntriesForTimeRange } = require("./services");
+const { addKarmaEntry, getKarmaEntriesForTimeRange, getQuizKarmaEntriesForTimeRange } = require("./services");
 const { updateMemberTotalKarma, getMemberByDiscordId } = require("../member");
 const { subDays } = require("date-fns");
-const { getKarmaLeaders, calculateTotalKarma } = require("./utils");
+const { getKarmaLeaders, calculateTotalKarma, getQuizLeaders } = require("./utils");
 const { channels, colors, images } = require("../../constants");
 
 const updateKarma = async (discordMemberId, karma, type, target, quizId) => {
@@ -80,6 +80,24 @@ const getKarmaForThePastDay = async () => {
   }
 }
 
+const getQuizWeekLeaders = async () => {
+  const end = new Date();
+  const start = subDays(end, 7);
+  try {
+    const entries = await getQuizKarmaEntriesForTimeRange(start, end);
+    const leaders = getQuizLeaders(entries);
+    const list = Object.keys(leaders).map((id) => ({ ...leaders[id] })).sort((a, b) => b.karma - a.karma).filter(member => member.username);
+    let text = '';
+    list.forEach((entry, index) => {
+      text = `${text}\n${index + 1}. ${entry.username} | Correct answers: ${entry.count} | Karma: ${entry.karma}`;
+    });
+    return new EmbedBuilder().setColor(colors.primary).setDescription(text).setImage(images.quizLeaders);
+  } catch (error) {
+    console.error(error)
+    return new EmbedBuilder().setColor(colors.danger).setDescription(`Something went wrong with getting data for quiz leaders`);
+  }
+}
+
 const getKarmaLeaderBoard = async () => {
   const end = new Date();
   const start = subDays(end, 1);
@@ -105,5 +123,6 @@ module.exports = {
   getKarmaLeaderBoard,
   getKarmaForThePastDay,
   addKarmaForContentMaking,
-  addKarmaForTheQuiz
+  addKarmaForTheQuiz,
+  getQuizWeekLeaders
 }

@@ -12,7 +12,7 @@ const ArticlesSchema = new mongoose.Schema({
   language: {
     type: String,
     enum: ["ua", "en", "ru"],
-    required: true,
+    required:  true,
   },
   title: {
     type: String,
@@ -21,9 +21,6 @@ const ArticlesSchema = new mongoose.Schema({
   content: {
     type: String,
     required: true,
-  },
-  image: {
-    type: String,
   },
   titleCompact: {
     type: String,
@@ -42,6 +39,10 @@ const ArticlesSchema = new mongoose.Schema({
     required: true,
   },
   keywordsSeo: {
+    type: String,
+    required: true,
+  },
+  slug: {
     type: String,
     required: true,
   },
