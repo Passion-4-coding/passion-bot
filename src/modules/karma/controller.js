@@ -1,8 +1,8 @@
 const { EmbedBuilder, MessageType } = require("discord.js");
-const { addKarmaEntry, getKarmaEntriesForTimeRange, getQuizKarmaEntriesForTimeRange } = require("./services");
+const { addKarmaEntry, getKarmaEntriesForTimeRange } = require("./services");
 const { updateMemberTotalKarma, getMemberByDiscordId } = require("../member");
 const { subDays } = require("date-fns");
-const { getKarmaLeaders, calculateTotalKarma, getQuizLeaders } = require("./utils");
+const { sumUserKarmaAndCount, calculateTotalKarma } = require("./utils");
 const { channels, colors, images } = require("../../constants");
 
 const updateKarma = async (discordMemberId, karma, type, target, quizId) => {
@@ -84,8 +84,8 @@ const getQuizWeekLeaders = async () => {
   const end = new Date();
   const start = subDays(end, 7);
   try {
-    const entries = await getQuizKarmaEntriesForTimeRange(start, end);
-    const leaders = getQuizLeaders(entries);
+    const entries = await getKarmaEntriesForTimeRange(start, end, "quiz");
+    const leaders = sumUserKarmaAndCount(entries);
     const list = Object.keys(leaders).map((id) => ({ ...leaders[id] })).sort((a, b) => b.karma - a.karma).filter(member => member.username);
     let text = '';
     list.forEach((entry, index) => {
@@ -98,12 +98,30 @@ const getQuizWeekLeaders = async () => {
   }
 }
 
+const getBestContentContributors = async () => {
+  const end = new Date();
+  const start = subDays(end, 7);
+  try {
+    const entries = await getKarmaEntriesForTimeRange(start, end, "content-making");
+    const leaders = sumUserKarmaAndCount(entries);
+    const list = Object.keys(leaders).map((id) => ({ ...leaders[id] })).sort((a, b) => b.karma - a.karma).filter(member => member.username);
+    let text = '';
+    list.forEach((entry, index) => {
+      text = `${text}\n${index + 1}. ${entry.username} | Content count: ${entry.count} | Karma: ${entry.karma}`;
+    });
+    return new EmbedBuilder().setColor(colors.primary).setDescription(text).setImage(images.contentLeaders);
+  } catch (error) {
+    console.error(error)
+    return new EmbedBuilder().setColor(colors.danger).setDescription(`Something went wrong with getting data for content contributors`);
+  }
+}
+
 const getKarmaLeaderBoard = async () => {
   const end = new Date();
   const start = subDays(end, 1);
   try {
     const entries = await getKarmaEntriesForTimeRange(start, end);
-    const leaders = getKarmaLeaders(entries);
+    const leaders = sumUserKarmaAndCount(entries);
     const list = Object.keys(leaders).map((id) => ({ ...leaders[id] })).sort((a, b) => b.karma - a.karma).filter(member => member.username);
     let text = '';
     list.forEach((entry, index) => {
@@ -124,5 +142,6 @@ module.exports = {
   getKarmaForThePastDay,
   addKarmaForContentMaking,
   addKarmaForTheQuiz,
-  getQuizWeekLeaders
+  getQuizWeekLeaders,
+  getBestContentContributors
 }

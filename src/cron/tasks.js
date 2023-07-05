@@ -5,6 +5,7 @@ const { getPastDayStats, addStatEntryMemberPromoted } = require('../modules/stat
 const { updateRoles } = require('../modules/member');
 const { randomIntFromInterval } = require('../utils');
 const { getQuiz } = require('../modules/quiz');
+const { getBestContentContributors } = require('../modules/karma/controller');
 
 const runTasks = (client) => {
   cron.schedule('0 16 * * *', async () => {
@@ -58,6 +59,14 @@ const runTasks = (client) => {
 
   cron.schedule('0 15 * * 5', async () => {
     const embed = await getQuizWeekLeaders();
+    const channel = client.channels.cache.get(channels.coffee);
+    channel.send({ embeds: [embed] });
+  }, {
+    timezone: 'Europe/Warsaw'
+  });
+
+  cron.schedule('0 15 * * 4', async () => {
+    const embed = await getBestContentContributors();
     const channel = client.channels.cache.get(channels.coffee);
     channel.send({ embeds: [embed] });
   }, {

@@ -1,26 +1,6 @@
 const { adminId } = require("../../constants");
 
-const getKarmaLeaders = (entries) => entries.reduce(
-  (accumulator, currentValue) => {
-    if (!currentValue.memberId || currentValue.memberId.discordId === adminId) return accumulator;
-    const member = accumulator[currentValue.memberId.discordId];
-    if (member) {
-      accumulator[currentValue.memberId.discordId] = {
-        ...member,
-        karma: member.karma + currentValue.karma
-      }
-      return accumulator;
-    }
-    accumulator[currentValue.memberId.discordId] = {
-      username: currentValue.memberId.username,
-      karma: currentValue.karma
-    }
-    return accumulator;
-  },
-  {}
-)
-
-const getQuizLeaders = (entries) => entries.reduce(
+const sumUserKarmaAndCount = (entries) => entries.reduce(
   (accumulator, currentValue) => {
     if (!currentValue.memberId || currentValue.memberId.discordId === adminId) return accumulator;
     const member = accumulator[currentValue.memberId.discordId];
@@ -48,7 +28,6 @@ const calculateTotalKarma = (entries) => entries.reduce(
 )
 
 module.exports = {
-  getKarmaLeaders,
+  sumUserKarmaAndCount,
   calculateTotalKarma,
-  getQuizLeaders
 }

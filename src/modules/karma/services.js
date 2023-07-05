@@ -6,12 +6,11 @@ const addKarmaEntry = (memberId, data) => {
   return karmaEntry.save();
 }
 
-const getKarmaEntriesForTimeRange = (start, end) => {
+const getKarmaEntriesForTimeRange = (start, end, type) => {
+  if (type) {
+    return KarmaEntryModel.find({ date: { $gte: start, $lt: end }, type }).populate("memberId");
+  }
   return KarmaEntryModel.find({ date: { $gte: start, $lt: end } }).populate("memberId");
-}
-
-const getQuizKarmaEntriesForTimeRange = (start, end) => {
-  return KarmaEntryModel.find({ date: { $gte: start, $lt: end }, type: "quiz" }).populate("memberId");
 }
 
 const updateKarmaEntriesMemberIds = async () => {
@@ -22,5 +21,4 @@ module.exports = {
   addKarmaEntry,
   getKarmaEntriesForTimeRange,
   updateKarmaEntriesMemberIds,
-  getQuizKarmaEntriesForTimeRange
 }
