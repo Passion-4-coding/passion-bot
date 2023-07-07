@@ -9,9 +9,13 @@ const ArticlesSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
+  publishedOn: {
+    type: Date,
+    required: true
+  },
   language: {
     type: String,
-    enum: ["ua", "en", "ru"],
+    enum: ["ua", "en"],
     required:  true,
   },
   title: {

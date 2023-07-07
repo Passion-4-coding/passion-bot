@@ -1,7 +1,10 @@
 const { getPaginatedDataFromModel } = require("../../utils");
 const { ArticlesModel } = require("./models");
 
-const getAllArticles = async (page, pageSize) => {
+const getAllArticles = async (page, pageSize, language) => {
+  if (language) {
+    return getPaginatedDataFromModel(ArticlesModel, page, pageSize, { language });
+  }
   return getPaginatedDataFromModel(ArticlesModel, page, pageSize);
 }
 
@@ -9,8 +12,8 @@ const getArticle = (id) => {
   return ArticlesModel.findById(id);
 }
 
-const getArticlesBySlug = (slug) => {
-  return ArticlesModel.find({ slug });
+const getArticleByQuery = (query) => {
+  return ArticlesModel.findOne(query);
 }
 
 const addArticle = async (article) => {
@@ -31,5 +34,5 @@ module.exports = {
   getAllArticles,
   getArticle,
   updateArticle,
-  getArticlesBySlug
+  getArticleByQuery
 }

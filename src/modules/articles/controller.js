@@ -1,25 +1,16 @@
 const { validateAccess, scopes } = require('../auth');
-const { getAllArticles, getArticlesBySlug, updateArticle, addArticle } = require('./services');
+const { getAllArticles, getArticleByQuery, updateArticle, addArticle } = require('./services');
 
 const handleArticlesApi = (app, client) => {
-  app.get('/api/articles', async ({ headers, query }, res) => {
-    const { page = 1, pageSize = 10 } = query;
-    if (!await validateAccess(headers, scopes.admin, client)) {
-      res.status(403);
-      res.send({ error: "Access Error", message: "This user is not allowed to get articles"});
-      return;
-    }
-    const articles = await getAllArticles(page, pageSize);
+  app.get('/api/articles', async ({ query }, res) => {
+    const { page = 1, pageSize = 10, language } = query;
+    const articles = await getAllArticles(page, pageSize, language);
     res.send(articles);
   })
 
-  app.get('/api/articles/:slug', async ({ headers, params }, res) => {
-    if (!await validateAccess(headers, scopes.admin, client)) {
-      res.status(403);
-      res.send({ error: "Access Error", message: "This user is not allowed to get articles"});
-      return;
-    }
-    const articles = await getArticlesBySlug(params.slug);
+  app.get('/api/articles/:slug/:language', async ({ params }, res) => {
+    console.log(params)
+    const articles = await getArticleByQuery(params);
     res.send(articles);
   })
 
