@@ -16,6 +16,10 @@ const getArticleByQuery = (query) => {
   return ArticlesModel.findOne(query);
 }
 
+const getArticlesByQuery = (query) => {
+  return ArticlesModel.find(query);
+}
+
 const addArticle = async (article) => {
   const newArticle = new ArticlesModel(article);
   try {
@@ -34,5 +38,6 @@ module.exports = {
   getAllArticles,
   getArticle,
   updateArticle,
-  getArticleByQuery
+  getArticleByQuery,
+  getArticlesByQuery
 }
