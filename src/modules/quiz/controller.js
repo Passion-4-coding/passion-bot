@@ -8,12 +8,12 @@ const NodeCache = require( "node-cache" );
 const { addKarmaForTheQuiz } = require('../karma');
 const { colors, images } = require('../../constants');
 
-const QUIZ_TIME = 3600;
+const QUIZ_TIME = 7200;
 
 const answersCache = new NodeCache( { stdTTL: QUIZ_TIME } );
 const timeoutCache = new NodeCache( { stdTTL: QUIZ_TIME } );
 
-const quizHeadMessage = "Quiz is here, you have one hour to provide an answer and earn some karma points.";
+const quizHeadMessage = "Quiz is here, you have two hours to provide an answer and earn some karma points.";
 
 const getQuizMessage = (quiz) => {
   return `${quizHeadMessage}\n\n**${quiz.question}**`;

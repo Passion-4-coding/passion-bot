@@ -13,19 +13,15 @@ module.exports = {
     const role = member.guild.roles.cache.get(roles.trainee);
     member.roles.add(role).catch(console.error);
     const channel = member.guild.channels.cache.get(channels.reception);
-    const randomLanguage = languages[Math.floor(Math.random()*languages.length)];
-    const randomMessage = welcome.messages[randomLanguage][Math.floor(Math.random()*welcome.messages[randomLanguage].length)];
-    const otherLanguages = languages.filter(l => l !== randomLanguage);
+    const message = welcome.messages.ua[Math.floor(Math.random()*welcome.messages.ua.length)];
 
     const buttons = new ActionRowBuilder()
-    for(const language of otherLanguages) {
-      buttons.addComponents(
-        new ButtonBuilder()
-          .setCustomId(`${roles[randomLanguage]}:${language}:${member.id}`)
-          .setLabel(welcome.buttons[language])
-          .setStyle(ButtonStyle.Primary),
-      );
-    }
-    await channel.send({ content: `${member}\n${randomMessage}`, components: [buttons] });
+    buttons.addComponents(
+      new ButtonBuilder()
+        .setCustomId(`${roles.en}:en:${member.id}`)
+        .setLabel(welcome.buttons.en)
+        .setStyle(ButtonStyle.Primary),
+    );
+    await channel.send({ content: `${member}\n${message}`, components: [buttons] });
   }
 }
