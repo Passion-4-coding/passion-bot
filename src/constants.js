@@ -33,11 +33,15 @@ const PRIMARY_COLOR = "#6764E9";
 const DANGER_COLOR = "#DC2626";
 
 // IMAGES
-const KARMA_15 = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688030691/15_o7afq8.png";
+const KARMA_10 = "https://res.cloudinary.com/de76u6w6i/image/upload/v1689436870/15_wujd67.png";
+const KARMA_15 = "https://res.cloudinary.com/de76u6w6i/image/upload/v1689436870/27_aeunua.png";
 const KARMA_20 = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688030691/16_krfted.png";
-const KARMA_25 = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688030691/20_ypqq8y.png";
 const KARMA_30 = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688030691/19_n32exh.png";
-const KARMA_35 = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688030691/18_idm7b1.png";
+const KARMA_40 = "https://res.cloudinary.com/de76u6w6i/image/upload/v1689436870/18_z9dnpd.png";
+const KARMA_45 = "https://res.cloudinary.com/de76u6w6i/image/upload/v1689436870/26_pybdme.png";
+const KARMA_50 = "https://res.cloudinary.com/de76u6w6i/image/upload/v1689436870/24_d2kzoe.png";
+const KARMA_60 = "https://res.cloudinary.com/de76u6w6i/image/upload/v1689436870/17_vlz1vx.png";
+const KARMA_75 = "https://res.cloudinary.com/de76u6w6i/image/upload/v1689436870/25_op45cg.png";
 const KARMA_LEADERS_24H = "https://res.cloudinary.com/de76u6w6i/image/upload/v1689430114/13_qlwfh9.png";
 const STATS_24H = "https://res.cloudinary.com/de76u6w6i/image/upload/v1689430114/12_uogafz.png";
 const QUIZ_LEADERS_WEEK = "https://res.cloudinary.com/de76u6w6i/image/upload/v1689430114/21_zqndjv.png";
@@ -91,11 +95,15 @@ module.exports = {
     stats: STATS_24H,
     quizLeaders: QUIZ_LEADERS_WEEK,
     contentLeaders: CONTENT_CONTRIBUTORS_WEEK,
+    karma10: KARMA_10,
     karma15: KARMA_15,
     karma20: KARMA_20,
-    karma25: KARMA_25,
     karma30: KARMA_30,
-    karma35: KARMA_35,
+    karma40: KARMA_40,
+    karma45: KARMA_45,
+    karma50: KARMA_50,
+    karma60: KARMA_60,
+    karma75: KARMA_75
   },
   adminId: ADMIN_ID
 }

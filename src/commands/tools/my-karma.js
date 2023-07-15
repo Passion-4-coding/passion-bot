@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ApplicationCommandType } = require("discord.js");
+const { SlashCommandBuilder } = require("discord.js");
 const { getMemberTotalKarma } = require("../../modules/member");
 
 module.exports = {

@@ -26,5 +26,5 @@ module.exports = {
   addQuestion,
   getAllQuestions,
   getQuestion,
-  updateQuestion
+  updateQuestion,
 }

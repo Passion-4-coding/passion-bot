@@ -13,14 +13,14 @@ const QUIZ_TIME = 7200;
 const answersCache = new NodeCache( { stdTTL: QUIZ_TIME } );
 const timeoutCache = new NodeCache( { stdTTL: QUIZ_TIME } );
 
-const quizHeadMessage = "Увага, тест! У тебе є дві години щоб відповісти на питання і заробити трохи очок карми";
+const quizHeadMessage = "Увага, тест! У тебе є дві години щоб відповісти на питання і заробити очок карми.";
 
 const getQuizMessage = (quiz) => {
-  return `${quizHeadMessage}\n\n**${quiz.question}**`;
+  return `${quizHeadMessage}\n\n**${quiz.question}**\n\n**A**: ${quiz.answerA}\n**B**: ${quiz.answerB}\n**C**: ${quiz.answerC}\n**D**: ${quiz.answerD}`;
 }
 
 const getQuizEmbed = (quiz, answersAmount = 0) => {
-  const karma = answersAmount >= 5 ? quiz.karmaRewardLate : quiz.karmaRewardEarly;
+  const karma = answersAmount >= 5 ? quiz.complexity * 10 : quiz.complexity * 15;
   return new EmbedBuilder()
   .setColor(colors.primary)
   .setDescription(getQuizMessage(quiz))
@@ -97,7 +97,7 @@ const handleAnswerRepeat = (interaction) => {
 const handleQuizNotAvailable = (interaction) => {
   const embed = new EmbedBuilder()
   .setColor(colors.danger)
-  .setTitle(`Ох, тест уже не доступний!`)
+  .setTitle(`Ох, тест уже недоступний!`)
   .setDescription("Я вже закрив цей тест. Зачекай на наступний і будь спритнішим");
   return interaction.editReply({
     embeds: [embed]
@@ -121,15 +121,15 @@ const handleMemberAnswer = async (interaction) => {
   const membersWhoAnswered = answersCache.get(questionId) || [];
   const isQuestionAlreadyAnswered = membersWhoAnswered.some(a => a.memberId === interaction.member.id);
   if (isQuestionAlreadyAnswered) {
-    handleAnswerRepeat(interaction)
+    handleAnswerRepeat(interaction);
     return;
   }
-  const isAnswerCorrect = question[answer] === question.correctAnswer;
+  const isAnswerCorrect = answer === question.correct;
   membersWhoAnswered.push({ memberId: interaction.member.id, correct: isAnswerCorrect });
   const amountOfCorrectAnswers = membersWhoAnswered.filter(m => m.correct).length;
   answersCache.set(questionId, membersWhoAnswered);
   if (isAnswerCorrect) {
-    const karma = amountOfCorrectAnswers > 5 ? question.karmaRewardLate : question.karmaRewardEarly;
+    const karma = amountOfCorrectAnswers > 5 ? question.complexity * 10 : question.complexity * 15;
     await handleCorrectAnswer(interaction, karma, amountOfCorrectAnswers, question);
     return;
   }
@@ -147,10 +147,10 @@ const getQuiz = async () => {
   const buttons = new ActionRowBuilder();
   const id = randomQuiz._id.toString();
   const embed = getQuizEmbed(randomQuiz);
-  buttons.addComponents(new ButtonBuilder().setCustomId(`${id}:answer1`).setLabel(randomQuiz.answer1).setStyle(ButtonStyle.Primary));
-  buttons.addComponents(new ButtonBuilder().setCustomId(`${id}:answer2`).setLabel(randomQuiz.answer2).setStyle(ButtonStyle.Primary));
-  buttons.addComponents(new ButtonBuilder().setCustomId(`${id}:answer3`).setLabel(randomQuiz.answer3).setStyle(ButtonStyle.Primary));
-  buttons.addComponents(new ButtonBuilder().setCustomId(`${id}:answer4`).setLabel(randomQuiz.answer4).setStyle(ButtonStyle.Primary));
+  buttons.addComponents(new ButtonBuilder().setCustomId(`${id}:A`).setLabel("A").setStyle(ButtonStyle.Primary));
+  buttons.addComponents(new ButtonBuilder().setCustomId(`${id}:B`).setLabel("B").setStyle(ButtonStyle.Primary));
+  buttons.addComponents(new ButtonBuilder().setCustomId(`${id}:C`).setLabel("C").setStyle(ButtonStyle.Primary));
+  buttons.addComponents(new ButtonBuilder().setCustomId(`${id}:D`).setLabel("D").setStyle(ButtonStyle.Primary));
   return { embeds: [embed], components: [buttons] };
 }
 

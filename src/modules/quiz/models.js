@@ -5,37 +5,33 @@ const QuizEntrySchema = new mongoose.Schema({
     type: Date,
     required: true
   },
-  karmaRewardEarly: {
+  complexity: {
     type: String,
-    enum: [25, 30, 35],
-    default: 25
-  },
-  karmaRewardLate: {
-    type: String,
-    enum: [15, 20, 25],
-    default: 15,
+    enum: [1, 2, 3, 4, 5],
+    default: 1
   },
   question: {
     type: String,
     required: true,
   },
-  answer1: {
+  answerA: {
     type: String,
     required: true,
   },
-  answer2: {
+  answerB: {
     type: String,
     required: true,
   },
-  answer3: {
+  answerC: {
     type: String,
   },
-  answer4: {
+  answerD: {
     type: String,
   },
-  correctAnswer: {
+  correct: {
     type: String,
-    required: true,
+    enum: ["A", "B", "C", "D"],
+    required: true
   },
   active: {
     type: Boolean,
@@ -43,9 +39,9 @@ const QuizEntrySchema = new mongoose.Schema({
   },
 });
 
-const QuizEntryModel = mongoose.model('quiz-questions', QuizEntrySchema);
+const QuizEntryModel = mongoose.model('quiz-questions-new', QuizEntrySchema);
 
 module.exports = {
   QuizEntrySchema,
-  QuizEntryModel
+  QuizEntryModel,
 }
