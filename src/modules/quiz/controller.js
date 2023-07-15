@@ -8,7 +8,7 @@ const NodeCache = require( "node-cache" );
 const { addKarmaForTheQuiz } = require('../karma');
 const { colors, images } = require('../../constants');
 
-const QUIZ_TIME = 3600;
+const QUIZ_TIME = 7200;
 
 const answersCache = new NodeCache( { stdTTL: QUIZ_TIME } );
 const timeoutCache = new NodeCache( { stdTTL: QUIZ_TIME } );

@@ -62,7 +62,7 @@ module.exports = {
     ru: RU_ROLE
   },
   karmaGradation: ROLES_KARMA_GRADATION,
-  languages: ["ua", "en", "ru"],
+  languages: ["ua", "en"],
   progressRoles: [
     { id: TRAINEE_ROLE, name: "trainee" },
     { id: JUNIOR_ROLE, name: "junior" },
