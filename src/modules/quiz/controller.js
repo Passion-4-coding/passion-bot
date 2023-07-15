@@ -13,7 +13,7 @@ const QUIZ_TIME = 3600;
 const answersCache = new NodeCache( { stdTTL: QUIZ_TIME } );
 const timeoutCache = new NodeCache( { stdTTL: QUIZ_TIME } );
 
-const quizHeadMessage = "Quiz is here, you have one hour to provide an answer and earn some karma points.";
+const quizHeadMessage = "Увага, тест! У тебе є дві години щоб відповісти на питання і заробити трохи очок карми";
 
 const getQuizMessage = (quiz) => {
   return `${quizHeadMessage}\n\n**${quiz.question}**`;
@@ -62,13 +62,13 @@ const handleQuizApi = (app, client) => {
 
 const handleCorrectAnswer = async (interaction, karma, correctAnswersAmount, quiz) => {
   const embedExisting = getQuizEmbed(quiz, correctAnswersAmount);
-  embedExisting.setFooter({ text: `Correct answers: ${correctAnswersAmount}` });
+  embedExisting.setFooter({ text: `Правильних відповідей: ${correctAnswersAmount}` });
   interaction.message.edit({ embeds: [embedExisting] })
   await addKarmaForTheQuiz(interaction.member.id, quiz._id, karma);
   const embed = new EmbedBuilder()
   .setColor(colors.primary)
-  .setTitle(`Congratulations!`)
-  .setDescription(`Your answer was correct and you have earned ${karma} karma points.`);
+  .setTitle(`Правильна відповідь!`)
+  .setDescription(`За успішне проходження тесту ти отримуєш ${karma} очок карми.`);
   return interaction.editReply({
     embeds: [embed]
   })
@@ -77,8 +77,8 @@ const handleCorrectAnswer = async (interaction, karma, correctAnswersAmount, qui
 const handleWrongAnswer = (interaction) => {
   const embed = new EmbedBuilder()
   .setColor(colors.danger)
-  .setTitle(`Wrong answer!`)
-  .setDescription("Don't worry and good luck next time");
+  .setTitle(`Неправильна відповідь!`)
+  .setDescription("Не хвилюйся і нехай тобі щастить наступного разу");
   return interaction.editReply({
     embeds: [embed]
   })
@@ -87,8 +87,8 @@ const handleWrongAnswer = (interaction) => {
 const handleAnswerRepeat = (interaction) => {
   const embed = new EmbedBuilder()
   .setColor(colors.danger)
-  .setTitle(`Ooops, hold on!`)
-  .setDescription("You have already answered this question, wait for the next one");
+  .setTitle(`Упс, не вийшло!`)
+  .setDescription("Я вже отримав відповідь від тебе по цьому тесту, зачекай на наступний");
   return interaction.editReply({
     embeds: [embed]
   })
@@ -97,8 +97,8 @@ const handleAnswerRepeat = (interaction) => {
 const handleQuizNotAvailable = (interaction) => {
   const embed = new EmbedBuilder()
   .setColor(colors.danger)
-  .setTitle(`Ooops, quiz is no longer available!`)
-  .setDescription("Wait for the next one and try to be faster next time");
+  .setTitle(`Ох, тест уже не доступний!`)
+  .setDescription("Я вже закрив цей тест. Зачекай на наступний і будь спритнішим");
   return interaction.editReply({
     embeds: [embed]
   })

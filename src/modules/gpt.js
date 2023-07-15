@@ -66,14 +66,14 @@ module.exports = {
     .setDescription(description)
     .addStringOption(option =>
       option.setName('question')
-        .setDescription('Question to ask')
+        .setDescription('Твоє запитання')
         .setRequired(true))
     .addStringOption(option =>
       option.setName('answer-type')
-        .setDescription('Choose a method how do you want to receive answer. Default: Reply')
+        .setDescription('Вибери метод за яким ти хочеш отримати відповідь. За замовчуванням: На каналі')
         .setChoices(
-          {name: "Reply", value: answerTypes.reply}, 
-          {name: "Private", value: answerTypes.private},
+          {name: "На каналі", value: answerTypes.reply}, 
+          {name: "Приватне повідомлення", value: answerTypes.private},
         )
       )
   }

@@ -43,12 +43,12 @@ const getMemberTotalKarma = async (user) => {
     const gradationRole = Object.keys(karmaGradation).find(key => karmaGradation[key] >= karma);
     if (gradationValue && gradationRole && user.roles && !user.roles.cache.has(roles.lead)) {
       const karmaNeededForNextRole = Math.round(gradationValue - karma);
-      return new EmbedBuilder().setColor(colors.primary).setDescription(`You have ${karma} karma points. For the ${gradationRole} you need to earn ${karmaNeededForNextRole} more karma point${karmaNeededForNextRole === 1 ? '' : 's'}`);
+      return new EmbedBuilder().setColor(colors.primary).setDescription(`Ти маєш ${karma} очок карми. До наступної ролі ${gradationRole} тобі треба заробити ще ${karmaNeededForNextRole} карми`);
     }
-    return new EmbedBuilder().setColor(colors.primary).setDescription(`You have ${karma} karma points.`);
+    return new EmbedBuilder().setColor(colors.primary).setDescription(`У тебе ${karma} очок карми.`);
   } catch (error) {
     console.log(error);
-    return new EmbedBuilder().setColor(colors.danger).setDescription(`Error getting karma for user ${user.username}`);
+    return new EmbedBuilder().setColor(colors.danger).setDescription(`Помилка при отриманні кількості очок карми для користувача з ніком ${user.username}`);
   }
 }
 

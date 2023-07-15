@@ -79,17 +79,16 @@ const getPastDayStats = async () => {
     const membersPromoted = entries.filter(e => e.type === "promotion").length;
     const totalKarma = await getKarmaForThePastDay();
     const text = 
-      `**${messageCount}** message${messageCount === 1 ? '' : 's'} was sent.\n` +
-      `**${commands}** command${commands === 1 ? '' : 's'} was used.\n` +
-      `**${membersJoined}** member${membersJoined === 1 ? '' : 's'} joined and **${membersLeft}** member${membersLeft === 1 ? '' : 's'} left.\n` +
-      `**${membersPromoted}** member${membersPromoted === 1 ? '' : 's'} promoted\n` +
-      `**${bans}** member${bans === 1 ? '' : 's'} was banned.\n` +
-      `**${bumps}** bump${bumps === 1 ? '' : 's'} was made to promote our server.\n` +
-      `**${totalKarma}** total karma point${totalKarma === 1 ? '' : 's'} was earned by our community.`;
+      `**${messageCount}** повідомлен${messageCount === 1 ? 'ня' : 'ь'} було відправлено.\n` +
+      `**${commands}** команд${commands === 1 ? 'а' : ''} була використана.\n` +
+      `**${membersJoined}** користувач${membersJoined === 1 ? '' : 'ів'} зайшло та **${membersLeft}** користувач${membersLeft === 1 ? '' : 'ів'} вийшло.\n` +
+      `**${membersPromoted}** користувач${membersPromoted === 1 ? '' : 's'} було підвищено\n` +
+      `**${bumps}** бамп${bumps === 1 ? '' : 'ів'} було використано для підвищення популярності нашої спільноти.\n` +
+      `**${totalKarma}** очок карми було зароблено нашою спільнотою.`;
     return new EmbedBuilder().setColor(colors.primary).setDescription(text).setImage(images.stats);
   } catch (error) {
     console.log(error);
-    return new EmbedBuilder().setColor(colors.danger).setDescription(`Something went wrong with getting data for leader board`);
+    return new EmbedBuilder().setColor(colors.danger).setDescription(`Щось пішло не так з виведенням денної статистики`);
   }
 }
 

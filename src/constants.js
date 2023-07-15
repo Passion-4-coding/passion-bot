@@ -38,10 +38,10 @@ const KARMA_20 = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688030691/
 const KARMA_25 = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688030691/20_ypqq8y.png";
 const KARMA_30 = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688030691/19_n32exh.png";
 const KARMA_35 = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688030691/18_idm7b1.png";
-const KARMA_LEADERS_24H = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688584463/13_dn4oln.png";
-const STATS_24H = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688584463/12_vlphby.png";
-const QUIZ_LEADERS_WEEK = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688584463/21_jyjjhf.png";
-const CONTENT_CONTRIBUTORS_WEEK = "https://res.cloudinary.com/de76u6w6i/image/upload/v1688584463/22_xhqwwn.png";
+const KARMA_LEADERS_24H = "https://res.cloudinary.com/de76u6w6i/image/upload/v1689430114/13_qlwfh9.png";
+const STATS_24H = "https://res.cloudinary.com/de76u6w6i/image/upload/v1689430114/12_uogafz.png";
+const QUIZ_LEADERS_WEEK = "https://res.cloudinary.com/de76u6w6i/image/upload/v1689430114/21_zqndjv.png";
+const CONTENT_CONTRIBUTORS_WEEK = "https://res.cloudinary.com/de76u6w6i/image/upload/v1689430114/22_cuc1qn.png";
 
 // ADMIN
 

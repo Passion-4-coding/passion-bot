@@ -13,12 +13,12 @@ const updateKarma = async (discordMemberId, karma, type, target, quizId) => {
 
 const changeKarmaManual = async (karma, member) => {
   const successMessage = karma > 0 ?
-    `Added ${karma} karma points to user ${member.username}` : 
-    `Removed ${Math.abs(karma)} karma points from user ${member.username}`
+    `Додано ${karma} очок карми для користувача з ніком ${member.username}` : 
+    `Віднято ${Math.abs(karma)} очок карми для користувача з ніком ${member.username}`
 
   const errorMessage = karma > 0 ?
-    `Error adding karma to user ${member.username}` : 
-    `Error removing karma from user ${member.username}`
+    `Помилка при додаванні карми для користувача з ніком ${member.username}` : 
+    `Помилка відняття карми для користувача з ніком ${member.username}`
 
   try {
     await updateKarma(member.id, karma, "manual");
@@ -57,8 +57,8 @@ const removeKarmaForSwearWord = (memberId, text) => {
 }
 
 const addKarmaForContentMaking = async (memberId, karma) => {
-  const successMessage = `User rewarded with ${karma} karma points`; 
-  const errorMessage = `Error adding karma to user for the content making`;
+  const successMessage = `Користувач нагороджений ${karma} очками карми`; 
+  const errorMessage = `Помилка при нагороджені користувача очками карми`;
 
   try {
     await updateKarma(memberId, karma, "content-making");
@@ -89,12 +89,12 @@ const getQuizWeekLeaders = async () => {
     const list = Object.keys(leaders).map((id) => ({ ...leaders[id] })).sort((a, b) => b.karma - a.karma).filter(member => member.username);
     let text = '';
     list.forEach((entry, index) => {
-      text = `${text}\n${index + 1}. ${entry.username} | Correct answers: ${entry.count} | Karma: ${entry.karma}`;
+      text = `${text}\n${index + 1}. ${entry.username} | Правильних відповідей: ${entry.count} | Очки карми: ${entry.karma}`;
     });
     return new EmbedBuilder().setColor(colors.primary).setDescription(text).setImage(images.quizLeaders);
   } catch (error) {
     console.error(error)
-    return new EmbedBuilder().setColor(colors.danger).setDescription(`Something went wrong with getting data for quiz leaders`);
+    return new EmbedBuilder().setColor(colors.danger).setDescription(`Помилка при отриманні результатів лідерів квізу`);
   }
 }
 
@@ -107,12 +107,12 @@ const getBestContentContributors = async () => {
     const list = Object.keys(leaders).map((id) => ({ ...leaders[id] })).sort((a, b) => b.karma - a.karma).filter(member => member.username);
     let text = '';
     list.forEach((entry, index) => {
-      text = `${text}\n${index + 1}. ${entry.username} | Content count: ${entry.count} | Karma: ${entry.karma}`;
+      text = `${text}\n${index + 1}. ${entry.username} | Кількість прийнятого контенту від користувача: ${entry.count} | очки карми: ${entry.karma}`;
     });
     return new EmbedBuilder().setColor(colors.primary).setDescription(text).setImage(images.contentLeaders);
   } catch (error) {
     console.error(error)
-    return new EmbedBuilder().setColor(colors.danger).setDescription(`Something went wrong with getting data for content contributors`);
+    return new EmbedBuilder().setColor(colors.danger).setDescription(`Помилка при отриманні результатів по запропонованому контенту`);
   }
 }
 
@@ -129,7 +129,7 @@ const getKarmaLeaderBoard = async () => {
     })
     return new EmbedBuilder().setColor(colors.primary).setDescription(text).setImage(images.karmaLeaders);
   } catch (error) {
-    return new EmbedBuilder().setColor(colors.danger).setDescription(`Something went wrong with getting data for leader board`);
+    return new EmbedBuilder().setColor(colors.danger).setDescription(`Помилка при отриманні результатів по лідерам карми`);
   }
 }
 
