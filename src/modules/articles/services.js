@@ -1,23 +1,16 @@
 const { getPaginatedDataFromModel } = require("../../utils");
 const { ArticlesModel } = require("./models");
 
-const getAllArticles = async (page, pageSize, language) => {
-  if (language) {
-    return getPaginatedDataFromModel(ArticlesModel, page, pageSize, { language });
-  }
-  return getPaginatedDataFromModel(ArticlesModel, page, pageSize);
+const getAllArticles = async (params) => {
+  const { page = 1, pageSize = 10, language, slug } = params;
+  const query = {};
+  if (language) query.language = language;
+  if (slug) query.slug = slug;
+  return getPaginatedDataFromModel(ArticlesModel, page, pageSize, query);
 }
 
 const getArticle = (id) => {
   return ArticlesModel.findById(id);
-}
-
-const getArticleByQuery = (query) => {
-  return ArticlesModel.findOne(query);
-}
-
-const getArticlesByQuery = (query) => {
-  return ArticlesModel.find(query);
 }
 
 const addArticle = async (article) => {
@@ -38,6 +31,4 @@ module.exports = {
   getAllArticles,
   getArticle,
   updateArticle,
-  getArticleByQuery,
-  getArticlesByQuery
 }

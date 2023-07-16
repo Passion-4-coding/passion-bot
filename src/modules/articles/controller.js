@@ -1,20 +1,9 @@
 const { validateAccess, scopes } = require('../auth');
-const { getAllArticles, getArticleByQuery, getArticlesByQuery, updateArticle, addArticle } = require('./services');
+const { getAllArticles, updateArticle, addArticle } = require('./services');
 
 const handleArticlesApi = (app, client) => {
   app.get('/api/articles', async ({ query }, res) => {
-    const { page = 1, pageSize = 10, language } = query;
-    const articles = await getAllArticles(page, pageSize, language);
-    res.send(articles);
-  })
-
-  app.get('/api/articles/:slug/', async ({ params }, res) => {
-    const articles = await getArticlesByQuery(params);
-    res.send(articles);
-  })
-
-  app.get('/api/articles/:slug/:language', async ({ params }, res) => {
-    const articles = await getArticleByQuery(params);
+    const articles = await getAllArticles(query);
     res.send(articles);
   })
 
