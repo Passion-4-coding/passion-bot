@@ -79,10 +79,10 @@ const getPastDayStats = async () => {
     const membersPromoted = entries.filter(e => e.type === "promotion").length;
     const totalKarma = await getKarmaForThePastDay();
     const text = 
-      `**${messageCount}** повідомлен${messageCount === 1 ? 'ня' : 'ь'} було відправлено.\n` +
-      `**${commands}** команд${commands === 1 ? 'а' : ''} була використана.\n` +
-      `**${membersJoined}** користувач${membersJoined === 1 ? '' : 'ів'} зайшло та **${membersLeft}** користувач${membersLeft === 1 ? '' : 'ів'} вийшло.\n` +
-      `**${membersPromoted}** користувач${membersPromoted === 1 ? '' : 's'} було підвищено\n` +
+      `**${messageCount}** повідомлен${messageCount === 1 ? 'ня' : 'ь'} було відправлено\n` +
+      `**${commands}** команд${commands === 1 ? 'а' : ''} була використано\n` +
+      `**${membersJoined}** користувач${membersJoined === 1 ? '' : 'ів'} зайшло та **${membersLeft}** користувач${membersLeft === 1 ? '' : 'ів'} вийшло\n` +
+      `**${membersPromoted}** користувач${membersPromoted === 1 ? '' : 'ів'} бу${membersPromoted === 1 ? 'в' : 'ло'} підвищено\n` +
       `**${bumps}** бамп${bumps === 1 ? '' : 'ів'} було використано для підвищення популярності нашої спільноти.\n` +
       `**${totalKarma}** очок карми було зароблено нашою спільнотою.`;
     return new EmbedBuilder().setColor(colors.primary).setDescription(text).setImage(images.stats);
