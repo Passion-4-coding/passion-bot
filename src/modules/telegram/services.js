@@ -1,3 +1,4 @@
+const { getPaginatedDataFromModel } = require("../../utils");
 const { TelegramMemberModel } = require("./models");
 
 const addTelegramMember = async (member) => {
@@ -13,11 +14,12 @@ const isExists = (discordId) => {
 }
 
 const updateTelegramMember = (id, data) => {
-  return TelegramMemberModel.updateOne({ _id: id }, data);
+  return TelegramMemberModel.findByIdAndUpdate(id, data, { new: true }).populate("memberId");
 };
 
-const getAllTelegramMembers = () => {
-  return TelegramMemberModel.find();
+const getAllTelegramMembers = (params) => {
+  const { page = 1, pageSize = 10 } = params;
+  return getPaginatedDataFromModel(TelegramMemberModel, page, pageSize, {}, true);
 }
 
 module.exports = {

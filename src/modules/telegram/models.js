@@ -19,6 +19,14 @@ const TelegramMemberSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
+  createdOn: {
+    type: Date,
+    required: true
+  },
+  updatedOn: {
+    type: Date,
+    required: true
+  },
 });
 
 const TelegramMemberModel = mongoose.model('telegram-members', TelegramMemberSchema);

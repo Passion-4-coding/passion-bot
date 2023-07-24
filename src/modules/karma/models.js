@@ -18,7 +18,7 @@ const KarmaEntrySchema = new mongoose.Schema({
   type: {
     type: String,
     required: true,
-    enum: ["manual", "bump", "message", "swear-word", "content-making", "quiz"]
+    enum: ["manual", "bump", "message", "swear-word", "content-making", "quiz", "telegram"]
   },
   target: String,
   quizId: {

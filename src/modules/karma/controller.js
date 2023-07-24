@@ -52,6 +52,10 @@ const addKarmaForTheQuiz = (memberId, quizId, karma) => {
   return updateKarma(memberId, karma, "quiz", undefined, quizId);
 }
 
+const addKarmaForTheTelegramSubscription = (memberId, telegramName) => {
+  return updateKarma(memberId, 200, "telegram", telegramName);
+}
+
 const removeKarmaForSwearWord = (memberId, text) => {
   return updateKarma(memberId, -10, "swear-word", text);
 }
@@ -143,5 +147,6 @@ module.exports = {
   addKarmaForContentMaking,
   addKarmaForTheQuiz,
   getQuizWeekLeaders,
-  getBestContentContributors
+  getBestContentContributors,
+  addKarmaForTheTelegramSubscription
 }

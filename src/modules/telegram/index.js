@@ -1,7 +1,9 @@
 const {
-  handleTelegramMembersApi
+  handleTelegramMembersApi,
+  addTelegramMemberAndGenerateEmbed
 } = require("./controller");
 
 module.exports = {
-  handleTelegramMembersApi
+  handleTelegramMembersApi,
+  addTelegramMemberAndGenerateEmbed
 }
