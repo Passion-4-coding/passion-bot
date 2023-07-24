@@ -6,6 +6,7 @@ const { handleMemberApi } = require("../modules/member");
 const { handleAuthApi } = require("../modules/auth");
 const { handleQuizApi } = require("../modules/quiz");
 const { handleArticlesApi } = require("../modules/articles");
+const { handleTelegramMembersApi } = require("../modules/telegram");
 
 const { PORT } = process.env;
 
@@ -19,6 +20,7 @@ const init = (client) => {
   handleAuthApi(app, client);
   handleQuizApi(app, client);
   handleArticlesApi(app, client);
+  handleTelegramMembersApi(app, client);
 }
 
 
