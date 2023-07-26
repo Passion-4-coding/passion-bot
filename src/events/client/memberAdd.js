@@ -13,7 +13,9 @@ module.exports = {
     const role = member.guild.roles.cache.get(roles.trainee);
     member.roles.add(role).catch(console.error);
     const channel = member.guild.channels.cache.get(channels.reception);
-    const message = welcome.messages.ua[Math.floor(Math.random()*welcome.messages.ua.length)];
+    const karmaChannel = member.guild.channels.cache.get(channels.karma);
+    const randomMessage = welcome.messages.ua[Math.floor(Math.random()*welcome.messages.ua.length)];
+    const message = `${randomMessage}\n\n*Підпишись на наш телеграм - https://t.me/pfc_ua і забирай 200 карми. Деталі в ${karmaChannel.toString()}*`
 
     const buttons = new ActionRowBuilder()
     buttons.addComponents(
