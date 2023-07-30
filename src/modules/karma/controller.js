@@ -1,9 +1,22 @@
 const { EmbedBuilder, MessageType } = require("discord.js");
-const { addKarmaEntry, getKarmaEntriesForTimeRange } = require("./services");
+const { addKarmaEntry, getKarmaEntriesForTimeRange, getAllKarmaEntries } = require("./services");
 const { updateMemberTotalKarma, getMemberByDiscordId } = require("../member");
 const { subDays } = require("date-fns");
 const { sumUserKarmaAndCount, calculateTotalKarma } = require("./utils");
 const { channels, colors, images } = require("../../constants");
+const { validateAccess, scopes } = require("../auth");
+
+const handleKarmaApi = (app, client) => {
+  app.get('/api/karma-entries', async ({ headers, query }, res) => {
+    if (!await validateAccess(headers, scopes.user, client)) {
+      res.status(403);
+      res.send({ error: "Access Error", message: "This user is not allowed to see karma entries"});
+      return;
+    }
+    const response = await getAllKarmaEntries(query);
+    res.send(response);
+  })
+}
 
 const updateKarma = async (discordMemberId, karma, type, target, quizId) => {
   const member = await getMemberByDiscordId(discordMemberId);
@@ -148,5 +161,6 @@ module.exports = {
   addKarmaForTheQuiz,
   getQuizWeekLeaders,
   getBestContentContributors,
-  addKarmaForTheTelegramSubscription
+  addKarmaForTheTelegramSubscription,
+  handleKarmaApi
 }

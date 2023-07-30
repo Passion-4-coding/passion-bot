@@ -7,16 +7,27 @@ const {
   getMemberKarma,
   updateMemberKarma,
   getAllMembers,
-  removeMember
+  removeMember,
+  getMembers
 } = require("./services");
 const { roles, karmaGradation, progressRoles, colors } = require("../../constants");
+const { scopes, validateAccess } = require("../auth");
 
 const { GUILD_ID } = process.env;
 
-const handleMemberApi = (app) => {
+const handleMemberApi = (app, client) => {
   app.get('/api/member-count', async (req, res) => {
     const count = await getMembersCount();
     res.send(count.toString());
+  })
+  app.get('/api/members', async ({ headers, query }, res) => {
+    if (!await validateAccess(headers, scopes.user, client)) {
+      res.status(403);
+      res.send({ error: "Access Error", message: "This user is not allowed to see members"});
+      return;
+    }
+    const response = await getMembers(query);
+    res.send(response);
   })
 }
 

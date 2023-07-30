@@ -44,6 +44,19 @@ const updateMemberKarma = (memberId, karma) => {
   )
 }
 
+const getMembers = async (params) => {
+  const { page = 1, pageSize = 10, memberId } = params;
+  const query = {};
+  if (memberId) query._id = memberId;
+
+  const list = await MemberModel.find({ ...query, isBot: false, isActive: true }).limit(pageSize).skip(pageSize * (page - 1)).sort("-karma");
+  const total = await MemberModel.countDocuments(query);
+  return {
+    list,
+    total
+  }
+}
+
 const getMembersCount = () => {
   return MemberModel.countDocuments({ isActive: true, isBot: false, isTest: false });
 }
@@ -61,5 +74,6 @@ module.exports = {
   getMemberKarma,
   updateMemberKarma,
   updateMembers,
-  getAllMembers
+  getAllMembers,
+  getMembers
 }

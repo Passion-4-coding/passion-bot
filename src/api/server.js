@@ -7,6 +7,7 @@ const { handleAuthApi } = require("../modules/auth");
 const { handleQuizApi } = require("../modules/quiz");
 const { handleArticlesApi } = require("../modules/articles");
 const { handleTelegramMembersApi } = require("../modules/telegram");
+const { handleKarmaApi } = require("../modules/karma");
 
 const { PORT } = process.env;
 
@@ -16,11 +17,12 @@ app.use(cors());
 app.use(express.json());
 
 const init = (client) => {
-  handleMemberApi(app);
+  handleMemberApi(app, client);
   handleAuthApi(app, client);
   handleQuizApi(app, client);
   handleArticlesApi(app, client);
   handleTelegramMembersApi(app, client);
+  handleKarmaApi(app, client);
 }
 
 
