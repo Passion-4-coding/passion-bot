@@ -2,10 +2,12 @@ const cron = require('node-cron');
 const { channels } = require("../constants");
 const { getKarmaLeaderBoard, getQuizWeekLeaders } = require('../modules/karma');
 const { getPastDayStats, addStatEntryMemberPromoted } = require('../modules/stats');
-const { updateRoles } = require('../modules/member');
+const { updateRoles, syncMembers } = require('../modules/member');
 const { randomIntFromInterval } = require('../utils');
 const { getQuiz } = require('../modules/quiz');
 const { getBestContentContributors } = require('../modules/karma/controller');
+
+const { GUILD_ID } = process.env;
 
 const runTasks = (client) => {
   cron.schedule('0 16 * * *', async () => {
@@ -50,8 +52,16 @@ const runTasks = (client) => {
   }, {
     timezone: 'Europe/Warsaw'
   });
+
+  cron.schedule('00 22 * * *', async () => {
+    const guild = client.guilds.resolve(GUILD_ID);
+    const guildMembers = await guild.members.fetch();
+    syncMembers(guildMembers);
+  }, {
+    timezone: 'Europe/Warsaw'
+  });
   
-  cron.schedule('0 0 */1 * * *', async () => {
+  cron.schedule('0 */5 * * * *', async () => {
     updateRoles(client, addStatEntryMemberPromoted);
   });
 }

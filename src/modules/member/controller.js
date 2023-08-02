@@ -8,7 +8,8 @@ const {
   updateMemberKarma,
   getAllMembers,
   removeMember,
-  getMembers
+  getMembers,
+  updateMember
 } = require("./services");
 const { roles, karmaGradation, progressRoles, colors } = require("../../constants");
 const { scopes, validateAccess } = require("../auth");
@@ -46,6 +47,19 @@ const _addMember = (discordMember) => {
   return addMember(member);
 };
 const _removeMember = (discordMember) => removeMember(discordMember);
+
+const syncMembers = async (guildMembers) => {
+  const dbMembers = await getAllMembers();
+  for (let index = 0; index < dbMembers.length; index++) {
+    const dbMember = dbMembers[index];
+    const guildMember = guildMembers.find(guildMember => {
+      return guildMember.id === dbMember.discordId;
+    });
+    if (!guildMember) {
+      await updateMember(dbMember._id, { isActive: false });
+    }
+  }
+}
 
 const getMemberTotalKarma = async (user) => {
   try {
@@ -128,5 +142,6 @@ module.exports = {
   getMemberTotalKarma,
   updateMemberTotalKarma,
   getAllMembers: _getAllMembers,
-  updateRoles
+  updateRoles,
+  syncMembers
 }

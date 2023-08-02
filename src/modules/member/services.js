@@ -44,6 +44,13 @@ const updateMemberKarma = (memberId, karma) => {
   )
 }
 
+const updateMember = (memberId, member) => {
+  return MemberModel.updateOne(
+    { _id: memberId },
+    member
+  )
+}
+
 const getMembers = async (params) => {
   const { page = 1, pageSize = 10, memberId } = params;
   const query = {};
@@ -75,5 +82,6 @@ module.exports = {
   updateMemberKarma,
   updateMembers,
   getAllMembers,
-  getMembers
+  getMembers,
+  updateMember
 }
