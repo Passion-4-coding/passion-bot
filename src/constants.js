@@ -79,7 +79,7 @@ module.exports = {
     { id: PRINCIPAL_ROLE, name: "principal" },
     { id: LEAD_ROLE, name: "lead" },
     { id: ARCHITECT_ROLE, name: "architect" },
-    { id: LEAD_ROLE, name: "lead" },
+    { id: QA_ROLE, name: "qa" },
     { id: OWNER_ROLE, name: "owner" },
   ],
   defaultLanguage: "en",
