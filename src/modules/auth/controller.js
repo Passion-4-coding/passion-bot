@@ -24,7 +24,7 @@ const handleAuthApi = (app, client) => {
     if (member) {
       memberScopes.push(scopes.user);
     }
-    if (member.roles.cache.has(roles.lead)) {
+    if (member.roles.cache.has(roles.qa)) {
       memberScopes.push(scopes.moderator);
     }
     if (member.roles.cache.has(roles.owner)) {

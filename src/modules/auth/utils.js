@@ -60,7 +60,7 @@ const validateAccess = async (headers, scope, client) => {
   if (member) {
     memberScopes.push("user");
   }
-  if (member.roles.cache.has(roles.lead)) {
+  if (member.roles.cache.has(roles.qa)) {
     memberScopes.push("moderator");
   }
   if (member.roles.cache.has(roles.owner)) {

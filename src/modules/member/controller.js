@@ -66,7 +66,7 @@ const getMemberTotalKarma = async (user) => {
     const karma = await getMemberKarma(user.id);
     const gradationValue = Object.values(karmaGradation).find(value => value >= karma);
     const gradationRole = Object.keys(karmaGradation).find(key => karmaGradation[key] >= karma);
-    if (gradationValue && gradationRole && user.roles && !user.roles.cache.has(roles.lead)) {
+    if (gradationValue && gradationRole && user.roles && !user.roles.cache.has(roles.qa)) {
       const karmaNeededForNextRole = Math.round(gradationValue - karma);
       return new EmbedBuilder().setColor(colors.primary).setDescription(`Ти маєш ${karma} очок карми. До наступної ролі ${gradationRole} тобі треба заробити ще ${karmaNeededForNextRole} карми`);
     }
@@ -78,7 +78,7 @@ const getMemberTotalKarma = async (user) => {
 }
 
 const isManualRole = (roleId) => {
-  return roleId === roles.architect || roleId === roles.lead || roleId === roles.owner
+  return roleId === roles.architect || roleId === roles.qa || roleId === roles.owner
 }
 
 const promoteRole = async (member, discordMembers, addStatEntryMemberPromoted) => {
