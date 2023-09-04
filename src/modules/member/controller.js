@@ -104,6 +104,9 @@ const promoteRole = async (member, discordMembers, addStatEntryMemberPromoted) =
   if (member.karma >= karmaGradation.principal) {
     newMemberRoleId = roles.principal;
   }
+  if (member.karma >= karmaGradation.lead) {
+    newMemberRoleId = roles.lead;
+  }
   if (!memberProgressRole) {
     discordMember.roles.add(newMemberRoleId);
     await addStatEntryMemberPromoted(member.discordId);
