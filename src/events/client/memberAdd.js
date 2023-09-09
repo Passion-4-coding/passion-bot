@@ -3,6 +3,7 @@ const { welcome } = require("../../modules/messages");
 const { roles, channels, languages } = require("../../constants");
 const { addMember } = require("../../modules/member");
 const { addStatEntryMemberAdd } = require("../../modules/stats");
+const { logMemberIn } = require("../../modules/log");
 
 module.exports = {
   name: Events.GuildMemberAdd,
@@ -10,6 +11,7 @@ module.exports = {
   async execute(member) {
     await addMember(member.user);
     addStatEntryMemberAdd(member.user.id);
+    logMemberIn(member.guild, member);
     const role = member.guild.roles.cache.get(roles.trainee);
     member.roles.add(role).catch(console.error);
     const channel = member.guild.channels.cache.get(channels.reception);

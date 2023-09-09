@@ -4,6 +4,7 @@ const { getSwearWordAmount, checkSwearWordsForUser } = require("../../modules/sw
 const { handleStatsForMessage } = require("../../modules/stats");
 const { channels, roles } = require("../../constants");
 const { handleDraftMessage } = require("../../modules/content-making");
+const { logInviteLinkPublished } = require("../../modules/log");
 
 module.exports = {
   name: Events.MessageCreate,
@@ -14,6 +15,15 @@ module.exports = {
     } 
     const message = interaction.content;
     const channelId = interaction.channelId;
+
+    if (message.includes('discord.gg/'||'discordapp.com/invite/') && interaction.channelId !== channels.log) {
+      interaction.delete();
+      const muteTime = 180 * 60 * 1000;
+      interaction.member.timeout(muteTime);
+      logInviteLinkPublished(client, interaction.member, message);
+      return;
+    }
+
     // check for bump and add karma
     addKarmaForBump(interaction);
     
@@ -29,6 +39,7 @@ module.exports = {
     await addKarmaForMessageActivity(message, memberId, channelId);
 
     const swearWordsAmount = getSwearWordAmount(message);
+
     if (swearWordsAmount > 0) {
       const channel = client.channels.cache.get(interaction.channelId);
       checkSwearWordsForUser(swearWordsAmount, interaction.member, channel);
