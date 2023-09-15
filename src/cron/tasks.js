@@ -61,7 +61,7 @@ const runTasks = (client) => {
     timezone: 'Europe/Warsaw'
   });
   
-  cron.schedule('0 */5 * * * *', async () => {
+  cron.schedule('03 00 * * *', async () => {
     updateRoles(client, addStatEntryMemberPromoted);
   });
 }

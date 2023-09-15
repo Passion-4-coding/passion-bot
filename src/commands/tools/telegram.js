@@ -9,7 +9,7 @@ module.exports = {
     option.setName('telegram-name')
       .setDescription('Ваш нікнейм в телеграм')
       .setRequired(true)),
-  async execute(interaction) {
+  async execute(interaction, client) {
 
     await interaction.deferReply({
       fetchReply: true,
@@ -21,7 +21,7 @@ module.exports = {
     const telegramName = option.value;
     const discordId = interaction.user.id;
 
-    const embed = await addTelegramMemberAndGenerateEmbed(discordId, telegramName);
+    const embed = await addTelegramMemberAndGenerateEmbed(client, discordId, telegramName);
 
     await interaction.editReply({
       ephemeral: true,

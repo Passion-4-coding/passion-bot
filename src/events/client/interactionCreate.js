@@ -24,11 +24,11 @@ module.exports = {
       }
     }
     if (interaction.isButton() && interaction.channelId === channels.code) {
-      handleMemberAnswer(interaction);
+      handleMemberAnswer(interaction, client);
       return;
     }
     if (interaction.isButton() && interaction.channelId === channels.draft_review) {
-      handleRewardMemberForContent(interaction);
+      handleRewardMemberForContent(client, interaction);
       return;
     }
     if (interaction.isButton()) {

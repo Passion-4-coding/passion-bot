@@ -8,7 +8,8 @@ const {
   getAllMembers,
   removeMember,
   updateRoles,
-  syncMembers
+  syncMembers,
+  promoteRole
 } = require("./controller");
 
 module.exports = {
@@ -21,5 +22,6 @@ module.exports = {
   getAllMembers,
   removeMember,
   updateRoles,
-  syncMembers
+  syncMembers,
+  promoteRole
 }

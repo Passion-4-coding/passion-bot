@@ -25,7 +25,7 @@ module.exports = {
     }
 
     // check for bump and add karma
-    addKarmaForBump(interaction);
+    addKarmaForBump(client, interaction);
     
     // handle message stats
     handleStatsForMessage(interaction);
@@ -36,14 +36,14 @@ module.exports = {
 
     if (interaction.author.bot) return;
     // add karma for user activity
-    await addKarmaForMessageActivity(message, memberId, channelId);
+    await addKarmaForMessageActivity(client, message, memberId, channelId);
 
     const swearWordsAmount = getSwearWordAmount(message);
 
     if (swearWordsAmount > 0) {
       const channel = client.channels.cache.get(interaction.channelId);
       checkSwearWordsForUser(swearWordsAmount, interaction.member, channel);
-      await removeKarmaForSwearWord(memberId, message);
+      await removeKarmaForSwearWord(client, memberId, message);
     }
   } 
 }

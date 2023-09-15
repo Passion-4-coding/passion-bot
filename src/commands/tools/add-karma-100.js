@@ -3,13 +3,13 @@ const { changeKarmaManual } = require("../../modules/karma");
 
 module.exports = {
   data: new ContextMenuCommandBuilder().setName("Add 100 karma points").setType(ApplicationCommandType.User),
-  async execute(interaction) {
+  async execute(interaction, client) {
     await interaction.deferReply({
       fetchReply: true,
       ephemeral: true,
     })
 
-    const embed = await changeKarmaManual(100, interaction.targetUser);
+    const embed = await changeKarmaManual(client, 100, interaction.targetUser);
     
     await interaction.editReply({
       embeds: [embed]

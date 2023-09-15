@@ -14,11 +14,16 @@ const logMemberIn = (guild, member) => {
 }
 
 const logMemberOut = (guild, member) => {
-  logMessage(guild, `${member} вийщов з серверу.`)
+  logMessage(guild, `${member} вийшов з серверу.`)
+}
+
+const logMemberRoleChange = (guild, member, oldRole, newRole) => {
+  logMessage(guild, `Роль ${member} була змінена з ${oldRole} на ${newRole}.`)
 }
 
 module.exports = {
   logInviteLinkPublished,
   logMemberIn,
-  logMemberOut
+  logMemberOut,
+  logMemberRoleChange
 }

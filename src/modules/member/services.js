@@ -38,9 +38,10 @@ const getMemberKarma = async (discordMemberId) => {
 }
 
 const updateMemberKarma = (memberId, karma) => {
-  return MemberModel.updateOne(
+  return MemberModel.findOneAndUpdate(
     { _id: memberId },
-    { $inc: { karma } }
+    { $inc: { karma } },
+    { new: true }
   )
 }
 

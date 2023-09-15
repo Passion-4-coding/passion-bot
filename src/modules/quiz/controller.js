@@ -60,11 +60,11 @@ const handleQuizApi = (app, client) => {
   })
 }
 
-const handleCorrectAnswer = async (interaction, karma, correctAnswersAmount, quiz) => {
+const handleCorrectAnswer = async (client, interaction, karma, correctAnswersAmount, quiz) => {
   const embedExisting = getQuizEmbed(quiz, correctAnswersAmount);
   embedExisting.setFooter({ text: `Правильних відповідей: ${correctAnswersAmount}` });
   interaction.message.edit({ embeds: [embedExisting] })
-  await addKarmaForTheQuiz(interaction.member.id, quiz._id, karma);
+  await addKarmaForTheQuiz(client, interaction.member.id, quiz._id, karma);
   const embed = new EmbedBuilder()
   .setColor(colors.primary)
   .setTitle(`Правильна відповідь!`)
@@ -104,7 +104,7 @@ const handleQuizNotAvailable = (interaction) => {
   })
 }
 
-const handleMemberAnswer = async (interaction) => {
+const handleMemberAnswer = async (interaction, client) => {
   await interaction.deferReply({
     ephemeral: true,
     fetchReply: true
@@ -130,7 +130,7 @@ const handleMemberAnswer = async (interaction) => {
   answersCache.set(questionId, membersWhoAnswered);
   if (isAnswerCorrect) {
     const karma = amountOfCorrectAnswers > 5 ? question.complexity * 10 : question.complexity * 15;
-    await handleCorrectAnswer(interaction, karma, amountOfCorrectAnswers, question);
+    await handleCorrectAnswer(client, interaction, karma, amountOfCorrectAnswers, question);
     return;
   }
   handleWrongAnswer(interaction)

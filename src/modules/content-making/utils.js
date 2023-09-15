@@ -55,7 +55,7 @@ const handleDraftMessage = async (interaction, client) => {
   interaction.delete();
 }
 
-const handleRewardMemberForContent = async (interaction) => {
+const handleRewardMemberForContent = async (client, interaction) => {
   await interaction.deferReply({
     ephemeral: true,
     fetchReply: true
@@ -63,7 +63,7 @@ const handleRewardMemberForContent = async (interaction) => {
   const ids = interaction.customId.split(":");
   const memberId = ids[0];
   const reward = Number(ids[1]);
-  const embed = await addKarmaForContentMaking(memberId, reward);
+  const embed = await addKarmaForContentMaking(client, memberId, reward);
   return interaction.editReply({
     embeds: [embed]
   })

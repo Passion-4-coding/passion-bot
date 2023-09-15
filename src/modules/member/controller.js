@@ -13,6 +13,7 @@ const {
 } = require("./services");
 const { roles, karmaGradation, progressRoles, colors } = require("../../constants");
 const { scopes, validateAccess } = require("../auth");
+const { logMemberRoleChange } = require("../log");
 
 const { GUILD_ID } = process.env;
 
@@ -81,10 +82,14 @@ const isManualRole = (roleId) => {
   return roleId === roles.architect || roleId === roles.qa || roleId === roles.owner
 }
 
-const promoteRole = async (member, discordMembers, addStatEntryMemberPromoted) => {
+const promoteRole = async (member, client, addStatEntryMemberPromoted) => {
+  const guild = client.guilds.resolve(GUILD_ID);
+  const discordMembers = await guild.members.fetch();
+
   const discordMember = discordMembers.find(m => {
     return m.id === member.discordId
   });
+
   if (!discordMember || member.isBot || !member.isActive || member.isNew) return;
   let memberProgressRole;
   discordMember.roles.cache.forEach(role => {
@@ -92,20 +97,26 @@ const promoteRole = async (member, discordMembers, addStatEntryMemberPromoted) =
     if (progressRole) memberProgressRole = progressRole;
   });
   let newMemberRoleId = roles.trainee;
+  let newRole = "trainee";
   if (member.karma >= karmaGradation.junior) {
     newMemberRoleId = roles.junior;
+    newRole = "junior";
   }
   if (member.karma >= karmaGradation.middle) {
     newMemberRoleId = roles.middle;
+    newRole = "middle";
   }
   if (member.karma >= karmaGradation.senior) {
     newMemberRoleId = roles.senior;
+    newRole = "senior";
   }
   if (member.karma >= karmaGradation.principal) {
     newMemberRoleId = roles.principal;
+    newRole = "principal";
   }
   if (member.karma >= karmaGradation.lead) {
     newMemberRoleId = roles.lead;
+    newRole = "lead";
   }
   if (!memberProgressRole) {
     discordMember.roles.add(newMemberRoleId);
@@ -115,20 +126,19 @@ const promoteRole = async (member, discordMembers, addStatEntryMemberPromoted) =
   if (memberProgressRole.id === newMemberRoleId || isManualRole(memberProgressRole.id)) {
     return;
   }
-  discordMember.roles.remove(memberProgressRole.id);
-  discordMember.roles.add(newMemberRoleId);
+  await discordMember.roles.remove(memberProgressRole.id);
+  await discordMember.roles.add(newMemberRoleId);
+  logMemberRoleChange(guild, discordMember, memberProgressRole.name, newRole);
   await addStatEntryMemberPromoted(member.discordId);
 }
 
 // returns amount of promoted users
 const updateRoles = async (client, addStatEntryMemberPromoted) => {
   const members = await _getAllMembers();
-  const guild = client.guilds.resolve(GUILD_ID);
-  const discordMembers = await guild.members.fetch();
   let count = 0;
   for (let index = 0; index < members.length; index++) {
     const member = members[index];
-    let status = await promoteRole(member, discordMembers, addStatEntryMemberPromoted);
+    let status = await promoteRole(member, client, addStatEntryMemberPromoted);
     if (status) count += 1;
   }
   return count;
@@ -146,5 +156,6 @@ module.exports = {
   updateMemberTotalKarma,
   getAllMembers: _getAllMembers,
   updateRoles,
-  syncMembers
+  syncMembers,
+  promoteRole
 }

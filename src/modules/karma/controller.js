@@ -1,6 +1,7 @@
 const { EmbedBuilder, MessageType } = require("discord.js");
 const { addKarmaEntry, getKarmaEntriesForTimeRange, getAllKarmaEntries } = require("./services");
-const { updateMemberTotalKarma, getMemberByDiscordId } = require("../member");
+const { addStatEntryMemberPromoted } = require('../stats');
+const { updateMemberTotalKarma, getMemberByDiscordId, promoteRole } = require("../member");
 const { subDays } = require("date-fns");
 const { sumUserKarmaAndCount, calculateTotalKarma } = require("./utils");
 const { channels, colors, images } = require("../../constants");
@@ -18,13 +19,14 @@ const handleKarmaApi = (app, client) => {
   })
 }
 
-const updateKarma = async (discordMemberId, karma, type, target, quizId) => {
-  const member = await getMemberByDiscordId(discordMemberId);
+const updateKarma = async (client, discordMemberId, karma, type, target, quizId) => {
+  let member = await getMemberByDiscordId(discordMemberId);
   await addKarmaEntry(member._id, { karma, type, target, quizId });
-  await updateMemberTotalKarma(member._id, karma);
+  member = await updateMemberTotalKarma(member._id, karma);
+  await promoteRole(member, client, addStatEntryMemberPromoted);
 }
 
-const changeKarmaManual = async (karma, member) => {
+const changeKarmaManual = async (client, karma, member) => {
   const successMessage = karma > 0 ?
     `Додано ${karma} очок карми для користувача з ніком ${member.username}` : 
     `Віднято ${Math.abs(karma)} очок карми для користувача з ніком ${member.username}`
@@ -34,7 +36,7 @@ const changeKarmaManual = async (karma, member) => {
     `Помилка відняття карми для користувача з ніком ${member.username}`
 
   try {
-    await updateKarma(member.id, karma, "manual");
+    await updateKarma(client, member.id, karma, "manual");
     return new EmbedBuilder().setDescription(successMessage);
   } catch (error) {
     console.log(error);
@@ -42,43 +44,43 @@ const changeKarmaManual = async (karma, member) => {
   }
 }
 
-const addKarmaForBump = async (interaction) => {
+const addKarmaForBump = async (client, interaction) => {
   if (interaction.type !== MessageType.ChatInputCommand || (interaction.interaction.commandName !== "bump" && interaction.interaction.commandName !== "like")) return;
   for (let embed of interaction.embeds) {
     if (embed.description.includes("Bump done!") || embed.description.includes("Server bumped") || embed.description.includes("successfully liked")) {
       const nowHours = new Date().getUTCHours();
       const karmaReward = nowHours >= 22 || nowHours <= 6 ? 50 : 25
-      await updateKarma(interaction.interaction.user.id, karmaReward, "bump");
+      await updateKarma(client, interaction.interaction.user.id, karmaReward, "bump");
     }
   }
 }
 
-const addKarmaForMessageActivity = (message, memberId, channelId) => {
+const addKarmaForMessageActivity = (client, message, memberId, channelId) => {
   const divisor = channelId === channels.coffee ? 20 : 10;
   const points = Math.round(message.length/divisor);
   const karma = points > 5 ? 5 : points;
   if (karma === 0) return;
-  return updateKarma(memberId, karma, "message");
+  return updateKarma(client, memberId, karma, "message");
 }
 
-const addKarmaForTheQuiz = (memberId, quizId, karma) => {
-  return updateKarma(memberId, karma, "quiz", undefined, quizId);
+const addKarmaForTheQuiz = (client, memberId, quizId, karma) => {
+  return updateKarma(client, memberId, karma, "quiz", undefined, quizId);
 }
 
-const addKarmaForTheTelegramSubscription = (memberId, telegramName) => {
-  return updateKarma(memberId, 200, "telegram", telegramName);
+const addKarmaForTheTelegramSubscription = (client, memberId, telegramName) => {
+  return updateKarma(client, memberId, 200, "telegram", telegramName);
 }
 
-const removeKarmaForSwearWord = (memberId, text) => {
-  return updateKarma(memberId, -10, "swear-word", text);
+const removeKarmaForSwearWord = (client, memberId, text) => {
+  return updateKarma(client, memberId, -10, "swear-word", text);
 }
 
-const addKarmaForContentMaking = async (memberId, karma) => {
+const addKarmaForContentMaking = async (client, memberId, karma) => {
   const successMessage = `Користувач нагороджений ${karma} очками карми`; 
   const errorMessage = `Помилка при нагороджені користувача очками карми`;
 
   try {
-    await updateKarma(memberId, karma, "content-making");
+    await updateKarma(client, memberId, karma, "content-making");
     return new EmbedBuilder().setDescription(successMessage);
   } catch (error) {
     console.log(error);

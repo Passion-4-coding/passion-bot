@@ -27,7 +27,7 @@ const handleTelegramMembersApi = (app, client) => {
   })
 }
 
-const addTelegramMemberAndGenerateEmbed = async (discordId, tgname) => {
+const addTelegramMemberAndGenerateEmbed = async (client, discordId, tgname) => {
   const exists = await isExists(discordId);
   if (exists) {
     return new EmbedBuilder().setColor(colors.danger).setDescription("Ти вже отримав карму за підписку на телеграм");
@@ -43,7 +43,7 @@ const addTelegramMemberAndGenerateEmbed = async (discordId, tgname) => {
   }
   try {
     await addTelegramMember(telegramMember);
-    await addKarmaForTheTelegramSubscription(discordId, tgname);
+    await addKarmaForTheTelegramSubscription(client, discordId, tgname);
     return new EmbedBuilder().setColor(colors.primary)
       .setTitle("Ви отримали 200 карми!")
       .setDescription("Вітаємо і дякуємо за підписку на наш телеграм. \n Мусимо попередити, що у разі відписки або хибного нікнейму я буду вимушений повернути карму назад.");
