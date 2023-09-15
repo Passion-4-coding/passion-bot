@@ -25,10 +25,10 @@ const KARMA_CHANNEL = IS_PRODUCTION ? "1133074006308827278" : "11330741157424169
 const LOG_CHANNEL = IS_PRODUCTION ? "932593903369068554" : "1150143792570171423";
 
 const ROLES_KARMA_GRADATION = {
-  junior: 50,
-  middle: 500,
-  senior: 1000,
-  principal: 5000,
+  junior: 200,
+  middle: 1000,
+  senior: 5000,
+  principal: 10000,
   lead: 50000
 }
 
