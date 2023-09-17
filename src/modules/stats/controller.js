@@ -4,7 +4,7 @@ const NodeCache = require( "node-cache" );
 const { addStatEntry, getStatEntriesForTimeRange } = require("./services");
 const { calculateMessages } = require("./utils");
 const { getMemberByDiscordId } = require("../member");
-const { getKarmaForThePastDay } = require("../karma");
+
 const { colors, images } = require("../../constants");
 
 const memberMessagesCache = new NodeCache( { stdTTL: 90000 } );
@@ -65,7 +65,7 @@ const handleStatsForMessage = async (interaction) => {
   }
 }
 
-const getPastDayStats = async () => {
+const getPastDayStats = async (getKarmaForThePastDay) => {
   const end = new Date();
   const start = subDays(end, 1);
   try {

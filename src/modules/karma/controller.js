@@ -17,6 +17,17 @@ const handleKarmaApi = (app, client) => {
     const response = await getAllKarmaEntries(query);
     res.send(response);
   })
+  app.put('/api/karma-entries', async (req, res) => {
+    if (!await validateAccess(req.headers, scopes.admin, client)) {
+      res.status(403);
+      res.send({ error: "Access Error", message: "This user is not allowed to add karma entry"});
+      return;
+    }
+    await addKarmaEntry(req.body.memberId, { karma: req.body.karma, type: req.body.type });
+    const member = await updateMemberTotalKarma(req.body.memberId, req.body.karma);
+    await promoteRole(member, client, addStatEntryMemberPromoted);
+    res.send(member);
+  })
 }
 
 const updateKarma = async (client, discordMemberId, karma, type, target, quizId) => {
@@ -122,6 +133,9 @@ const getBestContentContributors = async () => {
   const start = subDays(end, 7);
   try {
     const entries = await getKarmaEntriesForTimeRange(start, end, "content-making");
+    if (entries.length === 0) {
+      return null;
+    }
     const leaders = sumUserKarmaAndCount(entries);
     const list = Object.keys(leaders).map((id) => ({ ...leaders[id] })).sort((a, b) => b.karma - a.karma).filter(member => member.username);
     let text = '';

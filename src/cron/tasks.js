@@ -1,6 +1,6 @@
 const cron = require('node-cron');
 const { channels } = require("../constants");
-const { getKarmaLeaderBoard, getQuizWeekLeaders } = require('../modules/karma');
+const { getKarmaLeaderBoard, getQuizWeekLeaders, getKarmaForThePastDay } = require('../modules/karma');
 const { getPastDayStats, addStatEntryMemberPromoted } = require('../modules/stats');
 const { updateRoles, syncMembers } = require('../modules/member');
 const { randomIntFromInterval } = require('../utils');
@@ -20,7 +20,7 @@ const runTasks = (client) => {
 
   cron.schedule('0 12 * * *', async () => {
     const channel = client.channels.cache.get(channels.coffee);
-    const embed = await getPastDayStats();
+    const embed = await getPastDayStats(getKarmaForThePastDay);
     channel.send({ embeds: [embed] });
   }, {
     timezone: 'Europe/Warsaw'
@@ -47,6 +47,7 @@ const runTasks = (client) => {
 
   cron.schedule('0 15 * * 4', async () => {
     const embed = await getBestContentContributors();
+    if (!embed) return;
     const channel = client.channels.cache.get(channels.coffee);
     channel.send({ embeds: [embed] });
   }, {

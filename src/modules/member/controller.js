@@ -9,7 +9,8 @@ const {
   getAllMembers,
   removeMember,
   getMembers,
-  updateMember
+  updateMember,
+  getMembersForSearch
 } = require("./services");
 const { roles, karmaGradation, progressRoles, colors } = require("../../constants");
 const { scopes, validateAccess } = require("../auth");
@@ -29,6 +30,15 @@ const handleMemberApi = (app, client) => {
       return;
     }
     const response = await getMembers(query);
+    res.send(response);
+  })
+  app.get('/api/members/search', async ({ headers, query }, res) => {
+    if (!await validateAccess(headers, scopes.user, client)) {
+      res.status(403);
+      res.send({ error: "Access Error", message: "This user is not allowed to see members"});
+      return;
+    }
+    const response = await getMembersForSearch(query.search);
     res.send(response);
   })
 }

@@ -65,6 +65,11 @@ const getMembers = async (params) => {
   }
 }
 
+const getMembersForSearch = async (search) => {
+  const list = await MemberModel.find({ "username": { $regex: '.*' + search + '.*', $options: 'i' } });
+  return list
+}
+
 const getMembersCount = () => {
   return MemberModel.countDocuments({ isActive: true, isBot: false, isTest: false });
 }
@@ -84,5 +89,6 @@ module.exports = {
   updateMembers,
   getAllMembers,
   getMembers,
-  updateMember
+  updateMember,
+  getMembersForSearch
 }

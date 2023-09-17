@@ -60,9 +60,31 @@ const ArticlesSchema = new mongoose.Schema({
   }
 });
 
+const ArticlesTagsSchema = new mongoose.Schema({
+  createdOn: {
+    type: Date,
+    required: true
+  },
+  updatedOn: {
+    type: Date,
+    required: true
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  active: {
+    type: Boolean,
+    required: true
+  }
+});
+
 const ArticlesModel = mongoose.model('articles', ArticlesSchema);
+const ArticlesTagsModel = mongoose.model('articles-tags', ArticlesTagsSchema);
 
 module.exports = {
   ArticlesSchema,
-  ArticlesModel
+  ArticlesTagsSchema,
+  ArticlesModel,
+  ArticlesTagsModel,
 }
