@@ -66,9 +66,12 @@ const syncMembers = async (guildMembers) => {
     const guildMember = guildMembers.find(guildMember => {
       return guildMember.id === dbMember.discordId;
     });
-    if (!guildMember) {
-      await updateMember(dbMember._id, { isActive: false });
-    }
+    await updateMember(dbMember._id, {
+      isActive: !guildMember,
+      username: guildMember ? guildMember.username : dbMember.username,
+      avatar: guildMember ? `https://cdn.discordapp.com/avatars/${guildMember.user.id}/${guildMember.user.avatar}.png?size=256` : dbMember.avatar
+    });
+    console.log(`member ${dbMember.username} updated`)
   }
 }
 

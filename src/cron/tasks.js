@@ -6,6 +6,7 @@ const { updateRoles, syncMembers } = require('../modules/member');
 const { randomIntFromInterval } = require('../utils');
 const { getQuiz } = require('../modules/quiz');
 const { getBestContentContributors } = require('../modules/karma/controller');
+const IS_PRODUCTION = process.env.PRODUCTION;
 
 const { GUILD_ID } = process.env;
 
@@ -55,6 +56,7 @@ const runTasks = (client) => {
   });
 
   cron.schedule('00 22 * * *', async () => {
+    if (!IS_PRODUCTION) return;
     const guild = client.guilds.resolve(GUILD_ID);
     const guildMembers = await guild.members.fetch();
     syncMembers(guildMembers);

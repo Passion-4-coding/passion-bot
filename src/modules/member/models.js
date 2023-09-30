@@ -9,6 +9,13 @@ const MemberSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  blogname: {
+    type: String,
+  },
+  avatar: {
+    type: String,
+    required: true,
+  },
   karma: {
     type: Number,
     default: 0

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { ObjectId } = require("mongodb");
 
 const ArticlesSchema = new mongoose.Schema({
   createdOn: {
@@ -57,7 +58,17 @@ const ArticlesSchema = new mongoose.Schema({
   active: {
     type: Boolean,
     required: true
-  }
+  },
+  author: {
+    type: ObjectId,
+    ref: 'members',
+    required: true
+  },
+  tags: [{
+    type: ObjectId,
+    ref: 'articles-tags',
+    required: true
+  }],
 });
 
 const ArticlesTagsSchema = new mongoose.Schema({

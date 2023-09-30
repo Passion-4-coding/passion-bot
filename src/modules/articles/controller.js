@@ -1,10 +1,29 @@
 const { validateAccess, scopes } = require('../auth');
-const { getAllArticles, updateArticle, addArticle, addArticleTag, updateArticleTag, getTagsForSearch, getAllTags, getTag } = require('./services');
+const {
+  getAllArticles,
+  updateArticle,
+  addArticle,
+  addArticleTag,
+  getArticle,
+  getTagsForSearch,
+  getAllTags,
+  getTag
+} = require('./services');
 
 const handleArticlesApi = (app, client) => {
   app.get('/api/articles', async ({ query }, res) => {
     const articles = await getAllArticles(query);
     res.send(articles);
+  })
+
+  app.get('/api/articles/:id', async ({ params, headers }, res) => {
+    if (!await validateAccess(headers, scopes.admin, client)) {
+      res.status(403);
+      res.send({ error: "Access Error", message: "This user is not allowed to see article"});
+      return;
+    }
+    const response = await getArticle(params.id);
+    res.send(response);
   })
 
   app.post('/api/articles', async (req, res) => {
@@ -27,16 +46,6 @@ const handleArticlesApi = (app, client) => {
     res.send(response);
   })
 
-  app.get('/api/tags/:id', async ({ params, headers }, res) => {
-    if (!await validateAccess(headers, scopes.admin, client)) {
-      res.status(403);
-      res.send({ error: "Access Error", message: "This user is not allowed to see tags"});
-      return;
-    }
-    const response = await getTag(params.id);
-    res.send(response);
-  })
-
   app.get('/api/tags', async ({ query }, res) => {
     const articles = await getAllTags(query);
     res.send(articles);
@@ -52,23 +61,31 @@ const handleArticlesApi = (app, client) => {
     res.send(response);
   })
 
-  app.patch('/api/tags/:id', async ({ params, headers, body }, res) => {
-    if (!await validateAccess(headers, scopes.admin, client)) {
-      res.status(403);
-      res.send({ error: "Access Error", message: "This user is not allowed to edit tags"});
-      return;
-    }
-    const response = await updateArticleTag(params.id, body);
-    res.send(response);
-  })
-
   app.get('/api/tags/search', async ({ headers, query }, res) => {
+    console.log
     if (!await validateAccess(headers, scopes.admin, client)) {
       res.status(403);
       res.send({ error: "Access Error", message: "This user is not allowed to see tags"});
       return;
     }
-    const response = await getTagsForSearch(query.search);
+    console.log(query.search)
+    try {
+      const response = await getTagsForSearch(query.search);
+      console.log(response)
+      res.send(response);
+      
+    } catch (error) {
+      
+    }
+  })
+
+    app.get('/api/tags/:id', async ({ params, headers }, res) => {
+    if (!await validateAccess(headers, scopes.admin, client)) {
+      res.status(403);
+      res.send({ error: "Access Error", message: "This user is not allowed to see tags"});
+      return;
+    }
+    const response = await getTag(params.id);
     res.send(response);
   })
 }

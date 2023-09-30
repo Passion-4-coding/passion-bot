@@ -3,14 +3,20 @@ const { ArticlesModel, ArticlesTagsModel } = require("./models");
 
 const getAllArticles = async (params) => {
   const { page = 1, pageSize = 10, language, slug } = params;
-  const query = {};
+  const query = { language: "ua" };
   if (language) query.language = language;
   if (slug) query.slug = slug;
-  return getPaginatedDataFromModel(ArticlesModel, page, pageSize, query);
+
+  const list = await ArticlesModel.find(query).limit(pageSize).skip(pageSize * (page - 1)).populate("author").populate("tags");
+  const total = await ArticlesModel.countDocuments(query);
+  return {
+    list,
+    total
+  }
 }
 
 const getArticle = (id) => {
-  return ArticlesModel.findById(id);
+  return ArticlesModel.findById(id).populate("author");
 }
 
 const addArticle = async (article) => {
@@ -36,7 +42,7 @@ const getAllTags = async (params) => {
 }
 
 const getTagsForSearch = async (search) => {
-  const list = await MemberModel.find({ "name": { $regex: '.*' + search + '.*', $options: 'i' } });
+  const list = await ArticlesTagsModel.find({ "name": { $regex: '.*' + search + '.*', $options: 'i' } });
   return list;
 }
 
