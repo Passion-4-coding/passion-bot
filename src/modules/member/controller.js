@@ -67,7 +67,7 @@ const syncMembers = async (guildMembers) => {
       return guildMember.id === dbMember.discordId;
     });
     await updateMember(dbMember._id, {
-      isActive: guildMember,
+      isActive: !!guildMember,
       username: guildMember ? guildMember.username : dbMember.username,
       avatar: guildMember ? `https://cdn.discordapp.com/avatars/${guildMember.user.id}/${guildMember.user.avatar}.png?size=256` : dbMember.avatar
     });
