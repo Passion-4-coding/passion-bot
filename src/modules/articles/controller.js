@@ -27,12 +27,7 @@ const handleArticlesApi = (app, client) => {
     res.send(response);
   })
 
-  app.get('/api/articles/:slug', async ({ params, headers }, res) => {
-    if (!await validateAccess(headers, scopes.admin, client)) {
-      res.status(403);
-      res.send({ error: "Access Error", message: "This user is not allowed to see article"});
-      return;
-    }
+  app.get('/api/articles/:slug', async ({ params }, res) => {
     const response = await getArticleBySlug(params.slug);
     res.send(response);
   })
