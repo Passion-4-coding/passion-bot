@@ -7,7 +7,7 @@ const getAllArticles = async (params) => {
   if (language) query.language = language;
   if (slug) query.slug = slug;
 
-  const list = await ArticlesModel.find(query).limit(pageSize).skip(pageSize * (page - 1)).populate("author").populate("tags");
+  const list = await ArticlesModel.find(query).sort({ publishedOn: -1 }).limit(pageSize).skip(pageSize * (page - 1)).populate("author").populate("tags");
   const total = await ArticlesModel.countDocuments(query);
   return {
     list,
@@ -17,6 +17,10 @@ const getAllArticles = async (params) => {
 
 const getArticle = (id) => {
   return ArticlesModel.findById(id).populate("author");
+}
+
+const getArticleBySlug = (slug) => {
+  return ArticlesModel.findOne({ slug, language: "ua" }).populate("author").populate("tags");
 }
 
 const addArticle = async (article) => {
@@ -68,5 +72,6 @@ module.exports = {
   updateArticleTag,
   getTagsForSearch,
   getAllTags,
-  getTag
+  getTag,
+  getArticleBySlug
 }

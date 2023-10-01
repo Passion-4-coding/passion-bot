@@ -5,6 +5,7 @@ const {
   addArticle,
   addArticleTag,
   getArticle,
+  getArticleBySlug,
   getTagsForSearch,
   getAllTags,
   getTag
@@ -23,6 +24,16 @@ const handleArticlesApi = (app, client) => {
       return;
     }
     const response = await getArticle(params.id);
+    res.send(response);
+  })
+
+  app.get('/api/articles/:slug', async ({ params, headers }, res) => {
+    if (!await validateAccess(headers, scopes.admin, client)) {
+      res.status(403);
+      res.send({ error: "Access Error", message: "This user is not allowed to see article"});
+      return;
+    }
+    const response = await getArticleBySlug(params.slug);
     res.send(response);
   })
 
