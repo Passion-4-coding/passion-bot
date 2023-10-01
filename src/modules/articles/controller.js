@@ -27,7 +27,7 @@ const handleArticlesApi = (app, client) => {
     res.send(response);
   })
 
-  app.get('/api/articles/:slug', async ({ params }, res) => {
+  app.get('/api/article-slug/:slug', async ({ params }, res) => {
     const response = await getArticleBySlug(params.slug);
     res.send(response);
   })
