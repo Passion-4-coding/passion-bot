@@ -54,6 +54,7 @@ const _addMember = (discordMember) => {
     isActive: true,
     isBot: discordMember.bot,
     isTest: false,
+    avatar: `https://cdn.discordapp.com/avatars/${discordMember.id}/${discordMember.avatar}.png?size=256`,
   }
   return addMember(member);
 };
