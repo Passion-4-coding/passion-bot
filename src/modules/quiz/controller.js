@@ -1,17 +1,13 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
 const { validateAccess, scopes } = require('../auth');
-const { getAllQuestions, addQuestion, updateQuestion } = require('./services');
+const { getAllQuestions, addQuestion, updateQuestion, getQuestionCount, getQuestionByIndex, createPostedQuiz, getPostedQuizById, updatePostedQuiz } = require('./services');
 const { randomIntFromInterval } = require('../../utils');
 const { getQuestion } = require('./services');
-const { ObjectId } = require('mongodb');
-const NodeCache = require( "node-cache" );
 const { addKarmaForTheQuiz } = require('../karma');
 const { colors, images } = require('../../constants');
-
-const QUIZ_TIME = 7200;
-
-const answersCache = new NodeCache( { stdTTL: QUIZ_TIME } );
-const timeoutCache = new NodeCache( { stdTTL: QUIZ_TIME } );
+const { addHours, differenceInSeconds } = require('date-fns');
+const { getMemberByDiscordId } = require('../member');
+const { ObjectId } = require('mongodb');
 
 const quizHeadMessage = "Увага, тест! У тебе є дві години щоб відповісти на питання і заробити очок карми.";
 
@@ -110,42 +106,52 @@ const handleMemberAnswer = async (interaction, client) => {
     fetchReply: true
   })
   const ids = interaction.customId.split(":");
-  const questionId = ids[0];
-  const isQuizAvailable = timeoutCache.get(questionId);
-  if (!isQuizAvailable) {
+  const postedQuizId = ids[0];
+  const postedQuiz = await getPostedQuizById(postedQuizId);
+  const timeToExpired = differenceInSeconds(new Date(postedQuiz.expiredAt), new Date());
+  const member = await getMemberByDiscordId(interaction.member.id);
+  if (timeToExpired < 0) {
     handleQuizNotAvailable(interaction);
     return;
   } 
   const answer = ids[1];
-  const question = await getQuestion(new ObjectId(questionId));
-  const membersWhoAnswered = answersCache.get(questionId) || [];
-  const isQuestionAlreadyAnswered = membersWhoAnswered.some(a => a.memberId === interaction.member.id);
+  const question = await getQuestion(postedQuiz.quizId);
+  const correctAnswers = postedQuiz.correctAnswers;
+  const wrongAnswers = postedQuiz.wrongAnswers;
+  const allAnswers = [...correctAnswers, ...wrongAnswers];
+  const isQuestionAlreadyAnswered = allAnswers.some(id => id.toString() === member._id.toString());
   if (isQuestionAlreadyAnswered) {
     handleAnswerRepeat(interaction);
     return;
   }
   const isAnswerCorrect = answer === question.correct;
-  membersWhoAnswered.push({ memberId: interaction.member.id, correct: isAnswerCorrect });
-  const amountOfCorrectAnswers = membersWhoAnswered.filter(m => m.correct).length;
-  answersCache.set(questionId, membersWhoAnswered);
   if (isAnswerCorrect) {
-    const karma = amountOfCorrectAnswers > 5 ? question.complexity * 10 : question.complexity * 15;
-    await handleCorrectAnswer(client, interaction, karma, amountOfCorrectAnswers, question);
+    correctAnswers.push(member._id);
+  } else {
+    wrongAnswers.push(member._id);
+  }
+  await updatePostedQuiz(postedQuizId, { ...postedQuiz, correctAnswers, wrongAnswers });
+  if (isAnswerCorrect) {
+    const karma = correctAnswers.length > 5 ? question.complexity * 10 : question.complexity * 15;
+    await handleCorrectAnswer(client, interaction, karma, correctAnswers.length, question);
     return;
   }
   handleWrongAnswer(interaction)
 }
 
 const getQuiz = async () => {
-  const { list: questions } = await getAllQuestions();
-  const randomQuestionIndex = randomIntFromInterval(0, questions.length - 1);
-  const randomQuiz = questions[randomQuestionIndex];
-  timeoutCache.set(randomQuiz._id.toString(), true);
-  setInterval(() => {
-    timeoutCache.set(randomQuiz._id.toString(), false);
-  }, QUIZ_TIME*1000);
+  const count = await getQuestionCount();
+  const randomQuestionIndex = randomIntFromInterval(0, count - 1);
+  const randomQuiz = await getQuestionByIndex(randomQuestionIndex);
+  const postedQuiz = await createPostedQuiz({
+    createdAt: new Date(),
+    expiredAt: addHours(new Date(), 2),
+    quizId: randomQuiz._id,
+    correctAnswers: [],
+    wrongAnswers: [],
+  });
   const buttons = new ActionRowBuilder();
-  const id = randomQuiz._id.toString();
+  const id = postedQuiz._id.toString();
   const embed = getQuizEmbed(randomQuiz);
   buttons.addComponents(new ButtonBuilder().setCustomId(`${id}:A`).setLabel("A").setStyle(ButtonStyle.Primary));
   buttons.addComponents(new ButtonBuilder().setCustomId(`${id}:B`).setLabel("B").setStyle(ButtonStyle.Primary));

@@ -68,16 +68,13 @@ const handleArticlesApi = (app, client) => {
   })
 
   app.get('/api/tags/search', async ({ headers, query }, res) => {
-    console.log
     if (!await validateAccess(headers, scopes.admin, client)) {
       res.status(403);
       res.send({ error: "Access Error", message: "This user is not allowed to see tags"});
       return;
     }
-    console.log(query.search)
     try {
       const response = await getTagsForSearch(query.search);
-      console.log(response)
       res.send(response);
       
     } catch (error) {

@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongodb");
 const mongoose = require("mongoose");
 
 const QuizEntrySchema = new mongoose.Schema({
@@ -39,9 +40,38 @@ const QuizEntrySchema = new mongoose.Schema({
   },
 });
 
+const PostedQuizSchema = new mongoose.Schema({
+  createdAt: {
+    type: Date,
+    required: true
+  },
+  expiredAt: {
+    type: Date,
+    required: true
+  },
+  quizId: {
+    type: ObjectId,
+    ref: 'quiz-questions-new',
+    required: true
+  },
+  correctAnswers: [{
+    type: ObjectId,
+    ref: 'members',
+    required: true
+  }],
+  wrongAnswers: [{
+    type: ObjectId,
+    ref: 'members',
+    required: true
+  }],
+});
+
+
 const QuizEntryModel = mongoose.model('quiz-questions-new', QuizEntrySchema);
+const PostedQuizModel = mongoose.model('posted-quiz', PostedQuizSchema);
 
 module.exports = {
   QuizEntrySchema,
   QuizEntryModel,
+  PostedQuizModel
 }

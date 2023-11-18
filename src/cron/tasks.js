@@ -27,13 +27,11 @@ const runTasks = (client) => {
     timezone: 'Europe/Warsaw'
   });
 
-  cron.schedule('00 9,12,15,18 * * *', async () => {
+  cron.schedule('0 10,13,16,19 * * *', async () => {
     const channel = client.channels.cache.get(channels.code);
-    const timeout = randomIntFromInterval(1000, 10800*1000);
-    setTimeout(async () => {
-      const embed = await getQuiz()
-      channel.send(embed);
-    }, timeout)
+    const embed = await getQuiz()
+    channel.send(embed);
+    return;
   }, {
     timezone: 'Europe/Warsaw'
   });
