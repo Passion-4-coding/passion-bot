@@ -21,7 +21,7 @@ module.exports = {
     const telegramName = option.value;
     const discordId = interaction.user.id;
 
-    const embed = await addTelegramMemberAndGenerateEmbed(client, discordId, telegramName);
+    const embed = await addTelegramMemberAndGenerateEmbed(client, discordId, telegramName, interaction.user);
 
     await interaction.editReply({
       ephemeral: true,

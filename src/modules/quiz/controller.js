@@ -7,7 +7,9 @@ const { addKarmaForTheQuiz } = require('../karma');
 const { colors, images } = require('../../constants');
 const { addHours, differenceInSeconds } = require('date-fns');
 const { getMemberByDiscordId } = require('../member');
-const { ObjectId } = require('mongodb');
+const { logMemberCorrectAnswer, logMemberWrongAnswer } = require('../log');
+
+const { GUILD_ID } = process.env;
 
 const quizHeadMessage = "Увага, тест! У тебе є дві години щоб відповісти на питання і заробити очок карми.";
 
@@ -101,6 +103,7 @@ const handleQuizNotAvailable = (interaction) => {
 }
 
 const handleMemberAnswer = async (interaction, client) => {
+  const guild = client.guilds.resolve(GUILD_ID);
   await interaction.deferReply({
     ephemeral: true,
     fetchReply: true
@@ -108,6 +111,10 @@ const handleMemberAnswer = async (interaction, client) => {
   const ids = interaction.customId.split(":");
   const postedQuizId = ids[0];
   const postedQuiz = await getPostedQuizById(postedQuizId);
+  if (!postedQuiz) {
+    handleQuizNotAvailable(interaction);
+    return;
+  }
   const timeToExpired = differenceInSeconds(new Date(postedQuiz.expiredAt), new Date());
   const member = await getMemberByDiscordId(interaction.member.id);
   if (timeToExpired < 0) {
@@ -134,9 +141,11 @@ const handleMemberAnswer = async (interaction, client) => {
   if (isAnswerCorrect) {
     const karma = correctAnswers.length > 5 ? question.complexity * 10 : question.complexity * 15;
     await handleCorrectAnswer(client, interaction, karma, correctAnswers.length, question);
+    logMemberCorrectAnswer(guild, interaction.member);
     return;
   }
-  handleWrongAnswer(interaction)
+  handleWrongAnswer(interaction);
+  logMemberWrongAnswer(guild, interaction.member);
 }
 
 const getQuiz = async () => {

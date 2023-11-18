@@ -4,6 +4,9 @@ const { validateAccess, scopes } = require("../auth");
 const { colors } = require("../../constants");
 const { EmbedBuilder } = require("discord.js");
 const { addKarmaForTheTelegramSubscription } = require("../karma");
+const { logMemberSubscribedToTelegram } = require("../log");
+
+const { GUILD_ID } = process.env;
 
 const handleTelegramMembersApi = (app, client) => {
   app.get('/api/telegram-members', async ({ headers, query }, res) => {
@@ -27,8 +30,9 @@ const handleTelegramMembersApi = (app, client) => {
   })
 }
 
-const addTelegramMemberAndGenerateEmbed = async (client, discordId, tgname) => {
+const addTelegramMemberAndGenerateEmbed = async (client, discordId, tgname, discordMember) => {
   const exists = await isExists(discordId);
+  const guild = client.guilds.resolve(GUILD_ID);
   if (exists) {
     return new EmbedBuilder().setColor(colors.danger).setDescription("Ти вже отримав карму за підписку на телеграм");
   }
@@ -44,6 +48,7 @@ const addTelegramMemberAndGenerateEmbed = async (client, discordId, tgname) => {
   try {
     await addTelegramMember(telegramMember);
     await addKarmaForTheTelegramSubscription(client, discordId, tgname);
+    await logMemberSubscribedToTelegram(guild, discordMember);
     return new EmbedBuilder().setColor(colors.primary)
       .setTitle("Ви отримали 200 карми!")
       .setDescription("Вітаємо і дякуємо за підписку на наш телеграм. \n Мусимо попередити, що у разі відписки або хибного нікнейму я буду вимушений повернути карму назад.");

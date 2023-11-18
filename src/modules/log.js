@@ -21,9 +21,24 @@ const logMemberRoleChange = (guild, member, oldRole, newRole) => {
   logMessage(guild, `Роль ${member} була змінена з ${oldRole} на ${newRole}.`)
 }
 
+const logMemberCorrectAnswer = (guild, member) => {
+  logMessage(guild, `Користувач ${member} правильно відповів на квіз.`)
+}
+
+const logMemberWrongAnswer = (guild, member) => {
+  logMessage(guild, `Користувач ${member} помилився з відповіддю на квіз`)
+}
+
+const logMemberSubscribedToTelegram = (guild, member) => {
+  logMessage(guild, `Користувач ${member} підписався на телеграм`)
+}
+
 module.exports = {
   logInviteLinkPublished,
   logMemberIn,
   logMemberOut,
-  logMemberRoleChange
+  logMemberRoleChange,
+  logMemberCorrectAnswer,
+  logMemberWrongAnswer,
+  logMemberSubscribedToTelegram
 }
