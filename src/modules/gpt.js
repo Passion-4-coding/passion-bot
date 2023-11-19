@@ -1,18 +1,16 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-const { Configuration, OpenAIApi } = require("openai");
+const { OpenAI } = require("openai");
 const { getLanguageRole } = require("./roles");
 const { gpt } = require("../modules/messages");
 const { colors } = require("../constants");
 
-const configuration = new Configuration({
+const openai = new OpenAI({
   apiKey: process.env.OPEN_AI_API_KEY,
 });
 
-const openai = new OpenAIApi(configuration);
-
 const MODELS = {
-  davinci: "text-davinci-003",
-  gpt: "gpt-3.5-turbo"
+  gpt4: "gpt-4",
+  gpt3: "gpt-3.5-turbo"
 }
 
 const answerTypes = {
@@ -20,17 +18,16 @@ const answerTypes = {
   private: "private"
 }
 
-const createCompletion = (model, maxTokens, prompt) => {
-  if (model === MODELS.gpt) {
-    return openai.createChatCompletion({
+const createCompletion = async (model, maxTokens, prompt) => {
+  if (model === MODELS.gpt4) {
+    return openai.chat.completions.create({
       model,
       messages: [{role: "user", content: prompt}],
     }).catch((error) => console.log(error));
   }
-  return openai.createCompletion({
+  return openai.chat.completions.create({
     model,
     prompt,
-    max_tokens: maxTokens,
   });
 }
 
@@ -48,17 +45,18 @@ module.exports = {
   async getAnswer(text) {
     let completion;
     try {
-      completion = await createCompletion(MODELS.gpt, 4096, text);
+      completion = await createCompletion(MODELS.gpt4, 4096, text);
     } catch (error) {
-      console.error(MODELS.gpt, error);
+      console.error(MODELS.gpt4, error);
     }
-    if (completion) return completion.data.choices[0].message.content;
+    console.log(MODELS.gpt4, !!completion);
+    if (completion) return completion.choices[0].message.content;
     try {
-      completion = await createCompletion(MODELS.davinci, 4000, text);
+      completion = await createCompletion(MODELS.gpt3, 4000, text);
     } catch (error) {
-      console.error(MODELS.davinci, error);
+      console.error(MODELS.gpt3, error);
     }
-    if (completion) return completion.data.choices[0].text;
+    if (completion) return completion.choices[0].text;
   },
   getBasicGptOptions(name, description) {
     return new SlashCommandBuilder()
