@@ -33,6 +33,10 @@ const logMemberSubscribedToTelegram = (guild, member) => {
   logMessage(guild, `Користувач ${member} підписався на телеграм`)
 }
 
+const logStreakCompleted = (guild, member, length) => {
+  logMessage(guild, `Користувач ${member} виконав стрік на сьогодні і має серію з ${length} стріків`)
+}
+
 module.exports = {
   logInviteLinkPublished,
   logMemberIn,
@@ -40,5 +44,6 @@ module.exports = {
   logMemberRoleChange,
   logMemberCorrectAnswer,
   logMemberWrongAnswer,
-  logMemberSubscribedToTelegram
+  logMemberSubscribedToTelegram,
+  logStreakCompleted
 }

@@ -9,7 +9,8 @@ const {
   addKarmaForTheQuiz,
   getQuizWeekLeaders,
   addKarmaForTheTelegramSubscription,
-  handleKarmaApi
+  handleKarmaApi,
+  addKarmaForStreak
 } = require("./controller");
 
 module.exports = {
@@ -23,5 +24,6 @@ module.exports = {
   addKarmaForTheQuiz,
   getQuizWeekLeaders,
   addKarmaForTheTelegramSubscription,
-  handleKarmaApi
+  handleKarmaApi,
+  addKarmaForStreak
 }

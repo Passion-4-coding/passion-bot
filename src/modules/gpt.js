@@ -49,7 +49,6 @@ module.exports = {
     } catch (error) {
       console.error(MODELS.gpt4, error);
     }
-    console.log(MODELS.gpt4, !!completion);
     if (completion) return completion.choices[0].message.content;
     try {
       completion = await createCompletion(MODELS.gpt3, 4000, text);

@@ -8,6 +8,7 @@ const { colors, images } = require('../../constants');
 const { addHours, differenceInSeconds } = require('date-fns');
 const { getMemberByDiscordId } = require('../member');
 const { logMemberCorrectAnswer, logMemberWrongAnswer } = require('../log');
+const { applyStreak } = require('../streak');
 
 const { GUILD_ID } = process.env;
 
@@ -140,6 +141,7 @@ const handleMemberAnswer = async (interaction, client) => {
   await updatePostedQuiz(postedQuizId, { ...postedQuiz, correctAnswers, wrongAnswers });
   if (isAnswerCorrect) {
     const karma = correctAnswers.length > 5 ? question.complexity * 10 : question.complexity * 15;
+    await applyStreak(client, interaction.member, "quiz");
     await handleCorrectAnswer(client, interaction, karma, correctAnswers.length, question);
     logMemberCorrectAnswer(guild, interaction.member);
     return;

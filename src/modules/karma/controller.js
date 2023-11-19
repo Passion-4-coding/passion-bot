@@ -6,6 +6,7 @@ const { subDays } = require("date-fns");
 const { sumUserKarmaAndCount, calculateTotalKarma } = require("./utils");
 const { channels, colors, images } = require("../../constants");
 const { validateAccess, scopes } = require("../auth");
+const { applyStreak } = require("../streak");
 
 const handleKarmaApi = (app, client) => {
   app.get('/api/karma-entries', async ({ headers, query }, res) => {
@@ -61,21 +62,27 @@ const addKarmaForBump = async (client, interaction) => {
     if (embed.description.includes("Bump done!") || embed.description.includes("Server bumped") || embed.description.includes("successfully liked")) {
       const nowHours = new Date().getUTCHours();
       const karmaReward = nowHours >= 22 || nowHours <= 6 ? 50 : 25
+      await applyStreak(client, member, "bump");
       await updateKarma(client, interaction.interaction.user.id, karmaReward, "bump");
     }
   }
 }
 
-const addKarmaForMessageActivity = (client, message, memberId, channelId) => {
+const addKarmaForMessageActivity = async (client, message, member, channelId) => {
   const divisor = channelId === channels.coffee ? 20 : 10;
   const points = Math.round(message.length/divisor);
   const karma = points > 5 ? 5 : points;
   if (karma === 0) return;
-  return updateKarma(client, memberId, karma, "message");
+  await applyStreak(client, member, "message");
+  return updateKarma(client, member.id, karma, "message");
 }
 
 const addKarmaForTheQuiz = (client, memberId, quizId, karma) => {
   return updateKarma(client, memberId, karma, "quiz", undefined, quizId);
+}
+
+const addKarmaForStreak = (client, memberId, karma) => {
+  return updateKarma(client, memberId, karma, "streak");
 }
 
 const addKarmaForTheTelegramSubscription = (client, memberId, telegramName) => {
@@ -178,5 +185,6 @@ module.exports = {
   getQuizWeekLeaders,
   getBestContentContributors,
   addKarmaForTheTelegramSubscription,
-  handleKarmaApi
+  handleKarmaApi,
+  addKarmaForStreak
 }

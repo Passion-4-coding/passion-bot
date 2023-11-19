@@ -10,7 +10,7 @@ module.exports = {
   name: Events.MessageCreate,
   once: false,
   async execute(interaction, client) {
-    if (interaction.channelId === channels.draft  && !interaction.member.roles.cache.has(roles.owner)) {
+    if (interaction.channelId === channels.draft && !interaction.member.roles.cache.has(roles.owner)) {
       handleDraftMessage(interaction, client)
     } 
     const message = interaction.content;
@@ -32,11 +32,12 @@ module.exports = {
     
     if (!interaction.member) return;
 
+    const member = interaction.member;
     const memberId = interaction.member.user.id;
 
     if (interaction.author.bot) return;
     // add karma for user activity
-    await addKarmaForMessageActivity(client, message, memberId, channelId);
+    await addKarmaForMessageActivity(client, message, member, channelId);
 
     const swearWordsAmount = getSwearWordAmount(message);
 
