@@ -35,6 +35,7 @@ const ROLES_KARMA_GRADATION = {
 // COLORS
 const PRIMARY_COLOR = "#6764E9";
 const DANGER_COLOR = "#DC2626";
+const WARNING_COLOR = "#F5AD1C";
 
 // IMAGES
 const KARMA_10 = "https://res.cloudinary.com/de76u6w6i/image/upload/v1689436870/15_wujd67.png";
@@ -96,7 +97,8 @@ module.exports = {
   },
   colors: {
     primary: PRIMARY_COLOR,
-    danger: DANGER_COLOR
+    danger: DANGER_COLOR,
+    warning: WARNING_COLOR,
   },
   images: {
     karmaLeaders: KARMA_LEADERS_24H,

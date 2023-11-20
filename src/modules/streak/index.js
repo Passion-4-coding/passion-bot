@@ -1,7 +1,9 @@
 const {
-  applyStreak
+  applyStreak,
+  getCurrentStreakEmbed
 } = require("./controller");
 
 module.exports = {
-  applyStreak
+  applyStreak,
+  getCurrentStreakEmbed
 }

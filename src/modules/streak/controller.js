@@ -1,10 +1,38 @@
+const { EmbedBuilder } = require("discord.js");
+const { colors, channels } = require("../../constants");
 const { logStreakCompleted } = require("../log");
 const { getStreak, createStreak, updateStreak, getPreviousStreak } = require("./services");
 
 const STREAK_COMPLETE_LENGTH = 2;
 const STREAK_DAY_KARMA = 5;
+const ALL_ACTIVITIES = ["bump", "message", "content-making", "quiz"];
+
 
 const { GUILD_ID } = process.env;
+
+const getRestActivitiesList = (client, activities) => {
+  const guild = client.guilds.resolve(GUILD_ID);
+  const restActivities = ALL_ACTIVITIES.filter(a => !activities.includes(a));
+  let list = "";
+  restActivities.forEach(activity => {
+    if (activity === "message") {
+      list = `${list}\n- Відправити повідомлення в будь якому каналі довжиною не менше 20ти символів.`
+    }
+    if (activity === "bump") {
+      const bot =  guild.channels.cache.get(channels.bot);
+      list = `${list}\n- Бампнути сервер в ${bot.toString()}`;
+    }
+    if (activity === "content-making") {
+      const draft =  guild.channels.cache.get(channels.draft);
+      list = `${list}\n- Запропонувати контент в ${draft.toString()}`;
+    }
+    if (activity === "quiz") {
+      const code =  guild.channels.cache.get(channels.code);
+      list = `${list}\n- Відповісти правильно на квіз в ${code.toString()}`;
+    }
+  });
+  return list;
+}
 
 const applyStreak = async (client, discordMember, activity, addKarmaForStreak) => {
   const discordMemberId = discordMember.id;
@@ -37,6 +65,26 @@ const applyStreak = async (client, discordMember, activity, addKarmaForStreak) =
   return updateStreak(updatedStreak, discordMember, updatedStreak.length);
 }
 
+const getCurrentStreakEmbed = async (discordMemberId, client) => {
+  const currentStreak = await getStreak(discordMemberId);
+  if (!currentStreak) {
+    return new EmbedBuilder()
+      .setColor(colors.danger)
+      .setTitle("Щоб завершити стрік за сьогодні, виконай два завдання зі списку:")
+      .setDescription(getRestActivitiesList(client, []));
+  }
+  if (currentStreak.completed) {
+    return new EmbedBuilder()
+      .setColor(colors.primary)
+      .setDescription(`Ти завершив стрік за сьогодні`);
+  }
+  return new EmbedBuilder()
+    .setColor(colors.danger)
+    .setTitle("Щоб завершити стрік за сьогодні, виконай одне завдання зі списку:")
+    .setDescription(getRestActivitiesList(client, currentStreak.activities));
+}
+
 module.exports = {
-  applyStreak
+  applyStreak,
+  getCurrentStreakEmbed,
 }
