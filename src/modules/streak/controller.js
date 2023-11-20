@@ -13,7 +13,7 @@ const applyStreak = async (client, discordMember, activity, addKarmaForStreak) =
   const guild = client.guilds.resolve(GUILD_ID);
 
   if (!streak) { // create new streak
-    const currentLength = previousStreak?.completed ? previousStreak.length : 1;
+    const currentLength = previousStreak?.completed ? previousStreak.length : 0;
     const length = currentLength >= 20 ? 20 : currentLength + 1
     const newStreak = { discordMemberId, activities: [activity], completed: false, length };
     return createStreak(newStreak);
