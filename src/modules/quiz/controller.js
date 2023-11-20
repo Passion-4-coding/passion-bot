@@ -3,7 +3,7 @@ const { validateAccess, scopes } = require('../auth');
 const { getAllQuestions, addQuestion, updateQuestion, getQuestionCount, getQuestionByIndex, createPostedQuiz, getPostedQuizById, updatePostedQuiz } = require('./services');
 const { randomIntFromInterval } = require('../../utils');
 const { getQuestion } = require('./services');
-const { addKarmaForTheQuiz } = require('../karma');
+const { addKarmaForTheQuiz, addKarmaForStreak } = require('../karma');
 const { colors, images } = require('../../constants');
 const { addHours, differenceInSeconds } = require('date-fns');
 const { getMemberByDiscordId } = require('../member');
@@ -141,7 +141,7 @@ const handleMemberAnswer = async (interaction, client) => {
   await updatePostedQuiz(postedQuizId, { ...postedQuiz, correctAnswers, wrongAnswers });
   if (isAnswerCorrect) {
     const karma = correctAnswers.length > 5 ? question.complexity * 10 : question.complexity * 15;
-    await applyStreak(client, interaction.member, "quiz");
+    await applyStreak(client, interaction.member, "quiz", addKarmaForStreak);
     await handleCorrectAnswer(client, interaction, karma, correctAnswers.length, question);
     logMemberCorrectAnswer(guild, interaction.member);
     return;

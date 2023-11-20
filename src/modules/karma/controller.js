@@ -62,7 +62,7 @@ const addKarmaForBump = async (client, interaction) => {
     if (embed.description.includes("Bump done!") || embed.description.includes("Server bumped") || embed.description.includes("successfully liked")) {
       const nowHours = new Date().getUTCHours();
       const karmaReward = nowHours >= 22 || nowHours <= 6 ? 50 : 25
-      await applyStreak(client, member, "bump");
+      await applyStreak(client, member, "bump", addKarmaForStreak);
       await updateKarma(client, interaction.interaction.user.id, karmaReward, "bump");
     }
   }
@@ -73,7 +73,7 @@ const addKarmaForMessageActivity = async (client, message, member, channelId) =>
   const points = Math.round(message.length/divisor);
   const karma = points > 5 ? 5 : points;
   if (karma === 0) return;
-  await applyStreak(client, member, "message");
+  await applyStreak(client, member, "message", addKarmaForStreak);
   return updateKarma(client, member.id, karma, "message");
 }
 

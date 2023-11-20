@@ -1,6 +1,6 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { channels, colors } = require("../../constants");
-const { addKarmaForContentMaking } = require("../karma");
+const { addKarmaForContentMaking, addKarmaForStreak } = require("../karma");
 const { applyStreak } = require("../streak");
 
 const handleDraftMessage = async (interaction, client) => {
@@ -13,7 +13,7 @@ const handleDraftMessage = async (interaction, client) => {
   const draft = client.channels.cache.get(channels.draft);
   const draftReview = client.channels.cache.get(channels.draft_review);
 
-  await applyStreak(client, interaction.member, "content-making");
+  await applyStreak(client, interaction.member, "content-making", addKarmaForStreak);
 
   const responseEmbed = new EmbedBuilder()
   .setColor(colors.primary)
