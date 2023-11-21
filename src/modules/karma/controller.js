@@ -56,13 +56,13 @@ const changeKarmaManual = async (client, karma, member) => {
   }
 }
 
-const addKarmaForBump = async (client, interaction) => {
+const addKarmaForBump = async (client, interaction, ) => {
   if (interaction.type !== MessageType.ChatInputCommand || (interaction.interaction.commandName !== "bump" && interaction.interaction.commandName !== "like")) return;
   for (let embed of interaction.embeds) {
     if (embed.description.includes("Bump done!") || embed.description.includes("Server bumped") || embed.description.includes("successfully liked")) {
       const nowHours = new Date().getUTCHours();
       const karmaReward = nowHours >= 22 || nowHours <= 6 ? 50 : 25
-      await applyStreak(client, member, "bump", addKarmaForStreak);
+      await applyStreak(client, interaction.interaction.user, "bump", addKarmaForStreak);
       await updateKarma(client, interaction.interaction.user.id, karmaReward, "bump");
     }
   }
