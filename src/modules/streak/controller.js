@@ -65,22 +65,34 @@ const applyStreak = async (client, discordMember, activity, addKarmaForStreak) =
   return updateStreak(updatedStreak, discordMember, updatedStreak.length);
 }
 
+const getCurrentStreakLength = (streak) => {
+  if (!streak) return "";
+  if (streak.length === 20) return "Ти маєш максимальний стрік! Продовжуй виконувати завдання щоб отримувати 100 карми кожного дня!";
+  const startText = "Ти маєш стрік довжиною в ";
+  if (streak.length === 1) return `${startText} ${streak.length} день.`;
+  if (streak.length > 1 && streak.length < 5) return `${startText} ${streak.length} дні.`;
+  return `${startText} ${streak.length} днів.`;
+}
+
 const getCurrentStreakEmbed = async (discordMemberId, client) => {
   const currentStreak = await getStreak(discordMemberId);
+  const previousStreak = await getPreviousStreak(discordMemberId);
+  console.log("previousStreak", previousStreak)
   if (!currentStreak) {
+    const karmaToEarn = previousStreak ? (previousStreak.length + 1) * 5 : 5;
     return new EmbedBuilder()
       .setColor(colors.danger)
-      .setTitle("Щоб завершити стрік за сьогодні, виконай два завдання зі списку:")
+      .setTitle(`${getCurrentStreakLength(previousStreak)} Щоб заробити ${karmaToEarn} карми сьогодні, виконай два завдання зі списку:`)
       .setDescription(getRestActivitiesList(client, []));
   }
   if (currentStreak.completed) {
     return new EmbedBuilder()
       .setColor(colors.primary)
-      .setDescription(`Ти завершив стрік за сьогодні`);
+      .setDescription(`Вітаю з виконанням усіх завдань на сьогодні. ${getCurrentStreakLength(currentStreak)} Сьогодні зароблено ${currentStreak.length * 5} карми.`);
   }
   return new EmbedBuilder()
     .setColor(colors.danger)
-    .setTitle("Щоб завершити стрік за сьогодні, виконай одне завдання зі списку:")
+    .setTitle(`${getCurrentStreakLength(currentStreak)} Щоб заробити ${currentStreak.length * 5} карми сьогодні, виконай одне завдання зі списку:`)
     .setDescription(getRestActivitiesList(client, currentStreak.activities));
 }
 
