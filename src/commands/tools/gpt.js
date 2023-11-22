@@ -13,7 +13,7 @@ module.exports = {
       ephemeral: isPrivate,
     })
 
-    const answer = await getAnswer(option.value);
+    const answer = await getAnswer(option.value, interaction.member.id);
 
     if (isPrivate) {
       interaction.member.send(answer);

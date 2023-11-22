@@ -8,7 +8,7 @@ module.exports = {
       fetchReply: true,
     })
 
-    const answer = await getAnswer(interaction.targetMessage.content);
+    const answer = await getAnswer(interaction.targetMessage.content, interaction.member.id);
 
     const embed = getEmbed(false, interaction.targetMessage.content, answer, interaction.member);
 

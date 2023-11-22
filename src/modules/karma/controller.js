@@ -56,7 +56,7 @@ const changeKarmaManual = async (client, karma, member) => {
   }
 }
 
-const addKarmaForBump = async (client, interaction, ) => {
+const addKarmaForBump = async (client, interaction) => {
   if (interaction.type !== MessageType.ChatInputCommand || (interaction.interaction.commandName !== "bump" && interaction.interaction.commandName !== "like")) return;
   for (let embed of interaction.embeds) {
     if (embed.description.includes("Bump done!") || embed.description.includes("Server bumped") || embed.description.includes("successfully liked")) {

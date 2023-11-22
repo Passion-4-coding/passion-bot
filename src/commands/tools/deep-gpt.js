@@ -20,7 +20,7 @@ module.exports = {
 
     const question = await translator.translateText(option.value, null, 'en-US');
 
-    const answer = await getAnswer(question.text);
+    const answer = await getAnswer(question.text, interaction.member.id);
 
     if (isPrivate) {
       interaction.member.send(answer);

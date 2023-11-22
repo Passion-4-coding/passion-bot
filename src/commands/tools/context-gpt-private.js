@@ -9,7 +9,7 @@ module.exports = {
       ephemeral: true,
     })
 
-    const answer = await getAnswer(interaction.targetMessage.content);
+    const answer = await getAnswer(interaction.targetMessage.content, interaction.member.id);
     
     interaction.member.send(answer);
 
