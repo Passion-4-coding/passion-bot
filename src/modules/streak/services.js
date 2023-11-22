@@ -9,7 +9,6 @@ const getYesterdayRange = () => {
   const now = getCurrentDate();
   console.log(now);
   const yesterday = subDays(now, 1);
-  console.log(yesterday);
   return { start: startOfDay(yesterday), end: endOfDay(yesterday) };
 }
 
@@ -30,9 +29,8 @@ const getPreviousStreak = async (discordMemberId) => {
 }
 
 const updateStreak = async (streak) => {
-  const range = getYesterdayRange();
+  const range = getTodaysDateRange();
   return StreakEntryModel.findOneAndUpdate({
-    ...streak,
     discordMemberId: streak.discordMemberId,
     createdAt: { $gte: range.start, $lt: range.end }
   },
