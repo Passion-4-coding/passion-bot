@@ -49,17 +49,7 @@ const saveGptCounter = (memberId, counter) => {
 }
 
 const getGptCounter = (memberId) => {
-  return gptCounter.get(memberId, (err, success) => {
-    if ( err ) {
-      console.error('Error occurred while saving data.', err);
-      return false;
-    }
-
-    if ( success ) {
-      console.log( `User ${userId} with counter ${counter} saved successfully` );
-      return true;
-    }
-  });
+  return gptCounter.get(memberId);
 }
 
 module.exports = {
@@ -75,8 +65,9 @@ module.exports = {
   },
   async getAnswer(text, memberId) {
     let completion;
-    const counter = getGptCounter(memberId);
-    saveGptCounter(memberId, counter ? counter + 1 : 1);
+    const counter = getGptCounter(memberId) || 1;
+    saveGptCounter(memberId, counter);
+    console.log(memberId, counter);
     if (counter < 5) {
       try {
         completion = await createCompletion(MODELS.gpt4, 4096, text);
