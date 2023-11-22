@@ -95,11 +95,12 @@ const getCurrentStreakEmbed = async (discordMemberId, client) => {
       .setDescription(getRestActivitiesList(client, []));
   }
 
-  if ((!previousStreak?.completed && currentStreak?.length === 1)) {
+  if (currentStreak?.completed) {
+    const currentStreakLength = currentStreak.length;
+    const karmaEarned = currentStreakLength * 5;
     return new EmbedBuilder()
-      .setColor(colors.primary)
-      .setTitle(`Розпочни свій стрік сьогодні. Щоб заробити 5 карми, тобі залишилось виконати лише одне завдання зі списку:`)
-      .setDescription(getRestActivitiesList(client, currentStreak.activities));
+      .setColor(colors.danger)
+      .setTitle(`Вітаю! Ти виконав стрік за сьогодні і заробив ${karmaEarned} карми. Наступний cтрік буде доступний завтра.`)
   }
 
   if (!currentStreak && previousStreak?.completed) {
@@ -118,14 +119,6 @@ const getCurrentStreakEmbed = async (discordMemberId, client) => {
       .setColor(colors.primary)
       .setTitle(`${getStreakLengthText(currentStreakLength)} Продовжи стрік, щоб заробити ${karmaToEarn} карми. Тобі залишилось виконати лише одне завдання зі списку:`)
       .setDescription(getRestActivitiesList(client, currentStreak.activities));
-  }
-
-  if (currentStreak.completed) {
-    const currentStreakLength = currentStreak.length;
-    const karmaEarned = currentStreakLength * 5;
-    return new EmbedBuilder()
-    .setColor(colors.danger)
-    .setTitle(`Вітаю! Ти виконав стрік за сьогодні і заробив ${karmaEarned} карми. Наступний cтрік буде доступний завтра.`)
   }
 }
 
