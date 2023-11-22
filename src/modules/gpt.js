@@ -30,26 +30,16 @@ const createCompletion = async (model, maxTokens, prompt) => {
   }
   return openai.chat.completions.create({
     model,
-    prompt,
+    messages: [{role: "user", content: prompt}],
   });
 }
 
 const saveGptCounter = (memberId, counter) => {
-  gptCounter.set(memberId, counter, (err, success) => {
-    if ( err ) {
-      console.error('Error occurred while saving data.', err);
-      return false;
-    }
-
-    if ( success ) {
-      console.log( `User ${userId} with counter ${counter} saved successfully` );
-      return true;
-    }
-  });
+  gptCounter.set(memberId.toString(), counter);
 }
 
 const getGptCounter = (memberId) => {
-  return gptCounter.get(memberId);
+  return gptCounter.get(memberId.toString());
 }
 
 module.exports = {
@@ -66,8 +56,7 @@ module.exports = {
   async getAnswer(text, memberId) {
     let completion;
     const counter = getGptCounter(memberId) || 1;
-    saveGptCounter(memberId, counter);
-    console.log(memberId, counter);
+    saveGptCounter(memberId, counter + 1);
     if (counter < 5) {
       try {
         completion = await createCompletion(MODELS.gpt4, 4096, text);
@@ -83,7 +72,7 @@ module.exports = {
       console.error(MODELS.gpt3, error);
     }
     console.log("using " + MODELS.gpt3);
-    if (completion) return completion.choices[0].text;
+    if (completion) return completion.choices[0].message.content;
   },
   getBasicGptOptions(name, description) {
     return new SlashCommandBuilder()
