@@ -62,7 +62,7 @@ const applyStreak = async (client, discordMember, activity, addKarmaForStreak) =
     await logStreakCompleted(guild, discordMember, streak.length, STREAK_DAY_KARMA * streak.length);
   }
   const updatedStreak = { ...streak, activities, completed };
-  return updateStreak(updatedStreak, discordMember, updatedStreak.length);
+  return updateStreak(updatedStreak);
 }
 
 const getStreakLengthText = (length) => {

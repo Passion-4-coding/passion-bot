@@ -30,6 +30,7 @@ const getPreviousStreak = async (discordMemberId) => {
 
 const updateStreak = async (streak) => {
   const range = getTodaysDateRange();
+  console.log("updateStreak", streak)
   return StreakEntryModel.findOneAndUpdate({
     discordMemberId: streak.discordMemberId,
     createdAt: { $gte: range.start, $lt: range.end }
