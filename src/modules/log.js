@@ -26,7 +26,7 @@ const logMemberOut = (guild, member) => {
 
 const logMemberRoleChange = (guild, member, oldRole, newRole) => {
   const embed = new EmbedBuilder().setColor(colors.primary)
-    .setTitle(`Вітаємо ${member} з новою роллю ${newRole}`)
+    .setTitle(`Вітаємо ${member.user.username} з новою роллю ${newRole}`)
     .setImage(images.promotions[newRole]);
   logPublicMessage(guild, embed);
   logModMessage(guild, `Роль ${member} була змінена з ${oldRole} на ${newRole}.`);
@@ -45,6 +45,13 @@ const logMemberSubscribedToTelegram = (guild, member) => {
 }
 
 const logStreakCompleted = (guild, member, length) => {
+  console.log(member)
+  if (length >= 2) {
+    const embed = new EmbedBuilder().setColor(colors.primary)
+      .setTitle(`Вітаємо ${member.user.username} з виконанням стріку за сьогодні. Твоя серія стріків складає ${length}. Так тримати!`)
+      .setImage(images.streakCompleted);
+      logPublicMessage(guild, embed);
+  }
   logModMessage(guild, `Користувач ${member} виконав стрік на сьогодні і має серію з ${length} стріків`)
 }
 

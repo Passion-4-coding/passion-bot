@@ -52,6 +52,7 @@ const KARMA_LEADERS_24H = "https://res.cloudinary.com/de76u6w6i/image/upload/v16
 const STATS_24H = "https://res.cloudinary.com/de76u6w6i/image/upload/v1689430114/12_uogafz.png";
 const QUIZ_LEADERS_WEEK = "https://res.cloudinary.com/de76u6w6i/image/upload/v1689430114/21_zqndjv.png";
 const CONTENT_CONTRIBUTORS_WEEK = "https://res.cloudinary.com/de76u6w6i/image/upload/v1689430114/22_cuc1qn.png";
+const STREAK_COMPLETED = "https://res.cloudinary.com/de76u6w6i/image/upload/v1700844969/streak_dypxvo.png";
 
 const PROMOTION_JUNIOR = "https://res.cloudinary.com/de76u6w6i/image/upload/v1700841881/promotion-junior_vzvzmt.png";
 const PROMOTION_MIDDLE = "https://res.cloudinary.com/de76u6w6i/image/upload/v1700841881/promotion-middle_pqvqoc.png";
@@ -123,6 +124,7 @@ module.exports = {
     karma50: KARMA_50,
     karma60: KARMA_60,
     karma75: KARMA_75,
+    streakCompleted: STREAK_COMPLETED,
     promotions: {
       junior: PROMOTION_JUNIOR,
       middle: PROMOTION_MIDDLE,
