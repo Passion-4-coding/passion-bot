@@ -22,7 +22,8 @@ const CODE_CHANNEL = IS_PRODUCTION ? "821695511768727567" : "1118064704821137448
 const DRAFT_CHANNEL = IS_PRODUCTION ? "1119175434899296287" : "1119933699396485120";
 const DRAFT_REVIEW_CHANNEL = IS_PRODUCTION ? "1119933370013589594" : "1119933729603846194";
 const KARMA_CHANNEL = IS_PRODUCTION ? "1133074006308827278" : "1133074115742416946";
-const LOG_CHANNEL = IS_PRODUCTION ? "932593903369068554" : "1150143792570171423";
+const MODERATORS_LOG_CHANNEL = IS_PRODUCTION ? "932593903369068554" : "1150143792570171423";
+const PUBLIC_LOG_CHANNEL = IS_PRODUCTION ? "1177647165061996677" : "1177641666010689727";
 
 const ROLES_KARMA_GRADATION = {
   junior: 200,
@@ -51,6 +52,13 @@ const KARMA_LEADERS_24H = "https://res.cloudinary.com/de76u6w6i/image/upload/v16
 const STATS_24H = "https://res.cloudinary.com/de76u6w6i/image/upload/v1689430114/12_uogafz.png";
 const QUIZ_LEADERS_WEEK = "https://res.cloudinary.com/de76u6w6i/image/upload/v1689430114/21_zqndjv.png";
 const CONTENT_CONTRIBUTORS_WEEK = "https://res.cloudinary.com/de76u6w6i/image/upload/v1689430114/22_cuc1qn.png";
+
+const PROMOTION_JUNIOR = "https://res.cloudinary.com/de76u6w6i/image/upload/v1700841881/promotion-junior_vzvzmt.png";
+const PROMOTION_MIDDLE = "https://res.cloudinary.com/de76u6w6i/image/upload/v1700841881/promotion-middle_pqvqoc.png";
+const PROMOTION_SENIOR = "https://res.cloudinary.com/de76u6w6i/image/upload/v1700841881/promotion-senior_ai9s3b.png";
+const PROMOTION_PRINCIPAL = "https://res.cloudinary.com/de76u6w6i/image/upload/v1700841881/promotion-principal_lrtkhu.png";
+const PROMOTION_LEAD = "https://res.cloudinary.com/de76u6w6i/image/upload/v1700841881/promotion-lead_pcfb7a.png";
+const PROMOTION_LEGEND = "https://res.cloudinary.com/de76u6w6i/image/upload/v1700841881/promotion-legend_dnds9y.png";
 
 // ADMIN
 
@@ -93,7 +101,8 @@ module.exports = {
     draft: DRAFT_CHANNEL,
     draft_review: DRAFT_REVIEW_CHANNEL,
     karma: KARMA_CHANNEL,
-    log: LOG_CHANNEL
+    logModerators: MODERATORS_LOG_CHANNEL,
+    logPublic: PUBLIC_LOG_CHANNEL
   },
   colors: {
     primary: PRIMARY_COLOR,
@@ -113,7 +122,15 @@ module.exports = {
     karma45: KARMA_45,
     karma50: KARMA_50,
     karma60: KARMA_60,
-    karma75: KARMA_75
+    karma75: KARMA_75,
+    promotions: {
+      junior: PROMOTION_JUNIOR,
+      middle: PROMOTION_MIDDLE,
+      senior: PROMOTION_SENIOR,
+      principal: PROMOTION_PRINCIPAL,
+      lead: PROMOTION_LEAD,
+      legend: PROMOTION_LEGEND,
+    }
   },
   adminId: ADMIN_ID
 }

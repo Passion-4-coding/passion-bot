@@ -12,7 +12,7 @@ const { applyStreak } = require('../streak');
 
 const { GUILD_ID } = process.env;
 
-const quizHeadMessage = "Увага, тест! У тебе є дві години щоб відповісти на питання і заробити очок карми.";
+const quizHeadMessage = "Увага, тест! У тебе є три години щоб відповісти на питання і заробити очок карми.";
 
 const getQuizMessage = (quiz) => {
   return `${quizHeadMessage}\n\n**${quiz.question}**\n\n**A**: ${quiz.answerA}\n**B**: ${quiz.answerB}\n**C**: ${quiz.answerC}\n**D**: ${quiz.answerD}`;
@@ -156,7 +156,7 @@ const getQuiz = async () => {
   const randomQuiz = await getQuestionByIndex(randomQuestionIndex);
   const postedQuiz = await createPostedQuiz({
     createdAt: new Date(),
-    expiredAt: addHours(new Date(), 2),
+    expiredAt: addHours(new Date(), 3),
     quizId: randomQuiz._id,
     correctAnswers: [],
     wrongAnswers: [],

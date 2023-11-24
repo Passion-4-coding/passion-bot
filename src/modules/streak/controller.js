@@ -99,7 +99,7 @@ const getCurrentStreakEmbed = async (discordMemberId, client) => {
     const currentStreakLength = currentStreak.length;
     const karmaEarned = currentStreakLength * 5;
     return new EmbedBuilder()
-      .setColor(colors.danger)
+      .setColor(colors.primary)
       .setTitle(`Вітаю! Ти виконав стрік за сьогодні і заробив ${karmaEarned} карми. Наступний cтрік буде доступний завтра.`)
   }
 

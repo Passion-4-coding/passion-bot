@@ -16,12 +16,15 @@ module.exports = {
     const message = interaction.content;
     const channelId = interaction.channelId;
 
-    if (message.includes('discord.gg/'||'discordapp.com/invite/') && interaction.channelId !== channels.log) {
-      interaction.delete();
-      const muteTime = 180 * 60 * 1000;
-      interaction.member.timeout(muteTime);
-      logInviteLinkPublished(client, interaction.member, message);
-      return;
+    if (
+      message.includes('discord.gg/'||'discordapp.com/invite/') &&
+      interaction.channelId !== channels.logModerators &&
+      interaction.channelId !== channels.logPublic) {
+        interaction.delete();
+        const muteTime = 180 * 60 * 1000;
+        interaction.member.timeout(muteTime);
+        logInviteLinkPublished(client, interaction.member, message);
+        return;
     }
 
     // check for bump and add karma
