@@ -17,6 +17,10 @@ const handleAuthApi = (app, client) => {
         "Authorization": headers['authorization'],
       }
     });
+    if (response.status === 401) {
+      res.send(401, "Token not found");
+      return;
+    }
     const data = await response.json();
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const memberScopes = [];
