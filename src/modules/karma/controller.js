@@ -62,8 +62,8 @@ const addKarmaForBump = async (client, interaction) => {
     if (embed.description.includes("Bump done!") || embed.description.includes("Server bumped") || embed.description.includes("successfully liked")) {
       const nowHours = new Date().getUTCHours();
       const karmaReward = nowHours >= 22 || nowHours <= 6 ? 50 : 25
-      await applyStreak(client, interaction.member, "bump", addKarmaForStreak);
-      await updateKarma(client, interaction.member.user.id, karmaReward, "bump");
+      await applyStreak(client, interaction.interaction.user, "bump", addKarmaForStreak);
+      await updateKarma(client, interaction.interaction.user.id, karmaReward, "bump");
     }
   }
 }

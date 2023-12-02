@@ -45,10 +45,9 @@ const logMemberSubscribedToTelegram = (guild, member) => {
 }
 
 const logStreakCompleted = (guild, member, length) => {
-  console.log(member)
   if (length >= 2) {
     const embed = new EmbedBuilder().setColor(colors.primary)
-      .setTitle(`Вітаємо ${member.user.username} з виконанням стріку за сьогодні. Твоя серія стріків складає ${length}. Так тримати!`)
+      .setTitle(`Вітаємо ${member.user?.username || member.username} з виконанням стріку за сьогодні. Твоя серія стріків складає ${length}. Так тримати!`)
       .setImage(images.streakCompleted);
       logPublicMessage(guild, embed);
   }
