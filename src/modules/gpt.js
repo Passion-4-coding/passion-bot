@@ -57,7 +57,7 @@ module.exports = {
     let completion;
     const counter = getGptCounter(memberId) || 1;
     saveGptCounter(memberId, counter + 1);
-    if (counter < 5) {
+    if (counter < 100) {
       try {
         completion = await createCompletion(MODELS.gpt4, 4096, text);
       } catch (error) {
