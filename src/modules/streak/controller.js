@@ -5,8 +5,7 @@ const { getStreak, createStreak, updateStreak, getPreviousStreak } = require("./
 
 const STREAK_COMPLETE_LENGTH = 2;
 const STREAK_DAY_KARMA = 5;
-const ALL_ACTIVITIES = ["bump", "message", "content-making", "quiz"];
-
+const ALL_ACTIVITIES = ["message", "content-making", "quiz"];
 
 const { GUILD_ID } = process.env;
 
@@ -17,10 +16,6 @@ const getRestActivitiesList = (client, activities) => {
   restActivities.forEach(activity => {
     if (activity === "message") {
       list = `${list}\n- Відправити повідомлення в будь якому каналі довжиною не менше 20ти символів.`
-    }
-    if (activity === "bump") {
-      const bot =  guild.channels.cache.get(channels.bot);
-      list = `${list}\n- Бампнути сервер в ${bot.toString()}`;
     }
     if (activity === "content-making") {
       const draft =  guild.channels.cache.get(channels.draft);
@@ -42,7 +37,7 @@ const applyStreak = async (client, discordMember, activity, addKarmaForStreak) =
 
   if (!streak) { // create new streak
     const currentLength = previousStreak?.completed ? previousStreak.length : 0;
-    const length = currentLength >= 20 ? 20 : currentLength + 1
+    const length = currentLength >= 30 ? 30 : currentLength + 1
     const newStreak = { discordMemberId, activities: [activity], completed: false, length };
     return createStreak(newStreak);
   }
