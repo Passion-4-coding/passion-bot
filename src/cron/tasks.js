@@ -27,7 +27,7 @@ const runTasks = (client) => {
     timezone: 'Europe/Warsaw'
   });
 
-  cron.schedule('0 10,13,16,19 * * *', async () => {
+  cron.schedule('0 10,13,16,19,22 * * *', async () => {
     const channel = client.channels.cache.get(channels.code);
     const embed = await getQuiz()
     channel.send(embed);
