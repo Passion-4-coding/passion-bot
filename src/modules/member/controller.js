@@ -131,6 +131,11 @@ const promoteRole = async (member, client, addStatEntryMemberPromoted) => {
     newMemberRoleId = roles.lead;
     newRole = "lead";
   }
+  if (member.karma >= karmaGradation.legend) {
+    newMemberRoleId = roles.legend;
+    newRole = "legend";
+  }
+
   if (!memberProgressRole) {
     discordMember.roles.add(newMemberRoleId);
     await addStatEntryMemberPromoted(member.discordId);

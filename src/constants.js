@@ -8,6 +8,7 @@ const SENIOR_ROLE = IS_PRODUCTION ? "850396433600872518" : "1113387442771337266"
 const PRINCIPAL_ROLE = IS_PRODUCTION ? "850396643911532554" : "1113391768021516318";
 const LEAD_ROLE = IS_PRODUCTION ? "1146069924045926471" : "1146188339783938110";
 const ARCHITECT_ROLE = IS_PRODUCTION ? "982605844015357982" : "1113545609094385694";
+const LEGEND_ROLE = IS_PRODUCTION ? "1304738183220563978" : "1304736666354847756";
 const QA_ROLE = IS_PRODUCTION ? "850396748001706024" : "1113545672784879737";
 const OWNER_ROLE = IS_PRODUCTION ? "850397549324140575" : "1113545573115646023";
 const UA_ROLE = IS_PRODUCTION ? "1081158202193891358" : "1081211658204106832";
@@ -30,7 +31,8 @@ const ROLES_KARMA_GRADATION = {
   middle: 1000,
   senior: 5000,
   principal: 10000,
-  lead: 50000
+  lead: 50000,
+  legend: 100000,
 }
 
 // COLORS
@@ -74,6 +76,7 @@ module.exports = {
     principal: PRINCIPAL_ROLE,
     lead: LEAD_ROLE,
     architect: ARCHITECT_ROLE,
+    legend: LEGEND_ROLE,
     qa: QA_ROLE,
     owner: OWNER_ROLE,
     ua: UA_ROLE,
@@ -90,6 +93,7 @@ module.exports = {
     { id: PRINCIPAL_ROLE, name: "principal" },
     { id: LEAD_ROLE, name: "lead" },
     { id: ARCHITECT_ROLE, name: "architect" },
+    { id: LEGEND_ROLE, name: "legend" },
     { id: QA_ROLE, name: "qa" },
     { id: OWNER_ROLE, name: "owner" },
   ],
